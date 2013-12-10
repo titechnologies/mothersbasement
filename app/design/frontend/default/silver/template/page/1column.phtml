@@ -1,0 +1,64 @@
+<?php
+/**
+ * BelVG LLC.
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the EULA
+ * that is bundled with this package in the file LICENSE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://store.belvg.com/BelVG-LICENSE-COMMUNITY.txt
+ *
+ /***************************************
+ *         MAGENTO EDITION USAGE NOTICE *
+ *****************************************/
+ /* This package designed for Magento COMMUNITY edition
+ * BelVG does not guarantee correct work of this extension
+ * on any other Magento edition except Magento COMMUNITY edition.
+ * BelVG does not provide extension support in case of
+ * incorrect edition usage.
+ /***************************************
+ *         DISCLAIMER                   *
+ *****************************************/
+ /* Do not edit or add to this file if you wish to upgrade Magento to newer
+ * versions in the future.
+ *****************************************************
+ * @category   Belvg
+ * @package    Belvg_Android
+ * @copyright  Copyright (c) 2010 - 2011 BelVG LLC. (http://www.belvg.com)
+ * @license    http://store.belvg.com/BelVG-LICENSE-COMMUNITY.txt
+ */
+?>
+<?php
+/**
+ * Template for Mage_Page_Block_Html
+ */
+?>
+<!DOCTYPE HTML>
+<html lang="en-EN">
+<head>
+	<?php echo $this->getChildHtml('head') ?>
+</head>
+<body home="index.php" onload="setTimeout(scrollTo, 0, 0, 1)">
+
+<?php echo $this->getChildHtml('after_body_start') ?>
+<?php echo $this->getChildHtml('global_notices') ?>
+
+	<div class="wrapper">
+		<div class="header" role="banner">
+			<?php echo $this->getChildHtml('header') ?>
+		</div>
+		<div class="content-main" role="main">
+			<?php echo $this->getChildHtml('breadcrumbs') ?>
+			<?php echo $this->getChildHtml('content') ?>
+		</div>
+		<div class="footer" role="contentinfo">
+			<?php echo $this->getChildHtml('footer') ?>
+		</div>
+	</div>
+
+<?php echo $this->getChildHtml('before_body_end') ?>
+<?php echo $this->getAbsoluteFooter() ?>
+
+</body>
+</html>

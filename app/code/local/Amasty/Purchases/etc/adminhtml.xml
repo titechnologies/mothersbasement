@@ -1,0 +1,40 @@
+<?xml version="1.0"?> 
+<!--
+    Copyright (c) 2010 Amasty (http://www.amasty.com) 
+-->
+<config>
+	<acl>
+		<resources>
+			<all>
+				<title>Allow Everything</title>
+			</all>
+            <admin>
+                <children>
+                    <customer>
+                        <children>
+                            <ampurchases_orders>
+                                <title>View Orders By Customer</title>
+                            </ampurchases_orders>
+                        </children>
+                    </customer>
+                    <catalog>
+                        <children>
+                            <ampurchases_products>
+                                <title>View Customers By Product</title>
+                            </ampurchases_products>
+                        </children>
+                    </catalog>
+                 </children>
+            </admin> 
+		</resources>
+	</acl>
+    <translate>
+        <modules>
+            <Amasty_Notfound>
+                <files>
+                    <default>Amasty_Purchases.csv</default>
+                </files>
+            </Amasty_Notfound>
+        </modules>
+    </translate>
+</config> 

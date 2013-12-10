@@ -1,0 +1,89 @@
+<?xml version="1.0"?>
+<config>
+    <modules>
+        <Mage_Reference>
+            <version>0.1.0</version>
+        </Mage_Reference>
+    </modules>
+    
+    <global>
+        <models>
+            <reference>
+                <class>Mage_Reference_Model</class>
+                <resourceModel>reference_mysql4</resourceModel>
+            </reference>
+            <reference_mysql4>
+                <class>Mage_Reference_Model_Mysql4</class>
+            </reference_mysql4>
+        </models>
+        <blocks>
+            <reference>
+                <class>Mage_Reference_Block</class>
+            </reference>
+        </blocks>
+        <helpers>
+            <reference>
+                <class>Mage_Reference_Helper</class>
+            </reference>  
+        </helpers>
+    </global>
+    
+    <admin>
+        <routers>
+            <reference>
+                <use>admin</use>
+                <args>
+                    <module>Mage_Reference</module>
+                    <frontName>reference</frontName>
+                </args>
+            </reference>
+        </routers>
+    </admin>
+    
+    <adminhtml>
+        <translate>
+            <modules>
+                <mage_adminhtml>
+                    <files>
+                        <reference>Mage_Reference.csv</reference>
+                    </files>
+                </mage_adminhtml>
+            </modules>
+        </translate>
+        
+        <menu>
+            <catalog>
+                <children>
+                    <reference_adminform translate="title" module="reference">
+                        <title>References</title>
+                        <action>reference/adminhtml_myform</action>
+                    </reference_adminform>
+                </children>
+            </catalog>
+        </menu>
+        
+        <acl>
+            <resources>
+                <admin>
+                    <children>
+                        <catalog>
+                            <children>
+                                <reference_adminform>
+                                    <title>References</title>
+                                </reference_adminform>
+                            </children>
+                        </catalog>
+                    </children>
+                </admin>
+            </resources>
+        </acl>
+        
+        <layout>
+            <updates>
+                <reference>
+                    <file>reference.xml</file>
+                </reference>
+            </updates>
+        </layout>
+    </adminhtml>
+</config>

@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<config>
+ <modules>
+ <!-- Activate Add All in Cart to Wishlist Module -->
+   <Magemagician_Adminorderemail>
+     <active>true</active>
+     <codePool>local</codePool>
+   </Magemagician_Adminorderemail>
+ </modules>
+</config>

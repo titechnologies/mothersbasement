@@ -1,0 +1,82 @@
+<?php
+/**
+ * BelVG LLC.
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the EULA
+ * that is bundled with this package in the file LICENSE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://store.belvg.com/BelVG-LICENSE-COMMUNITY.txt
+ *
+ /***************************************
+ *         MAGENTO EDITION USAGE NOTICE *
+ *****************************************/
+ /* This package designed for Magento COMMUNITY edition
+ * BelVG does not guarantee correct work of this extension
+ * on any other Magento edition except Magento COMMUNITY edition.
+ * BelVG does not provide extension support in case of
+ * incorrect edition usage.
+ /***************************************
+ *         DISCLAIMER                   *
+ *****************************************/
+ /* Do not edit or add to this file if you wish to upgrade Magento to newer
+ * versions in the future.
+ *****************************************************
+ * @category   Belvg
+ * @package    Belvg_Android
+ * @copyright  Copyright (c) 2010 - 2011 BelVG LLC. (http://www.belvg.com)
+ * @license    http://store.belvg.com/BelVG-LICENSE-COMMUNITY.txt
+ */
+?>
+<script>
+	var payment = new Payment('co-payment-form', '<?php echo $this->getUrl('checkout/onepage/savePayment') ?>');
+</script>
+<form action="" id="co-payment-form">
+	<?php echo $this->getChildHtml('methods') ?>
+</form>
+
+<div class="col2-alt-set button-set">
+	<div class="col-1">
+		<p class="required"><?php echo $this->__('* Required Fields') ?></p>
+	</div>
+	<div class="col-2">&nbsp;</div>
+</div>
+<div class="col2-alt-set button-set" style="padding-top:0;">
+	<div class="col-1" style="padding-top:8px;">
+		<a href="#" class="left" onclick="checkout.back(); return false;"><span><?php echo $this->__('&laquo Back') ?></span></a>
+	</div>
+	<div class="col-2">
+		<div class="form-buttons">
+			<span id="payment-buttons-container">
+				<span id="payment-please-wait" style="display:none;" class="opc-please-wait">
+					<img src="<?php echo $this->getSkinUrl('images/opc-ajax-loader.gif') ?>" class="v-middle" alt=""> &nbsp; <?php echo $this->__('Loading next step...') ?> &nbsp;
+				</span><br>
+				<button type="button" class="form-button" onclick="payment.save();"><span><?php echo $this->__('Continue') ?></span></button>
+			</span>
+		</div>
+	</div>
+</div>
+
+<script>
+	function toggleToolTip(event){
+		if($('payment-tool-tip')){
+			$('payment-tool-tip').setStyle({
+				top: (Event.pointerY(event)-400)+'px',
+				left: (Event.pointerX(event)+100)+'px'
+			})
+			$('payment-tool-tip').toggle();
+		}
+		Event.stop(event);
+	}
+	if($('payment-tool-tip-close')){
+		Event.observe($('payment-tool-tip-close'), 'click', toggleToolTip);
+	}
+
+	$$('.cvv-what-is-this').each(function(element){
+		Event.observe(element, 'click', toggleToolTip);
+	});
+</script>
+<script>
+	payment.currentMethod = "<?php echo $this->getChild('methods')->getSelectedMethodCode() ?>";
+</script>

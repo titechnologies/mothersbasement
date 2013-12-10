@@ -1,0 +1,22 @@
+<?xml version="1.0"?> 
+<config>
+	<acl>
+		<resources>
+			<admin>
+				<children>
+					<system>
+						<children>
+							<config>
+								<children>
+									<autorelated_products>
+										<title>autorelated-products</title>
+									</autorelated_products>
+								</children>
+							</config>
+						</children>
+					</system>					
+				</children>
+			</admin>
+        </resources>
+	</acl>
+</config>

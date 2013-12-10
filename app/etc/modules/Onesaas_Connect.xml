@@ -1,0 +1,8 @@
+<config>
+    <modules>
+	<Onesaas_Connect>
+            <active>true</active>
+            <codePool>local</codePool>
+	</Onesaas_Connect>
+    </modules>
+</config>

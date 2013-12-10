@@ -1,0 +1,438 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Flint Technology Ltd
+ *
+ * This module was developed by Flint Technology Ltd (http://www.flinttechnology.co.uk).
+ * For support or questions, contact us via http://www.flinttechnology.co.uk/store/contacts
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the EULA bundled with this package in the file LICENSE.txt.
+ * It is also available online at http://www.flinttechnology.co.uk/store/module-license-1.0
+ *
+ * @package     flint_feefo-ce-1.2.0.zip
+ * @registrant  David Suter
+ * @license     68561092-2FBC-43E2-8F1F-450A55AB97CE
+ * @eula        Flint Module Single Installation License (http://www.flinttechnology.co.uk/store/module-license-1.0
+ * @copyright   Copyright (c) 2012 Flint Technology Ltd (http://www.flinttechnology.co.uk)
+ */
+
+-->
+<config>
+    <sections>
+        <flint_feefo>
+            <label><![CDATA[Flint FeeFo]]></label>
+            <tab>sales</tab>
+            <frontend_type>text</frontend_type>
+            <sort_order>100</sort_order>
+            <show_in_default>1</show_in_default>
+            <show_in_website>1</show_in_website>
+            <show_in_store>1</show_in_store>
+            <groups>
+                <general>
+                    <label><![CDATA[General Settings<span style="float:right; margin-right: 30px;">1.2.0</span>]]></label>
+                    <frontend_type>text</frontend_type>
+                    <sort_order>10</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <fields>
+                        <processing_heading translate="label">
+                            <label><![CDATA[<img src="https://www.flinttechnology.co.uk/store/module/status/image/k/68561092-2FBC-43E2-8F1F-450A55AB97CE/v/1.2.0/" />]]></label>
+                            <frontend_model>adminhtml/system_config_form_field_heading</frontend_model>
+                            <sort_order>10</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                        </processing_heading>
+                        <logon translate="label">
+                            <label>Logon</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>20</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment>Customer identifier (usually domain name)</comment>
+			</logon>
+			<key>
+                            <label>Key</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>30</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment>Optional security key for extracting order information (provided by Feefo).</comment>
+                        </key>
+                        <firewall translate="label">
+                            <label>IP Firewall</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>40</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment>Comma separated list of IP's permitted to retrieve order xml (when empty, the firewall is disengaged and all IP addresses are permitted).</comment>
+			</firewall>
+                        <logoTemplate translate="label">
+                            <label>Logo template</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>50</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment><![CDATA[Name of template file used to generate logos <a href="http://feefo.com/feefo/selectlogotemplate.jsp" target="_blank">http://feefo.com/feefo/selectlogotemplate.jsp</a>]]></comment>
+			</logoTemplate>
+                        <queryDate translate="label">
+                            <label>XML Query Date is when status achieves</label>
+                            <frontend_type>multiselect</frontend_type>
+                            <source_model>flint_feefo/source_date</source_model>
+                            <sort_order>60</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment>The earliest date that an order reaches one of the selected status determines when the order is presented to Feefo.</comment>
+			</queryDate>
+                        <queryDateOffset translate="label">
+                            <label>XML Query Date Offset</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>70</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment>Denotes the number of days from Order date that feedback date occurs.</comment>
+			</queryDateOffset>
+                        <caching translate="label">
+                            <label>Review caching</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>flint_feefo/source_caching</source_model>
+                            <sort_order>80</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment>Determines how long a review query is cached on the server.</comment>
+			</caching>
+                    </fields>
+                </general>
+                <homepage>
+                    <label><![CDATA[Homepage sitebar<span style="float:right; margin-right: 30px;"></span>]]></label>
+                    <frontend_type>text</frontend_type>
+                    <sort_order>20</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <fields>
+                        <active translate="label">
+                            <label>Active</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>10</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment>Determines whether logos are rendered on homepage page.</comment>
+			</active>
+                        <logoTemplate translate="label">
+                            <label>Logo template</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>50</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment><![CDATA[Name of template file used to generate logos <a href="http://feefo.com/feefo/selectlogotemplate.jsp" target="_blank">http://feefo.com/feefo/selectlogotemplate.jsp</a>]]></comment>
+			</logoTemplate>
+                        <mode translate="label">
+                            <label>Review Types to Include</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>flint_feefo/source_mode</source_model>
+                            <sort_order>60</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment>Determine which comments will be shown in reviews.</comment>
+			</mode>
+                        <order translate="label">
+                            <label>Order</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>flint_feefo/source_order</source_model>
+                            <sort_order>80</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment>Determines date order that reviews are presented.</comment>
+			</order>
+                        <since translate="label">
+                            <label>Since</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>flint_feefo/source_since</source_model>
+                            <sort_order>90</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment>Amount of history to include is logo queries.</comment>
+			</since>
+                        <limit translate="label">
+                            <label>Limit</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>100</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment>Number of review results to return. Default value = 50.</comment>
+			</limit>
+                        <additional translate="label">
+                            <label>Additional parameters (optional)</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>110</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment><![CDATA[example: &amp;param=value&amp;param2=value2]]></comment>
+			</additional>
+                    </fields>
+                </homepage>
+                <category>
+                    <label><![CDATA[Category page sitebar<span style="float:right; margin-right: 30px;"></span>]]></label>
+                    <frontend_type>text</frontend_type>
+                    <sort_order>40</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <fields>
+                        <active translate="label">
+                            <label>Active</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>10</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment>Determines whether logos are rendered on category pages.</comment>
+			</active>
+                        <logoTemplate translate="label">
+                            <label>Logo template</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>50</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment><![CDATA[Name of template file used to generate logos <a href="http://feefo.com/feefo/selectlogotemplate.jsp" target="_blank">http://feefo.com/feefo/selectlogotemplate.jsp</a>]]></comment>
+			</logoTemplate>
+                        <mode translate="label">
+                            <label>Review Types to Include</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>flint_feefo/source_mode</source_model>
+                            <sort_order>60</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment>Determine which comments will be shown in reviews.</comment>
+			</mode>
+                        <order translate="label">
+                            <label>Order</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>flint_feefo/source_order</source_model>
+                            <sort_order>80</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment>Determines date order that reviews are presented.</comment>
+			</order>
+                        <since translate="label">
+                            <label>Since</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>flint_feefo/source_since</source_model>
+                            <sort_order>90</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment>Amount of history to include is logo queries.</comment>
+			</since>
+                        <limit translate="label">
+                            <label>Limit</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>100</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment>Number of review results to return. Default value = 50.</comment>
+			</limit>
+                        <additional translate="label">
+                            <label>Additional parameters (optional)</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>110</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment><![CDATA[example: &amp;param=value&amp;param2=value2]]></comment>
+			</additional>
+                    </fields>
+                </category>
+                <productpage>
+                    <label><![CDATA[Productpage sitebar<span style="float:right; margin-right: 30px;"></span>]]>
+                    </label>
+                    <frontend_type>text</frontend_type>
+                    <sort_order>45</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <fields>
+                        <active translate="label">
+                            <label>Active</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>10</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment>Determines whether logos are rendered on productpage page.</comment>
+                        </active>
+                        <logoTemplate translate="label">
+                            <label>Logo template</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>50</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment><![CDATA[Name of template file used to generate logos <a href="http://feefo.com/feefo/selectlogotemplate.jsp" target="_blank">http://feefo.com/feefo/selectlogotemplate.jsp</a>]]>
+                            </comment>
+                        </logoTemplate>
+                        <mode translate="label">
+                            <label>Review Types to Include</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>flint_feefo/source_mode</source_model>
+                            <sort_order>60</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment>Determine which comments will be shown in reviews.</comment>
+                        </mode>
+                        <order translate="label">
+                            <label>Order</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>flint_feefo/source_order</source_model>
+                            <sort_order>80</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment>Determines date order that reviews are presented.</comment>
+                        </order>
+                        <since translate="label">
+                            <label>Since</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>flint_feefo/source_since</source_model>
+                            <sort_order>90</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment>Amount of history to include is logo queries.</comment>
+                        </since>
+                        <limit translate="label">
+                            <label>Limit</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>100</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment>Number of review results to return. Default value = 50.</comment>
+                        </limit>
+                        <additional translate="label">
+                            <label>Additional parameters (optional)</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>110</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment><![CDATA[example: &amp;param=value&amp;param2=value2]]></comment>
+			</additional>
+                    </fields>
+                </productpage>
+                <product>
+                    <label><![CDATA[Product page<span style="float:right; margin-right: 30px;"></span>]]></label>
+                    <frontend_type>text</frontend_type>
+                    <sort_order>50</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <fields>
+                        <active translate="label">
+                            <label>Active</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>10</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment>Determines whether logos are rendered on product pages.</comment>
+			</active>
+                        <googleStars translate="label">
+                            <label>Google Stars</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>20</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment>Generate html for Google stars.</comment>
+			</googleStars>
+                        <logoTemplate translate="label">
+                            <label>Logo template</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>50</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment><![CDATA[Name of template file used to generate logos <a href="http://feefo.com/feefo/selectlogotemplate.jsp" target="_blank">http://feefo.com/feefo/selectlogotemplate.jsp</a>]]></comment>
+			</logoTemplate>
+                        <mode translate="label">
+                            <label>Review Types to Include</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>flint_feefo/source_mode</source_model>
+                            <sort_order>60</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment>Determine which comments will be shown in reviews.</comment>
+			</mode>
+                        <order translate="label">
+                            <label>Order</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>flint_feefo/source_order</source_model>
+                            <sort_order>80</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment>Determines date order that reviews are presented.</comment>
+			</order>
+                        <since translate="label">
+                            <label>Since</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>flint_feefo/source_since</source_model>
+                            <sort_order>90</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment>Amount of history to include is logo queries.</comment>
+			</since>
+                        <limit translate="label">
+                            <label>Limit</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>100</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment>Number of review results to return. Default value = 50.</comment>
+			</limit>
+                        <additional translate="label">
+                            <label>Additional parameters (optional)</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>110</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment><![CDATA[example: &amp;param=value&amp;param2=value2]]></comment>
+			</additional>
+                    </fields>
+                </product>
+            </groups>
+        </flint_feefo>
+    </sections>
+</config>

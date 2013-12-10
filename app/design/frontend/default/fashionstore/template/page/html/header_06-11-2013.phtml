@@ -1,0 +1,131 @@
+<?php
+/**
+ * Magento
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Academic Free License (AFL 3.0)
+ * that is bundled with this package in the file LICENSE_AFL.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/afl-3.0.php
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to license@magentocommerce.com so we can send you a copy immediately.
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade Magento to newer
+ * versions in the future. If you wish to customize Magento for your
+ * needs please refer to http://www.magentocommerce.com for more information.
+ *
+ * @category    design
+ * @package     base_default
+ * @copyright   Copyright (c) 2009 Irubin Consulting Inc. DBA Varien (http://www.varien.com)
+ * @license     http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
+ */
+?>
+
+<div class="header-container">
+  <div class="header">
+    <h2 class="logo"><a href="<?php echo $this->getUrl('') ?>" title="<?php echo $this->getLogoAlt() ?>"><img src="<?php echo $this->getLogoSrc() ?>" alt="<?php echo $this->getLogoAlt() ?>" /></a></h2>
+	
+    <div class="quick-access">
+		<?php echo $this->getChildHtml('topLinks') ?> 
+		<?php echo $this->getChildHtml('topSearch') ?>	
+    </div>
+	
+    <?php echo $this->getChildHtml('topContainer'); ?> </div>
+</div>
+<div class="home_page_header_block">
+  <?php //echo $this->getChildHtml('home_page_header_block'); ?>
+  <ul>
+    <li class="home"><a href="<?php echo $this->getUrl('') ?>"><img alt="Home" src="<?php echo $this->getSkinUrl('images/home.png') ?>"></a></li>
+    <li><a href="<?php echo $this->getBaseUrl();?>categories/hot-toys.html">Hot Toys</a></li>
+    <li><a href="<?php echo $this->getBaseUrl();?>categories/sideshow-collectibles.html">Sideshow Collectibles</a></li>
+    <li><a href="<?php echo $this->getBaseUrl();?>categories/funko.html">Funko</a></li>
+    <li><a href="<?php echo $this->getBaseUrl();?>categories/kotobukiya-toys.html">Kotobukiya</a></li>
+    <li><a href="<?php echo $this->getBaseUrl();?>categories/diamond-select.html">Diamond Select</a></li>
+
+    <li onclick="javascript:alert('Coming Soon....')" style="background:none">The Danger Room Blog</li>
+
+    <!--<?php
+//$cats = Mage::getModel('catalog/category')->load(2)->getChildren();
+//$catIds = explode(',',$cats);
+?>
+    <?php //foreach($catIds as $catId): ?>
+    <li>
+      <?php
+			//$category = Mage::getModel('catalog/category')->load($catId);
+			?>
+      <a href="<?php //echo $category->getUrl()?>"> <?php //echo $category->getName();
+		?> </a> </li>
+    <?php //endforeach; ?>
+    <li style=" background:none"> <a href="javascript:void(0);">More<a></li>-->
+  </ul>
+</div>
+<div class="sub-cat">
+<ul>
+<?php echo $this->getLayout()->createBlock('cms/block')->setBlockId('categorylevel2menu')->toHtml(); ?>
+<!--<li><a href="<?php //echo Mage::getModel('catalog/category')->load(2)->getUrl();?>">marvel</a></li>-->
+<!--<li><a href="<?php echo $this->getBaseUrl();?>categories/marvel.html">marvel</a></li>
+<li><a href="<?php echo $this->getBaseUrl();?>categories/dc.html">dc</a></li>
+<li><a href="<?php echo $this->getBaseUrl();?>categories/star-wars.html">star wars</a></li>
+<li><a href="<?php echo $this->getBaseUrl();?>categories/doctor-who.html">doctor who</a></li>
+<li><a href="<?php echo $this->getBaseUrl();?>categories/true-blood.html">true blood</a></li>
+<li><a href="<?php echo $this->getBaseUrl();?>categories/game-of-trones.html">game of thrones</a></li>
+<li><a href="<?php echo $this->getBaseUrl();?>categories/star-trek.html">star trek</a></li>
+<li><a href="<?php echo $this->getBaseUrl();?>categories/walking-dead.html">walking dead</a></li>
+<li><a href="<?php echo $this->getBaseUrl();?>categories/transformers.html">transformers</a></li>
+<li style="border:none"><a href="<?php echo $this->getBaseUrl();?>superheroes/hunger-games.html">hunger games</a></li>-->
+</ul></div>
+<div class="sub-bar">
+  <table width="100%" border="0">
+    <tr>
+      <td width="105"><span>join us</span></td>
+      <?php echo $this->getChildHtml('newsletterheader');?>
+      
+      <td width="120"><span>find us on</span></td>
+      <td>
+		<a href="https://twitter.com/MothersBasement" target="_blank"><img id="facebook" src="<?php echo $this->getSkinUrl('images/twitter-icon.png') ?>" alt="twitter"></a>
+		<a href="https://www.facebook.com/mothersbasementuk" target="_blank"><img id="facebook"  src="<?php echo $this->getSkinUrl('images/facebook-icon.png') ?>" alt="facebook"></a>
+		<a href="https://plus.google.com/116285829443362186056" target="_blank"><img id="facebook"  src="<?php echo $this->getSkinUrl('images/google-plus-icon.png') ?>" alt="facebook"></a>
+		<a href="https://www.pinterest.com/mothersbasement" target="_blank"><img id="facebook"  src="<?php echo $this->getSkinUrl('images/pinterest.png') ?>" alt="facebook"></a>
+	  </td>
+    </tr>
+  </table>
+  <?php echo $this->getChildHtml('home_page_header_sub_bar'); ?> </div>
+<?php
+if($this->getUrl('') == $this->getUrl('*/*/*', array('_current'=>true, '_use_rewrite'=>true)))
+{
+?>
+<style>
+.col2-left-layout .col-main{width:796px}
+</style>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
+<link href="http://mothersbasement.co.uk/anything_slider/screen.css" rel="stylesheet" type="text/css" media="screen" />
+<script type="text/javascript" src="<?php echo $this->getSkinUrl();?>js/jquery/easySlider1.7.js"></script>
+<script type="text/javascript">
+jQuery.noConflict();
+		jQuery(document).ready(function(){	
+			jQuery("#slider").easySlider({
+				auto: true, 
+				continuous: true,
+				pause: 4000,
+                speed: 1100,
+				numeric: true
+			});
+		});	
+	</script>
+<div class="banner">
+  <div id="slider">
+	<ul>  
+		<!-- 03-09-2013 #1660 <li><a href="<?php echo $this->getUrl('') ?>the-summer-sale/where/dir/desc/order/created_at.html"><img src="<?php echo Mage::getBaseUrl() ?>media/wysiwyg/Banners/summersale.jpg" alt=""></a></li>-->
+		<!-- 21-10-2013<li><a href="<?php echo $this->getUrl('') ?>categories/the-avengers.html"><img src="<?php echo Mage::getBaseUrl() ?>media/wysiwyg/Banners/marvel-avengers-banner.jpg" alt=""></a></li>-->
+		<li><a href="<?php echo $this->getUrl('') ?>categories/funko.html"><img src="<?php echo Mage::getBaseUrl() ?>media/wysiwyg/Banners/funko-multibuy-banner.jpg" alt=""></a></li>
+		<li><a href="<?php echo $this->getUrl('') ?>categories/superman.html"><img src="<?php echo Mage::getBaseUrl() ?>media/wysiwyg/Banners/man-of-steel-carousel.jpg" alt="CLICK HERE TO BUY WALKING DEAD ACTION FIGURES"></a></li>
+      	<li><a href="<?php echo $this->getUrl('') ?>categories/iron-man.html"><img src="<?php echo Mage::getBaseUrl() ?>media/wysiwyg/Banners/iron-man-3-carousel.jpg" alt="CLICK HERE TO BUY OFFICIAL IRON MAN 3 MERCHANDISE"></a></li>
+	  	<li><a href="<?php echo $this->getUrl('') ?>categories/walking-dead.html"><img src="<?php echo Mage::getBaseUrl() ?>media/wysiwyg/Banners/walking-dead-carousel.jpg" alt="CLICK HERE TO BUY THE 2013 FUNKO RANGE"></a></li>
+    </ul>
+  </div>
+</div>
+<?php }?>

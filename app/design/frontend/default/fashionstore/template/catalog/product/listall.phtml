@@ -1,0 +1,68 @@
+<?php
+ //$_productCollection = Mage::getModel('catalog/product')->getCollection(); ?>
+ <table border="0" style=" width:805px ;height:120px;">
+  <tr>
+    <td valign="top"><?php $_productCollection=$this->getLoadedProductCollection() ?>
+<?php if(!$_productCollection->count()): ?>
+<p class="note-msg"><?php echo $this->__('There are no products matching the selection.') ?></p>
+<?php else: ?>
+<div class="category-products">
+<div class="top-header">
+<span>In Stock</span><span style="float:right; padding-top:0"><a href="<?php echo $this->getBaseUrl();?>in-stock.html" style=" color:red">View All&nbsp;</a></span>
+</div>
+    <?php // Grid Mode ?>
+
+    <?php $_collectionSize = 4;//$_productCollection->count() ?>
+    <?php $_columnCount = 4;//$this->getColumnCount(); ?>
+    <?php $i=0; foreach ($_productCollection as $_product): ?>
+	 <?php
+    if($i==4){break;}
+	?>
+        <?php if ($i++%$_columnCount==0): ?>
+        <ul class="products-grid in-stock">
+        <?php endif ?>
+            <li class="item<?php if(($i-1)%$_columnCount==0): ?> first<?php elseif($i%$_columnCount==0): ?> last<?php endif; ?>">
+            <img src="<?php echo $this->getSkinUrl('images/in-stock.png') ?>" class="pre-img" />
+                <a href="<?php echo $_product->getProductUrl() ?>" title="<?php echo $this->htmlEscape($this->getImageLabel($_product, 'small_image')) ?>" class="product-image">
+				
+				 <img src="<?php echo $this->helper('catalog/image')->init($_product, 'small_image')->resize(115,85); ?>" width="115" height="85" alt="<?php echo $this->htmlEscape($this->getImageLabel($_product, 'small_image')) ?>" />
+				
+				</a>
+                <h2 class="product-name"><a href="<?php echo $_product->getProductUrl() ?>" title="<?php echo $this->htmlEscape($_product->getName()) ?>"><?php echo $this->htmlEscape($_product->getName()) ?></a></h2>
+               <!-- <div class="shortDescription">
+	                <?php echo nl2br($_product->getShortDescription()); ?>
+                </div>-->
+                <?php if($_product->getRatingSummary()): ?>
+                <?php echo $this->getReviewsSummaryHtml($_product, 'short') ?>
+                <?php endif; ?>
+                <?php echo $this->getPriceHtml($_product, true) ?>
+                <div class="actions">
+                    <?php if($_product->isSaleable()): ?>
+                        <button type="button" title="<?php echo $this->__('Add to Cart') ?>" class="button btn-cart" onclick="setLocation('<?php echo $this->getAddToCartUrl($_product) ?>')"><span><span><?php echo $this->__('Add to Cart') ?></span></span></button>
+                    <?php else: ?>
+                        <p class="availability out-of-stock"><span><?php echo $this->__('Out of stock') ?></span></p>
+                    <?php endif; ?>
+                </div>
+
+            </li>
+        <?php if ($i%$_columnCount==0 || $i==$_collectionSize): ?>
+        </ul>
+        <?php endif ?>
+        <?php endforeach ?>
+        <script type="text/javascript">decorateGeneric($$('ul.products-grid'), ['odd','even','first','last'])</script>
+</div>
+<?php endif; ?>
+
+</td>
+    
+        <td width="10%">
+			<div id="rightimage2">
+			<img src="<?php echo $this->getSkinUrl('images/tedside.png') ?>" alt="Ted" class="rit" />
+        </div>
+       </td>
+
+  </tr>
+</table>
+
+
+

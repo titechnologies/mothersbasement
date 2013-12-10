@@ -1,0 +1,141 @@
+<?php
+/**
+ * Magento
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Academic Free License (AFL 3.0)
+ * that is bundled with this package in the file LICENSE_AFL.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/afl-3.0.php
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to license@magentocommerce.com so we can send you a copy immediately.
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade Magento to newer
+ * versions in the future. If you wish to customize Magento for your
+ * needs please refer to http://www.magentocommerce.com for more information.
+ *
+ * @category    design
+ * @package     base_default
+ * @copyright   Copyright (c) 2009 Irubin Consulting Inc. DBA Varien (http://www.varien.com)
+ * @license     http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
+ */
+?>
+
+<div class="header-container">
+    <div class="header">
+        <?php if ($this->getIsHomePage()):?>
+        <h2 class="logo"><strong><?php echo $this->getLogoAlt() ?></strong><a href="<?php echo $this->getUrl('') ?>" title="<?php echo $this->getLogoAlt() ?>" class="logo"><img src="<?php echo $this->getLogoSrc() ?>" alt="<?php echo $this->getLogoAlt() ?>" /></a></h2>
+        <?php else:?>
+        <a href="<?php echo $this->getUrl('') ?>" title="<?php echo $this->getLogoAlt() ?>" class="logo"><strong><?php echo $this->getLogoAlt() ?></strong><img src="<?php echo $this->getLogoSrc() ?>" alt="<?php echo $this->getLogoAlt() ?>" /></a>
+        <?php endif?>
+        <div class="quick-access">
+            <?php echo $this->getChildHtml('topSearch') ?>
+            <p class="welcome-msg"><?php echo $this->getWelcome()?></p>
+            <?php echo $this->getChildHtml('topLinks') ?>
+            <div class="switchers">
+    	        <?php echo $this->getChildHtml('store_switcher') ?>
+	            <?php echo $this->getChildHtml('store_language') ?>
+            </div>
+        </div>
+        <?php echo $this->getChildHtml('topContainer'); ?>
+    </div>
+</div>
+<div class="home_page_header_block">
+<?php //echo $this->getChildHtml('home_page_header_block'); ?>
+
+
+<ul>
+<li class="home"><a href="http://mothers-basement.co.uk"><img alt="Home" src="http://mothers-basement.co.uk/skin/frontend/default/fashionstore/images/home.png"></a></li>
+
+<?php
+$cats = Mage::getModel('catalog/category')->load(2)->getChildren();
+$catIds = explode(',',$cats);
+?>
+<?php foreach($catIds as $catId): ?>
+	<li>
+    	<?php
+			$category = Mage::getModel('catalog/category')->load($catId);
+			?>
+			<a href="<?php echo $category->getUrl()?>">
+			<?php echo $category->getName();
+		?>
+           </a>
+    </li>
+<?php endforeach; ?>
+<li style=" background:none"> <a href="javascript:void(0);">More<a></li>
+</ul>
+
+
+</div>
+
+<div class="sub-cat">
+<ul>
+<li><a href="#">marvel</a></li><li><a href="#">dc</a></li><li><a href="#">star wars</a></li><li><a href="#">doctor who</a></li>
+<li><a href="#">true blood</a></li>
+<li><a href="#">game of thrones</a></li><li><a href="#"> star trek</a></li><li><a href="#">walking dead</a></li><li><a href="#">transformers</a></li><li style="border:none"><a href="#">hunger games</a></li>
+</ul>
+</div>
+
+<div class="sub-bar">
+<table width="100%" border="0">
+  <tr>
+    <td width="110"><span>join us</span></td>
+    <td align="left" width="535"><input id="join" type="text" name="email"> </td>
+    <td width="110"><img id="signup" src="<?php echo $this->getSkinUrl('images/signup.jpg') ?>" alt="signup"></td>
+    <td width="120"><span>find us on</span></td>
+    <td>
+	<a href=""><img id="facebook" src="<?php echo $this->getSkinUrl('images/twitter.png') ?>" alt="twitter"></a>
+	<a href=""><img id="facebook"  src="<?php echo $this->getSkinUrl('images/facebook.png') ?>" alt="facebook"></a>
+	</td>
+  </tr>
+</table>
+<?php echo $this->getChildHtml('home_page_header_sub_bar'); ?>
+</div>
+
+
+<?php
+if($this->getUrl('') == $this->getUrl('*/*/*', array('_current'=>true, '_use_rewrite'=>true)))
+{
+?>
+
+<style>
+.col2-left-layout .col-main{width:790px}
+</style>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
+<link href="http://mothers-basement.co.uk/anything_slider/screen.css" rel="stylesheet" type="text/css" media="screen" />			
+<script type="text/javascript" src="http://94.136.40.100/~tnaeurostore.com/anything_slider/easySlider1.7.js"></script>
+	<script type="text/javascript">
+		jQuery(document).ready(function(){	
+			jQuery("#slider").easySlider({
+				auto: true, 
+				continuous: true,
+				pause: 4000,
+                speed: 1100,
+				numeric: true
+			});
+		});	
+	</script>
+
+
+
+<div class="banner">
+
+<div id="slider">
+<ul>
+<li><img src="<?php echo $this->getSkinUrl('images/banner.jpg') ?>" alt="banner"></li>
+<li><img src="<?php echo $this->getSkinUrl('images/banner.jpg') ?>" alt="banner"></li>
+<li><img src="<?php echo $this->getSkinUrl('images/banner.jpg') ?>" alt="banner"></li>
+<li><img src="<?php echo $this->getSkinUrl('images/banner.jpg') ?>" alt="banner"></li>
+
+</ul>
+</div>
+
+
+
+</div>
+
+<?php }?>

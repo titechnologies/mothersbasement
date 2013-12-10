@@ -1,0 +1,80 @@
+<?php 
+$storeId = Mage::app()->getStore()->getId();
+$_productCollection = Mage::getModel('catalog/product')->getCollection()
+->addCategoryFilter(Mage::getModel('catalog/category')->load($this->getCategoryId()))
+->setStoreId($storeId)
+->addStoreFilter($storeId)
+->addAttributeToFilter('status',array('neq' => Mage_Catalog_Model_Product_Status::STATUS_DISABLED))
+->addAttributeToSelect('*');
+Mage::getSingleton('catalog/product_status')->addSaleableFilterToCollection($_productCollection);
+Mage::getSingleton('cataloginventory/stock')->addInStockFilterToCollection($_productCollection);
+$_productCollection->getSelect()->reset(Zend_Db_Select::ORDER);
+$_productCollection->getSelect()->order('entity_id DESC')->limit(4);
+$_productCollection->load();
+?>
+<?php if(!$_productCollection->count()): ?>
+<p class="note-msg"><?php echo $this->__('There are no products matching the selection.') ?></p>
+<?php else: ?>
+<div class="category-products">
+<div class="top-header">
+<span><!--Special Offers #1660 -->CLEARANCE</span><span style="float:right; padding-top:0"><a href="<?php echo $this->getBaseUrl();?>special-offers.html" style=" color:red">View All&nbsp;</a></span>
+</div>
+    <?php // Grid Mode ?>
+
+    <?php $_collectionSize = 4;//$_productCollection->count() ?>
+    <?php $_columnCount = 4;//$this->getColumnCount(); ?>
+    <?php $i=0; foreach ($_productCollection as $_product): ?>
+        <?php if ($i++%$_columnCount==0): ?>
+        <ul class="products-grid special-offer">
+        <?php endif ?>
+            <li class="item<?php if(($i-1)%$_columnCount==0): ?> first<?php elseif($i%$_columnCount==0): ?> last<?php endif; ?>">
+            <?php 
+    $price = Mage::getModel('catalog/product')->load($_product->getId())->getPrice(); 
+    // Get the Special Price
+    $specialprice = Mage::getModel('catalog/product')->load($_product->getId())->getSpecialPrice(); 
+    // Get the Special Price FROM date
+    $specialPriceFromDate = Mage::getModel('catalog/product')->load($_product->getId())->getSpecialFromDate();
+    // Get the Special Price TO date
+    $specialPriceToDate = Mage::getModel('catalog/product')->load($_product->getId())->getSpecialToDate();
+    // Get Current date
+    $today =  time();
+ 
+    if ($specialprice):
+        //if($today >= strtotime( $specialPriceFromDate) && $today <= strtotime($specialPriceToDate) || 
+        //$today >= strtotime( $specialPriceFromDate) && is_null($specialPriceToDate)):?>
+        <span class="specialblank-img"><?php echo 'save<br/>&pound;'.$saveoff = $price - $specialprice;?></span>
+        <?php //endif;?>
+        <?php endif;?>
+            
+            
+            
+            
+                <a href="<?php echo $_product->getProductUrl() ?>" title="<?php echo $this->htmlEscape($this->getImageLabel($_product, 'small_image')) ?>" class="product-image">
+				
+				 <img src="<?php echo $this->helper('catalog/image')->init($_product, 'small_image')->resize(115,85); ?>" width="115" height="85" alt="<?php echo $this->htmlEscape($this->getImageLabel($_product, 'small_image')) ?>" />
+				
+				</a>
+                <h2 class="product-name"><a href="<?php echo $_product->getProductUrl() ?>" title="<?php echo $this->htmlEscape($_product->getName()) ?>"><?php echo $this->htmlEscape($_product->getName()) ?></a></h2>
+               <!-- <div class="shortDescription">
+	                <?php echo nl2br($_product->getShortDescription()); ?>
+                </div>-->
+                <?php /*if($_product->getRatingSummary()): ?>
+                <?php echo $this->getReviewsSummaryHtml($_product, 'short') ?>
+                <?php endif;*/ ?>
+                <?php echo $this->getPriceHtml($_product, true) ?>
+                <div class="actions">
+                    <?php if($_product->isSaleable()): ?>
+                        <button type="button" title="<?php echo $this->__('Add to Cart') ?>" class="button btn-cart" onclick="setLocation('<?php echo $this->getAddToCartUrl($_product) ?>')"><span><span><?php echo $this->__('Add to Cart') ?></span></span></button>
+                    <?php else: ?>
+                        <p class="availability out-of-stock"><span><?php echo $this->__('Out of stock') ?></span></p>
+                    <?php endif; ?>
+                </div>
+
+            </li>
+        <?php if ($i%$_columnCount==0 || $i==$_collectionSize): ?>
+        </ul>
+        <?php endif ?>
+        <?php endforeach ?>
+        <script type="text/javascript">decorateGeneric($$('ul.products-grid'), ['odd','even','first','last'])</script>
+</div>
+<?php endif; ?>

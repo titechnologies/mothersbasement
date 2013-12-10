@@ -1,0 +1,247 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config>
+  
+    <modules>
+        <FBShop_Platform>
+            <version>0.3.5</version>
+        </FBShop_Platform>
+    </modules>
+    
+    <global>
+       <blocks>
+            <Platform>
+                <class>FBShop_Platform_Block</class>
+            </Platform>
+        </blocks>
+        
+        <helpers>
+            <Platform>
+                <class>FBShop_Platform_Helper</class>
+            </Platform>  
+        </helpers>
+        <models>
+            <platform>
+                <class>FBShop_Platform_Model</class>
+                <resourceModel>platform_mysql4</resourceModel>
+            </platform>
+            <platform_mysql4>
+                <class>FBShop_Platform_Model_Mysql4</class>
+                <entities>
+                    <platform>
+                        <table>platform</table>
+                    </platform>
+                </entities>
+            </platform_mysql4>
+        </models>
+        <resources>
+            <platform_setup>
+                <setup>
+                    <module>FBShop_Platform</module>
+                </setup>
+                <connection>
+                    <use>core_setup</use>
+                </connection>
+            </platform_setup>
+            <platform_write>
+                <connection>
+                    <use>core_write</use>
+                </connection>
+            </platform_write>
+            <platform_read>
+                <connection>
+                    <use>core_read</use>
+                </connection>
+            </platform_read>
+        </resources>
+        <events>
+            <sales_order_place_after>
+                <observers>
+                    <place_order>
+                        <type>singleton</type>
+                        <class>FBShop_Platform_Model_Observer</class>
+                        <method>placeOrderAfter</method>
+                    </place_order>
+                </observers>    
+            </sales_order_place_after>
+           
+           <sales_order_save_after> <!-- identifier of the event we want to catch -->
+                <observers>
+                    <sales_order_status_after_handler> <!-- identifier of the event handler -->
+                        <type>singleton</type> <!-- class method call type; valid are model, object and singleton -->
+                        <class>FBShop_Platform_Model_Observer</class> <!-- observers class alias -->
+                        <method>orderSave</method>  <!-- observer's method to be called -->
+                        <args></args> <!-- additional arguments passed to observer -->
+                    </sales_order_status_after_handler>
+                </observers>
+            </sales_order_save_after>
+      
+            <catalog_controller_product_delete>
+                <observers>
+                    <Platform_observer>
+                        <type>singleton</type>
+                        <class>FBShop_Platform_Model_Observer</class>
+                        <method>deleteProduct</method>
+                    </Platform_observer>
+                </observers>
+            </catalog_controller_product_delete> 
+                       
+            <catalog_product_save_after>
+                <observers>
+                    <Platform_observer>
+                        <type>singleton</type>
+                        <class>FBShop_Platform_Model_Observer</class>
+                        <method>saveProduct</method>
+                    </Platform_observer>
+                </observers>
+            </catalog_product_save_after> 
+            
+            <catalog_product_delete_after>
+                <observers>
+                    <Platform_observer>
+                        <type>singleton</type>
+                        <class>FBShop_Platform_Model_Observer</class>
+                        <method>deleteProduct</method>
+                    </Platform_observer>
+                </observers>
+            </catalog_product_delete_after> 
+       </events>
+         
+         <template>
+             <email>
+                  <FBShop_template_order translate="label" module="Platform">
+                    <label>New Order</label>
+                    <file>FBShop/order.html</file>
+                    <type>html</type>
+                </FBShop_template_order>
+             </email>
+         </template>
+       
+    </global>
+    
+    <frontend>
+     
+        <events>
+            <sales_quote_remove_item>
+                <observers>
+                    <Remove_Item_To_Cart_Model_Observer>
+                        <type>singleton</type>
+                        <class>FBShop_Platform_Model_Observer</class>
+                        <method>removeQuoteItem</method>
+                    </Remove_Item_To_Cart_Model_Observer>
+                </observers>
+                
+            </sales_quote_remove_item>
+           
+            <checkout_onepage_controller_success_action>
+                <observers>
+                    <Order_Payment_To_Cart_Model_Observer>
+                        <type>singleton</type>
+                        <class>FBShop_Platform_Model_Observer</class>
+                        <method>orderPaymentSucces</method>
+                    </Order_Payment_To_Cart_Model_Observer>
+                </observers>
+            </checkout_onepage_controller_success_action>
+            <controller_action_predispatch>
+                <observers>
+                    <order_Payment_Failure>
+                        <type>singleton</type>
+                        <class>FBShop_Platform_Model_Observer</class>
+                        <method>orderPaymentFailure</method>
+                    </order_Payment_Failure>
+                </observers>
+            </controller_action_predispatch>
+                
+                
+                
+            <checkout_cart_product_add_after>
+                <observers>
+                    <Add_Item_To_Cart_Model_Observer>
+                        <type>singleton</type>
+                        <class>FBShop_Platform_Model_Observer</class>
+                        <method>addQuoteItem</method>
+                    </Add_Item_To_Cart_Model_Observer>
+                </observers>
+            </checkout_cart_product_add_after>
+            
+            <checkout_cart_update_items_after>
+                <observers>
+                    <Update_Item_To_Cart_Model_Observe>
+                        <type>singleton</type>
+                        <class>FBShop_Platform_Model_Observer</class>
+                        <method>updateCartItems</method>
+                    </Update_Item_To_Cart_Model_Observe>
+                </observers>
+            </checkout_cart_update_items_after>
+        </events>
+        
+        <routers>
+            <FBShop>
+                <use>standard</use>
+                <args>
+                    <module>FBShop_Platform</module>
+                    <frontName>FBShop</frontName>
+                </args>
+            </FBShop>
+        </routers>
+
+        <layout>
+            <updates>
+                <Platform>
+                    <file>Platform.xml</file>
+                </Platform>
+            </updates>
+        </layout>
+    </frontend>  
+    
+    <admin>
+        <routers>
+            <FBShop-installation>
+                <use>admin</use>
+                <args>
+                    <module>FBShop_Platform</module>
+                    <frontName>FBShop-installation</frontName>
+                </args>
+            </FBShop-installation>
+        </routers>
+    </admin>
+  
+    <adminhtml>
+        <events>
+       <!-- fffffffffffffffffffffffffff            -->
+    
+<!--            
+            <controller_action_postispatch>
+                 <observers>
+                    <Platform_observer>
+                         <type>singleton</type>
+                        <class>FBShop_Platform_Model_Observer</class>
+                        <method>message</method>
+                    </Platform_observer>
+                </observers>
+            </controller_action_postispatch>
+    -->
+<!--  ================================         -->
+        </events>
+        <menu>
+            <FBShop translate="title" module="Platform">
+                <title>Facebook Shop</title>
+                <action>FBShop-installation/admin/index</action>
+                <sort_order>71</sort_order>
+            </FBShop >
+        </menu>
+
+        <acl>
+            <resources>
+                <admin>
+                    <children>
+                        <facebook-store translate="title" module="Platform">
+                            <title>Facebook Shop</title>
+                            <sort_order>100</sort_order>
+                        </facebook-store>
+                    </children>
+                </admin>
+            </resources>
+        </acl>
+    </adminhtml>   
+  
+</config>

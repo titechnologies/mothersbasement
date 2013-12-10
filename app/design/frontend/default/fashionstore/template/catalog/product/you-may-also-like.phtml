@@ -1,0 +1,493 @@
+<?php
+////////////////////////////////////////////////////////////////////////#1615
+$displayLimit = Mage::getStoreConfig('automatedproducts/crosssellproducts/limit'); //admin configuration settings
+
+/// brand, liense, series, type
+$finalProductArray0 = getMatchingProducts(0);
+//$finalProductCount = $finalProductArray0->count();
+$finalProductCount = getFinalProductCount($finalProductArray0);
+
+/// brand, liense, series
+if($finalProductCount < $displayLimit){
+  $finalProductArray1 = getMatchingProducts(1);
+  //$finalProductCount = ($finalProductCount+$finalProductArray1->count());
+  $finalProductCount = getFinalProductCount($finalProductArray1);
+}
+
+/// brand, liense
+if($finalProductCount < $displayLimit){
+  $finalProductArray2 = getMatchingProducts(2);
+ // $finalProductCount = ($finalProductCount+$finalProductArray2->count());
+  $finalProductCount = getFinalProductCount($finalProductArray2);
+}
+
+/// brand
+if($finalProductCount < $displayLimit){
+  $finalProductArray3 = getMatchingProducts(3);
+  //$finalProductCount = ($finalProductCount+$finalProductArray3->count());
+  $finalProductCount = getFinalProductCount($finalProductArray3);
+}
+
+////////////////////////////////////////////////////////////////////////#1615
+?>
+
+<table border="0" width="100%">
+  <tr>
+    <td valign="top">
+	<?php 
+	//ORIGINAL	//if(!$finalProductArray->count()):
+	if(!$finalProductCount):
+	?>
+	<p class="note-msg"><?php echo $this->__('There are no products matching the selection.') ?></p>
+	<?php else: ?>
+	<div class="category-products">
+	  <?php 
+		//ORIGINAL	//$_collectionSize = $finalProductArray->count();
+		$_collectionSize = $finalProductCount;
+	    	$_columnCount = 5;//$this->getColumnCount();
+		global $i; //glabal counter
+		$i=0;
+	  ?>
+	  <?php
+		/// brand, license, series, type
+		foreach ($finalProductArray0 as $_product):
+
+			//checking sku to avoid duplicate entries in display
+			if(in_array($_product->getSku(), $tempDuplicateSku)){
+			//$i = ($i-1);
+			continue;
+			}
+
+
+
+			//ORIGINAL	//if($i==$_columnCount){break;}
+			if($i==$displayLimit){break;}
+			/* ORIGINAL - 22-10-2013
+			if ($i++%$_columnCount==0){
+			  echo '<ul class="products-grid pre-order">';
+			}
+			*/
+			if(($i++%$_columnCount==0)){
+			  echo '<ul class="products-grid">';
+			}
+			  ?>
+			  <li class="item<?php if(($i-1)%$_columnCount==0): ?> first<?php elseif($i%$_columnCount==0): ?> last<?php endif; ?>">
+
+				<?php
+				////////////////////////////////////////////////////////////#1727
+				///display 'label' only for preorder items
+				if($_product->getPreOrder() == '1'){
+				echo "<img src=".$this->getSkinUrl('images/pre-order.png')." class='pre-img' />";
+				}
+				////////////////////////////////////////////////////////////#1727
+				?>
+			    <a href="<?php echo $_product->getProductUrl() ?>" 
+				title="<?php echo $this->htmlEscape($this->getImageLabel($_product, 'small_image')) ?>" 
+				class="product-image">
+				<img src="<?php echo $this->helper('catalog/image')->init($_product, 'small_image')->resize(135,135); ?>" 
+					width="135" 
+					height="135" 
+					alt="<?php echo $this->htmlEscape($this->getImageLabel($_product, 'small_image')) ?>" 
+					/>
+			    </a>
+			    <h2 class="product-name">
+				<a href="<?php echo $_product->getProductUrl() ?>" title="<?php echo $this->htmlEscape($_product->getName()) ?>">
+					<?php echo $this->htmlEscape($_product->getName()) ?>
+				</a>
+			    </h2>
+			    <!-- <div class="shortDescription"><?php echo nl2br($_product->getShortDescription()); ?></div>-->
+			    <?php
+		 		if($_product->getRatingSummary()):
+				  echo $this->getReviewsSummaryHtml($_product, 'short');
+				endif;
+			    ?>
+			    <?php echo $this->getPriceHtml($_product, true) ?>
+			    <div class="actions">
+			       <?php 
+				////////////////////////////////////////////////////////////#1727
+				if($_product->isSaleable()): ?>
+					<?php if($_product->getPreOrder() == '1'){ 
+					?>
+					<ul  class="pre-order">
+					  <button type="button" 
+					    title="<?php echo $this->__('Add to Cart') ?>" 
+					    class="button btn-cart" 
+					    onclick="setLocation('<?php echo $this->getAddToCartUrl($_product) ?>')">
+					    <span><span><?php echo $this->__('Add to Cart') ?></span></span>
+					  </button>
+					</ul>
+					<?php }else{ ?>
+					<ul  class="in-stock">
+					  <button type="button" 
+					    title="<?php echo $this->__('Add to Cart') ?>" 
+					    class="button btn-cart" 
+					    onclick="setLocation('<?php echo $this->getAddToCartUrl($_product) ?>')">
+					    <span><span><?php echo $this->__('Add to Cart') ?></span></span>
+					  </button>
+					</ul>
+					<?php }
+					////////////////////////////////////////////////////////////#1727
+				?>
+			       <?php else: ?>
+				  <p class="availability out-of-stock"><span><?php echo $this->__('Out of stock') ?></span></p>
+			       <?php endif; ?>
+			    </div>
+			 </li>
+			 <?php if ($i%$_columnCount==0 || $i==$_collectionSize): ?>
+			</ul>
+			<?php endif ?>
+			<?php
+			//getting sku to avoid duplicate entries in display
+			$tempDuplicateSku[] = $_product->getSku();
+			?>
+		<?php endforeach ?>
+
+		<?php
+		/// brand, license, series
+		foreach ($finalProductArray1 as $_product):
+			//checking sku to avoid duplicate entries in display
+			if(in_array($_product->getSku(), $tempDuplicateSku)){
+			//$i = ($i-1);
+			continue;
+			}
+
+			//ORIGINAL	//if($i==$_columnCount){break;}
+			if($i==$displayLimit){break;}
+
+			if ($i++%$_columnCount==0):
+			  echo '<ul class="products-grid pre-order">';
+			endif
+			  ?>
+			  <li class="item<?php if(($i-1)%$_columnCount==0): ?> first<?php elseif($i%$_columnCount==0): ?> last<?php endif; ?>">
+
+				<?php
+				////////////////////////////////////////////////////////////#
+				///display 'label' only for preorder items
+				if($_product->getPreOrder() == '1'){
+				echo "<img src=".$this->getSkinUrl('images/pre-order.png')." class='pre-img' />";
+				}
+				////////////////////////////////////////////////////////////#
+				?>
+
+			    <a href="<?php echo $_product->getProductUrl() ?>" 
+				title="<?php echo $this->htmlEscape($this->getImageLabel($_product, 'small_image')) ?>" 
+				class="product-image">
+				<img src="<?php echo $this->helper('catalog/image')->init($_product, 'small_image')->resize(135,135); ?>" 
+					width="135" 
+					height="135" 
+					alt="<?php echo $this->htmlEscape($this->getImageLabel($_product, 'small_image')) ?>" 
+					/>
+			    </a>
+			    <h2 class="product-name">
+				<a href="<?php echo $_product->getProductUrl() ?>" title="<?php echo $this->htmlEscape($_product->getName()) ?>">
+					<?php echo $this->htmlEscape($_product->getName()) ?>
+				</a>
+			    </h2>
+			    <!-- <div class="shortDescription"><?php echo nl2br($_product->getShortDescription()); ?></div>-->
+			    <?php
+		 		if($_product->getRatingSummary()):
+				  echo $this->getReviewsSummaryHtml($_product, 'short');
+				endif;
+			    ?>
+			    <?php echo $this->getPriceHtml($_product, true) ?>
+			    <div class="actions">
+			       <?php 
+				////////////////////////////////////////////////////////////#1727
+				if($_product->isSaleable()): ?>
+					<?php if($_product->getPreOrder() == '1'){ 
+					?>
+					<ul  class="pre-order">
+					  <button type="button" 
+					    title="<?php echo $this->__('Add to Cart') ?>" 
+					    class="button btn-cart" 
+					    onclick="setLocation('<?php echo $this->getAddToCartUrl($_product) ?>')">
+					    <span><span><?php echo $this->__('Add to Cart') ?></span></span>
+					  </button>
+					</ul>
+					<?php }else{ ?>
+					<ul  class="in-stock">
+					  <button type="button" 
+					    title="<?php echo $this->__('Add to Cart') ?>" 
+					    class="button btn-cart" 
+					    onclick="setLocation('<?php echo $this->getAddToCartUrl($_product) ?>')">
+					    <span><span><?php echo $this->__('Add to Cart') ?></span></span>
+					  </button>
+					</ul>
+					<?php }
+					////////////////////////////////////////////////////////////#1727
+				?>
+			       <?php else: ?>
+				  <p class="availability out-of-stock"><span><?php echo $this->__('Out of stock') ?></span></p>
+			       <?php endif; ?>
+			    </div>
+			 </li>
+			 <?php if ($i%$_columnCount==0 || $i==$_collectionSize): ?>
+			</ul>
+			<?php endif ?>
+			<?php
+			//getting sku to avoid duplicate entries in display
+			$tempDuplicateSku[] = $_product->getSku();
+			?>
+		<?php endforeach ?>
+
+		<?php
+		/// brand, license
+		foreach ($finalProductArray2 as $_product):
+			//checking sku to avoid duplicate entries in display
+			if(in_array($_product->getSku(), $tempDuplicateSku)){
+			//$i = ($i-1);
+			continue;
+			}
+
+			//ORIGINAL	//if($i==$_columnCount){break;}
+			if($i==$displayLimit){break;}
+
+			if ($i++%$_columnCount==0):
+			  echo '<ul class="products-grid pre-order">';
+			endif
+			  ?>
+			  <li class="item<?php if(($i-1)%$_columnCount==0): ?> first<?php elseif($i%$_columnCount==0): ?> last<?php endif; ?>">
+				<?php
+				////////////////////////////////////////////////////////////#
+				///display 'label' only for preorder items
+				if($_product->getPreOrder() == '1'){
+					echo "<img src=".$this->getSkinUrl('images/pre-order.png')." class='pre-img' />";
+				}
+				////////////////////////////////////////////////////////////#
+				?>
+
+			    <a href="<?php echo $_product->getProductUrl() ?>" 
+				title="<?php echo $this->htmlEscape($this->getImageLabel($_product, 'small_image')) ?>" 
+				class="product-image">
+				<img src="<?php echo $this->helper('catalog/image')->init($_product, 'small_image')->resize(135,135); ?>" 
+					width="135" 
+					height="135" 
+					alt="<?php echo $this->htmlEscape($this->getImageLabel($_product, 'small_image')) ?>" 
+					/>
+			    </a>
+			    <h2 class="product-name">
+				<a href="<?php echo $_product->getProductUrl() ?>" title="<?php echo $this->htmlEscape($_product->getName()) ?>">
+					<?php echo $this->htmlEscape($_product->getName()) ?>
+				</a>
+			    </h2>
+			    <!-- <div class="shortDescription"><?php echo nl2br($_product->getShortDescription()); ?></div>-->
+			    <?php
+		 		if($_product->getRatingSummary()):
+				  echo $this->getReviewsSummaryHtml($_product, 'short');
+				endif;
+			    ?>
+			    <?php echo $this->getPriceHtml($_product, true) ?>
+			    <div class="actions">
+			       <?php 
+				////////////////////////////////////////////////////////////#1727
+				if($_product->isSaleable()): ?>
+					<?php if($_product->getPreOrder() == '1'){ 
+					?>
+					<ul  class="pre-order">
+					  <button type="button" 
+					    title="<?php echo $this->__('Add to Cart') ?>" 
+					    class="button btn-cart" 
+					    onclick="setLocation('<?php echo $this->getAddToCartUrl($_product) ?>')">
+					    <span><span><?php echo $this->__('Add to Cart') ?></span></span>
+					  </button>
+					</ul>
+					<?php }else{ ?>
+					<ul  class="in-stock">
+					  <button type="button" 
+					    title="<?php echo $this->__('Add to Cart') ?>" 
+					    class="button btn-cart" 
+					    onclick="setLocation('<?php echo $this->getAddToCartUrl($_product) ?>')">
+					    <span><span><?php echo $this->__('Add to Cart') ?></span></span>
+					  </button>
+					</ul>
+					<?php }
+					////////////////////////////////////////////////////////////#1727
+				?>
+			       <?php else: ?>
+				  <p class="availability out-of-stock"><span><?php echo $this->__('Out of stock') ?></span></p>
+			       <?php endif; ?>
+			    </div>
+			 </li>
+			 <?php if ($i%$_columnCount==0 || $i==$_collectionSize): ?>
+			</ul>
+			<?php endif ?>
+			<?php
+			//getting sku to avoid duplicate entries in display
+			$tempDuplicateSku[] = $_product->getSku();
+			?>
+		<?php endforeach ?>
+
+
+		<?php
+		/// brand
+		foreach ($finalProductArray3 as $_product):
+			//checking sku to avoid duplicate entries in display
+			if(in_array($_product->getSku(), $tempDuplicateSku)){
+			//$i = ($i-1);
+			continue;
+			}
+
+			//ORIGINAL	//if($i==$_columnCount){break;}
+			if($i==$displayLimit){break;}
+
+			if ($i++%$_columnCount==0):
+			  echo '<ul class="products-grid pre-order">';
+			endif
+			  ?>
+			  <li class="item<?php if(($i-1)%$_columnCount==0): ?> first<?php elseif($i%$_columnCount==0): ?> last<?php endif; ?>">
+				<?php
+				////////////////////////////////////////////////////////////#
+				///display 'label' only for preorder items
+				if($_product->getPreOrder() == '1'){
+					echo "<img src=".$this->getSkinUrl('images/pre-order.png')." class='pre-img' />";
+				}
+				////////////////////////////////////////////////////////////#
+				?>
+			    <a href="<?php echo $_product->getProductUrl() ?>" 
+				title="<?php echo $this->htmlEscape($this->getImageLabel($_product, 'small_image')) ?>" 
+				class="product-image">
+				<img src="<?php echo $this->helper('catalog/image')->init($_product, 'small_image')->resize(135,135); ?>" 
+					width="135" 
+					height="135" 
+					alt="<?php echo $this->htmlEscape($this->getImageLabel($_product, 'small_image')) ?>" 
+					/>
+			    </a>
+			    <h2 class="product-name">
+				<a href="<?php echo $_product->getProductUrl() ?>" title="<?php echo $this->htmlEscape($_product->getName()) ?>">
+					<?php echo $this->htmlEscape($_product->getName()) ?>
+				</a>
+			    </h2>
+			    <!-- <div class="shortDescription"><?php echo nl2br($_product->getShortDescription()); ?></div>-->
+			    <?php
+		 		if($_product->getRatingSummary()):
+				  echo $this->getReviewsSummaryHtml($_product, 'short');
+				endif;
+			    ?>
+			    <?php echo $this->getPriceHtml($_product, true) ?>
+			    <div class="actions">
+			       <?php 
+				////////////////////////////////////////////////////////////#1727
+				if($_product->isSaleable()): ?>
+					<?php if($_product->getPreOrder() == '1'){ 
+					?>
+					<ul  class="pre-order">
+					  <button type="button" 
+					    title="<?php echo $this->__('Add to Cart') ?>" 
+					    class="button btn-cart" 
+					    onclick="setLocation('<?php echo $this->getAddToCartUrl($_product) ?>')">
+					    <span><span><?php echo $this->__('Add to Cart') ?></span></span>
+					  </button>
+					</ul>
+					<?php }else{ ?>
+					<ul  class="in-stock">
+					  <button type="button" 
+					    title="<?php echo $this->__('Add to Cart') ?>" 
+					    class="button btn-cart" 
+					    onclick="setLocation('<?php echo $this->getAddToCartUrl($_product) ?>')">
+					    <span><span><?php echo $this->__('Add to Cart') ?></span></span>
+					  </button>
+					</ul>
+					<?php }
+					////////////////////////////////////////////////////////////#1727
+				?>
+			       <?php else: ?>
+				  <p class="availability out-of-stock"><span><?php echo $this->__('Out of stock') ?></span></p>
+			       <?php endif; ?>
+			    </div>
+			 </li>
+			 <?php if ($i%$_columnCount==0 || $i==$_collectionSize): ?>
+			</ul>
+			<?php endif ?>
+			<?php
+			//getting sku to avoid duplicate entries in display
+			$tempDuplicateSku[] = $_product->getSku();
+			?>
+		<?php endforeach ?>
+		<script type="text/javascript">decorateGeneric($$('ul.products-grid'), ['odd','even','first','last'])</script>
+	</div>
+	<?php endif; ?>
+    </td>
+  </tr>
+</table>
+
+
+<?php
+// function to return result array
+function getMatchingProducts($tempFlagCount){
+    $product = Mage::getSingleton('checkout/session')->getLastAddedProductId();
+    $session = Mage::getSingleton('checkout/session');
+    foreach($session->getQuote()->getAllVisibleItems() as $item) {
+    	$product = $item->getProductId();
+    }
+
+    $store_id = Mage::app()->getStore()->getId();
+    $helper = Mage::helper('automatedproducts');
+    $config = $helper->getConfig("automatedproducts/relatedproducts");
+    $product = Mage::getModel('catalog/product')->load($product);
+    $_productCollection = Mage::getModel('catalog/product')->getCollection()->addAttributeToSelect(Mage::getSingleton('catalog/config')->getProductAttributes());
+    $_productCollection->setStoreId($store_id)->addStoreFilter($store_id);
+
+	////////////////////////////////////////////////////////////////////////#1615
+	//conditional query
+	if($tempFlagCount == 0){
+		// filter by brand, license, series and type
+		$_productCollection->addAttributeToFilter('brand', array('eq' => $product->getBrand()));
+		if($product->getLicense() != null){
+			$_productCollection->addAttributeToFilter('license', array('eq' => $product->getLicense()));
+		}
+		if($product->getSeries() != null){
+			$_productCollection->addAttributeToFilter('series', array('eq' => $product->getSeries()));
+		}
+		if($product->getType() != null){
+			$_productCollection->addAttributeToFilter('type', array('eq' => $product->getType()));
+		}
+	}else if($tempFlagCount == 1){
+		// filter by brand, license and series
+		$_productCollection->addAttributeToFilter('brand', array('eq' => $product->getBrand()));
+		if($product->getLicense() != null){
+			$_productCollection->addAttributeToFilter('license', array('eq' => $product->getLicense()));
+		}
+		if($product->getSeries() != null){
+			$_productCollection->addAttributeToFilter('series', array('eq' => $product->getSeries()));
+		}
+	}else if($tempFlagCount == 2){
+		// filter by brand and license
+		$_productCollection->addAttributeToFilter('brand', array('eq' => $product->getBrand()));
+		if($product->getLicense() != null){
+			$_productCollection->addAttributeToFilter('license', array('eq' => $product->getLicense()));
+		}
+	}else if($tempFlagCount == 3){
+		// filter by brand only
+		$_productCollection->addAttributeToFilter('brand', array('eq' => $product->getBrand()));
+	}else{
+	/*do nothing*/
+	}
+	////////////////////////////////////////////////////////////////////////#1615
+
+    $_productCollection->addStoreFilter()
+    //ORIGINAL	//->setPageSize(5)
+    ->setPageSize(Mage::getStoreConfig('automatedproducts/crosssellproducts/limit'))
+    ->setCurPage(1)
+    ->addIdFilter(array($product->getId()), true);
+
+    //ORIGINAL	//$_productCollection->getSelect()->order('rand()');
+    $_productCollection->addAttributeToSort('name', 'asc');
+
+    Mage::getSingleton('catalog/product_status')->addSaleableFilterToCollection($_productCollection);
+    Mage::getSingleton('cataloginventory/stock')->addInStockFilterToCollection($_productCollection);
+    Mage::getSingleton('catalog/product_visibility')->addVisibleInCatalogFilterToCollection($_productCollection);
+    $_productCollection->load();
+
+    return $_productCollection;
+}
+
+//function to return count of products for each iteration
+function getFinalProductCount($tempFinalProductArray){
+  foreach ($tempFinalProductArray as $_product){
+    $tempGlobalSku[] = $_product->getSku();
+  }
+  $buffer = array_unique($tempGlobalSku);
+ return sizeof($buffer);
+}
+////////////////////////////////////////////////////////////////////////#1615
+?>

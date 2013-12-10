@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config>
+    <modules>
+        <EW_Automatedproducts>
+            <version>1.0.0</version>
+        </EW_Automatedproducts>
+    </modules>
+    <global>
+        <blocks>
+            <automatedproducts>
+                <class>EW_Automatedproducts_Block</class>
+            </automatedproducts>
+            <catalog>
+	            <rewrite>
+	                <product_list_related>EW_Automatedproducts_Block_Catalog_Product_List_Related</product_list_related>
+	                <product_list_upsell>EW_Automatedproducts_Block_Catalog_Product_List_Upsell</product_list_upsell>
+	                <!-- <product_list_crosssell>EW_Automatedproducts_Block_Catalog_Product_List_Crosssell</product_list_crosssell> -->
+	            </rewrite>
+            </catalog>
+        </blocks>
+        <models>
+            <automatedproducts>
+                <class>EW_Automatedproducts_Model</class>
+            </automatedproducts>
+        </models>
+        <helpers>
+            <automatedproducts>
+                <class>EW_Automatedproducts_Helper</class>
+            </automatedproducts>
+        </helpers>
+    </global>
+    <default>
+        <automatedproducts>
+            <relatedproducts>
+                <enabled>0</enabled>
+                <limit>10</limit>
+                <collectionmode>merge</collectionmode>
+                <conditions>category</conditions>
+            </relatedproducts>
+            <upsellproducts>
+                <enabled>0</enabled>
+                <limit>10</limit>
+                <collectionmode>merge</collectionmode>
+                <conditions>category</conditions>
+            </upsellproducts>
+            <crosssellproducts>
+                <enabled>0</enabled>
+                <limit>10</limit>
+                <collectionmode>merge</collectionmode>
+                <conditions>category</conditions>
+            </crosssellproducts>
+        </automatedproducts>
+    </default>
+</config>
