@@ -1,0 +1,198 @@
+<?php
+/**
+ * Flint Technology Ltd
+ *
+ * This module was developed by Flint Technology Ltd (http://www.flinttechnology.co.uk).
+ * For support or questions, contact us via http://www.flinttechnology.co.uk/store/contacts
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the EULA bundled with this package in the file LICENSE.txt.
+ * It is also available online at http://www.flinttechnology.co.uk/store/module-license-1.0
+ *
+ * @package     flint_feefo-ce-1.2.0.zip
+ * @registrant  David Suter
+ * @license     68561092-2FBC-43E2-8F1F-450A55AB97CE
+ * @eula        Flint Module Single Installation License (http://www.flinttechnology.co.uk/store/module-license-1.0
+ * @copyright   Copyright (c) 2012 Flint Technology Ltd (http://www.flinttechnology.co.uk)
+ */
+
+?>
+<?php echo $this->__("Mother's Basement uses Feefo to give independent and honest feedback on out products and service.")?>
+<?php if (Mage::getStoreConfig('flint_feefo/product/active')):
+    $helper = Mage::helper('flint_feefo/Data');
+    $product = Mage::registry('current_product');
+    if($dom = $helper->getReviews($product)):
+        $feedbacks = $dom->getElementsByTagName('FEEDBACK');
+    function compare_dates($date1, $date2)
+    {
+    	$blocks = array(
+    			array('name'=>'year','amount'    =>    60*60*24*365    ),
+    			array('name'=>'month','amount'    =>    60*60*24*31    ),
+    			array('name'=>'week','amount'    =>    60*60*24*7    ),
+    			array('name'=>'day','amount'    =>    60*60*24    ),
+    			array('name'=>'hour','amount'    =>    60*60        ),
+    			array('name'=>'minute','amount'    =>    60        ),
+    			array('name'=>'second','amount'    =>    1        )
+    	);
+    
+    	$diff = abs($date1-$date2);
+    
+    	$levels = 2;
+    	$current_level = 1;
+    	$result = array();
+    	foreach($blocks as $block)
+    	{
+    		if ($current_level > $levels) {
+    			break;
+    		}
+    		if ($diff/$block['amount'] >= 1)
+    		{
+    			$amount = floor($diff/$block['amount']);
+    			if ($amount>1) {
+    				$plural='s';
+    			} else {$plural='';
+    			}
+    			$result[] = $amount.' '.$block['name'].$plural;
+    			$diff -= $amount*$block['amount'];
+    			$current_level++;
+    		}
+    	}
+    	return implode(' ',$result).' ago';
+    }
+        ?>
+
+            <div class="std" id="feefo_reviews_block" style="margin-top:10px;">
+
+               <?php
+                    if($feedbacks->length):
+                       ?>
+                        <table class="data-table" id="product-feefo-reviews">
+                            <colgroup>
+                            	<col width="22%"></col>
+                            	<col width="45%"></col>
+                            	<col width="35%"></col>
+                            </colgroup>
+                            <thead>
+                                <tr>
+                                    <th><?php echo $this->__('Date') ?></th>
+                                    <th><?php echo $this->__('Review') ?></th>
+                                    <th><?php echo $this->__('Ratings') ?> </th>
+                                </tr>
+                            </thead> 
+                            <tbody>
+                       <?php
+                        $i = 0;
+                        foreach($feedbacks as $feedback){
+                            ?>
+                                  <tr>
+                                  	<td>
+                                  		<?php
+                                  		//echo date("d-m-Y", strtotime($feedback->getElementsByTagName('DATE')->item(0)->nodeValue));
+                                  		print(compare_dates(strtotime($feedback->getElementsByTagName('DATE')->item(0)->nodeValue),time())); 
+                                  		?>
+                                  	</td>
+                                    <td>
+                                        <?php
+                                        $shorCusCom = $feedback->getElementsByTagName('SHORTCUSTOMERCOMMENT')->item(0)->nodeValue;
+                                        $CusCom = $feedback->getElementsByTagName('CUSTOMERCOMMENT')->item(0)->nodeValue;
+                                        
+                                        ?>
+                                        <font id="shortCus<?php echo $feedback->getElementsByTagName('COUNT')->item(0)->nodeValue;?>"><?php print($shorCusCom); ?></font>
+                                        <?php if($shorCusCom != $CusCom): ?>
+                                            <a href="<?php echo $this->__('Read More.') ?>" onclick="$('shortCus<?php echo $feedback->getElementsByTagName('COUNT')->item(0)->nodeValue;?>').style.display = 'none';this.style.display = 'none';$('longCus<?php echo $feedback->getElementsByTagName('COUNT')->item(0)->nodeValue;?>').style.display = '';return false;"><?php echo $this->__('Read More.') ?></a>
+                                            <font id="longCus<?php echo $feedback->getElementsByTagName('COUNT')->item(0)->nodeValue;?>" style="display: none"><?php print($CusCom); ?></font>
+                                        <?php endif; ?>
+                                    </td>
+                                    <td>
+                                        <?php/*
+                                        $shorVenCom = $feedback->getElementsByTagName('SHORTVENDORCOMMENT')->item(0)->nodeValue;
+                                        $VenCom = $feedback->getElementsByTagName('VENDORCOMMENT')->item(0)->nodeValue;
+                                        
+                                        ?>
+                                        <font id="short<?php echo $feedback->getElementsByTagName('COUNT')->item(0)->nodeValue;?>"><?php print($shorVenCom); ?></font>
+                                        <?php if($shorVenCom != $VenCom): ?>
+                                            <a href="<?php echo $this->__('Read More.') ?>" onclick="$('short<?php echo $feedback->getElementsByTagName('COUNT')->item(0)->nodeValue;?>').style.display = 'none';this.style.display = 'none';$('long<?php echo $feedback->getElementsByTagName('COUNT')->item(0)->nodeValue;?>').style.display = '';return false;"><?php echo $this->__('Read More.') ?></a>
+                                            <font id="long<?php echo $feedback->getElementsByTagName('COUNT')->item(0)->nodeValue;?>" style="display: none"><?php print($VenCom); ?></font>
+                                        <?php endif; */?>
+                                        <span style="float:left"><?php 
+                                            if($feedback->getElementsByTagName('SERVICERATING')->length):
+                                                print( 'Service: ');
+                                                foreach(str_split($feedback->getElementsByTagName('SERVICERATING')->item(0)->nodeValue) as $img){
+                                                    if($img === '+' || $img === '-') print('<img src="'.$this->getSkinUrl('images/flint_feefo'.$img.'.gif').'" />');
+                                                }
+                                            endif;
+                                            if($feedback->getElementsByTagName('PRODUCTRATING')->length):
+                                                print( ' Product: ');
+                                                foreach(str_split($feedback->getElementsByTagName('PRODUCTRATING')->item(0)->nodeValue) as $img){
+                                                    if($img === '+' || $img === '-') print('<img src="'.$this->getSkinUrl('images/flint_feefo'.$img.'.gif').'" />');
+                                                }
+                                            endif;
+                                        ?>
+                                        </span>
+                                    </td>
+                                </tr>
+                            <?php
+                        }
+                        
+                       ?>
+                            </tbody>
+                        </table>
+                        <div id="feefo-ratting-keys">
+                        	<div class="feefo-left">
+                        		<span><strong><?php echo $this->__("Ratings Key")?></strong></span>
+                        		<span>
+                        			<img src="<?php echo $this->getSkinUrl("images/flint_feefo+.gif")?>" alt=""/>
+                        			<img src="<?php echo $this->getSkinUrl("images/flint_feefo+.gif")?>" alt=""/>
+                        			<?php echo $this->__("Excellent")?>
+                        		</span>
+                        		<span>
+                        			<img src="<?php echo $this->getSkinUrl("images/flint_feefo+.gif")?>" alt=""/>
+                        			<?php echo $this->__("Good")?>
+                        		</span>
+                        		<span>
+                        			<img src="<?php echo $this->getSkinUrl("images/flint_feefo-.gif")?>" alt=""/>
+                        			<?php echo $this->__("Poor")?>
+                        		</span>
+                        		<span>
+                        			<img src="<?php echo $this->getSkinUrl("images/flint_feefo-.gif")?>" alt=""/>
+                        			<img src="<?php echo $this->getSkinUrl("images/flint_feefo-.gif")?>" alt=""/>
+                        			<?php echo $this->__("Bad")?>
+                        		</span>
+                        		<a class="more-reviews" href="<?php echo 'http://www.feefo.com/feefo/viewvendor.jsp?logon='.$helper->getConfig()->getConfigData('flint_feefo/general/logon'); ?>" onclick="popWin('<?php echo 'http://www.feefo.com/feefo/viewvendor.jsp?logon='.$helper->getConfig()->getConfigData('flint_feefo/general/logon'); ?>', '<?php echo $this->__("Feefo reviews")?>', 'width=1000, height=600, toolbar=no, location=no, scrollbars=1'); return false;">
+									<?php print(Mage::helper('flint_feefo')->__('Read more reviews on Feefo ')); ?>
+									<?php print(Mage::helper('flint_feefo')->__('here >')); ?>
+								</a>
+                        	</div>
+							<div class="feefo-right">
+								<?php echo $this->getChildHtml("feefo_logo")?>
+							</div>
+                        </div>
+                        <script type="text/javascript">decorateTable('product-feefo-reviews')</script>
+                       <?php
+                    else:
+                        ?>
+                       <strong><?php echo  $this->__('This product has no reviews yet.'); ?></strong>
+                       <script type="text/javascript">decorateTable('product-feefo-reviews')</script>
+                       <?php
+                    endif;
+                 ?>
+            </div>
+               <?php
+              if($helper->getConfig()->getConfigData('flint_feefo/product/googleStars')):
+               
+                   $summary = $dom->getElementsByTagName('SUMMARY')->item(0); ?>
+                   <span style="display:none" class="hreview-aggregate">
+                      <span class="item"><span class="fn">Feefo reviews</span></span>
+                      <span class="rating"><?php echo $summary->getElementsByTagName('AVERAGE')->item(0)->nodeValue; ?>%</span>
+                      <span class="count"><?php echo $summary->getElementsByTagName('TOTALPRODUCTCOUNT')->item(0)->nodeValue; ?></span>
+                    </span>
+              <?php endif; ?>  
+    <?php else: ?>
+        <h2><?php echo $this->__('FeeFo Reviews') ?><img style="float:right" src="<?php echo $helper->getStarsSrc($product)?>" /></h2>
+
+            <div class="std" id="feefo_reviews_block">
+                <?php echo  $this->__('Connection problem to Feefo server.'); ?>
+            </div>
+    <?php endif; ?>
+<?php endif; ?>

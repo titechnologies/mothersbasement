@@ -1,0 +1,103 @@
+<?xml version="1.0"?>
+<!--
+    Copyright (c) 2010 Amasty (http://www.amasty.com) 
+-->
+<config>
+    <modules>
+        <Amasty_Purchases>
+            <version>1.0.3</version>
+        </Amasty_Purchases>
+    </modules>
+    
+    <global>
+        <resources>
+            <ampurchases_setup>
+                <setup>
+                    <module>Amasty_Purchases</module>
+                </setup>
+                <connection>
+                    <use>core_setup</use>
+                </connection>
+            </ampurchases_setup>
+            <ampurchases_write>
+                <connection>
+                    <use>core_write</use>
+                </connection>
+            </ampurchases_write>
+            <ampurchases_read>
+                <connection>
+                    <use>core_read</use>
+                </connection>
+            </ampurchases_read>
+        </resources>
+
+        <blocks>
+            <ampurchases>
+                <class>Amasty_Purchases_Block</class>
+            </ampurchases>
+            <adminhtml>
+                <rewrite>
+                    <customer_edit_tabs>Amasty_Purchases_Block_Adminhtml_Customer_Edit_Tabs</customer_edit_tabs>
+                </rewrite>
+                <rewrite>
+                    <catalog_product_edit_tabs>Amasty_Purchases_Block_Adminhtml_Catalog_Product_Edit_Tabs</catalog_product_edit_tabs>
+                </rewrite>
+            </adminhtml>             
+        </blocks>
+         
+        <helpers>
+            <ampurchases>
+                <class>Amasty_Purchases_Helper</class>
+            </ampurchases>
+        </helpers>
+    </global>
+    
+    <admin>
+        <routers>
+			<ampurchases>
+				<use>admin</use>
+				<args>
+					<module>Amasty_Purchases</module>
+					<frontName>ampurchases</frontName>
+				</args>
+			</ampurchases>
+        </routers>
+    </admin> 
+        
+   <adminhtml>
+		<acl>
+			<resources>
+				<all>
+					<title>Allow Everything</title>
+				</all>
+                <admin>
+                    <children>
+                        <customer>
+                            <children>
+                                <ampurchases_orders>
+                                    <title>View Orders By Customer</title>
+                                </ampurchases_orders>
+                            </children>
+                        </customer>
+                        <catalog>
+                            <children>
+                                <ampurchases_products>
+                                    <title>View Customers By Product</title>
+                                </ampurchases_products>
+                            </children>
+                        </catalog>
+                     </children>
+                </admin> 
+			</resources>
+		</acl>
+        <translate>
+            <modules>
+                <Amasty_Purchases>
+                    <files>
+                        <default>Amasty_Purchases.csv</default>
+                    </files>
+                </Amasty_Purchases>
+            </modules>
+        </translate> 
+    </adminhtml> 
+</config>

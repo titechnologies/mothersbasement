@@ -1,0 +1,211 @@
+<?php
+$url=Mage::getBaseUrl();
+?>
+<!--<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js"></script>
+-->
+<script type="text/javascript">
+var $bar = jQuery.noConflict();
+$bar(document).ready(function() {
+  $bar("span.accordsuffix1").toggle(function(){
+    $bar(".submenu1").slideDown('slow');
+	$bar("img.statusicon1").attr('src','<?php echo $this->getSkinUrl('images/minus.gif') ?>')
+	},
+    function(){
+    $bar(".submenu1").slideUp('slow');
+	$bar("img.statusicon1").attr('src','<?php echo $this->getSkinUrl('images/plus.png') ?>')
+
+	});
+  
+  
+    $bar("span.accordsuffix2").toggle(function(){
+    $bar(".submenu2").slideDown('slow');
+	$bar("img.statusicon2").attr('src','<?php echo $this->getSkinUrl('images/minus.gif') ?>')
+	},
+    function(){
+    $bar(".submenu2").slideUp('slow');
+	$bar("img.statusicon2").attr('src','<?php echo $this->getSkinUrl('images/plus.png') ?>')
+	});
+	
+	
+	$bar("span.accordsuffix3").toggle(function(){
+    $bar(".submenu3").slideDown('slow');
+	$bar("img.statusicon3").attr('src','<?php echo $this->getSkinUrl('images/minus.gif') ?>')
+	},
+    function(){
+    $bar(".submenu3").slideUp('slow');
+	$bar("img.statusicon3").attr('src','<?php echo $this->getSkinUrl('images/plus.png') ?>')
+	});
+	
+
+	$bar("span.accordsuffix4").toggle(function(){
+    $bar(".submenu4").slideDown('slow');
+	$bar("img.statusicon4").attr('src','<?php echo $this->getSkinUrl('images/minus.gif') ?>')
+	},
+    function(){
+    $bar(".submenu4").slideUp('slow');
+	$bar("img.statusicon4").attr('src','<?php echo $this->getSkinUrl('images/plus.png') ?>')
+	});
+
+
+$bar("span.accordsuffix5").toggle(function(){
+    $bar(".submenu5").slideDown('slow');
+	$bar("img.statusicon5").attr('src','<?php echo $this->getSkinUrl('images/minus.gif') ?>')
+	},
+    function(){
+    $bar(".submenu5").slideUp('slow');
+	$bar("img.statusicon5").attr('src','<?php echo $this->getSkinUrl('images/plus.png') ?>')
+	});
+
+  });
+
+</script>
+<?php if(Mage::registry('current_category')):?>
+<?php
+            $_helper    = $this->helper('catalog/output');
+            $_category  = $this->getCurrentCategory(); ?>
+<?php $cat= $_category->getName();
+		$f1=0;
+
+if(($cat=='Garden/Small Weathervanes') || ($cat=='Large/Estate Weathervanes') || ($cat=='Standard Weathervanes')){$f1=1;}
+if(($cat=='Aluminum Weathervanes') || ($cat=='Copper Weathervanes')){$f1=2;}
+if(($cat=='Farm Animal Weathervanes') || ($cat=='Lifestyle/Sporting Weathervanes')|| ($cat=='Mythology Weathervanes')|| ($cat=='Ocean Weathervanes')|| ($cat=='Patriotic Weathervanes')|| ($cat=='Plain/Train/Auto Weathervanes')|| ($cat=='Wild Animal Weathervanes')){$f1=3;}
+
+if(($cat=='Airplane Weathervanes') || ($cat=='Angel Weathervanes')|| ($cat=='Arrow Weathervanes')|| ($cat=='Banner &amp; Flag Weathervanes')|| ($cat=='Bird Weathervanes')|| ($cat=='Deer Weathervanes')|| ($cat=='Dog Weathervanes')|| ($cat=='Dragon Weathervanes')|| ($cat=='Duck Weathervanes')|| ($cat=='Eagle Weathervanes')|| ($cat=='Fireman Weathervanes')|| ($cat=='Fish Weathervanes')|| ($cat=='Golf Weathervanes')|| ($cat=='Goose Weathervanes')|| ($cat=='Gun Weathervanes')|| ($cat=='Heron Weathervanes')|| ($cat=='Horse Weathervanes')|| ($cat=='Hummingbird Weathervanes')|| ($cat=='Lighthouse Weathervanes')|| ($cat=='Motorcycle Weathervanes')|| ($cat=='Pet Weathervanes')|| ($cat=='Pig Weathervanes') || ($cat=='Rooster Weathervanes')|| ($cat=='Sailboat Weathervanes')|| ($cat=='Whale Weathervanes')|| ($cat=='Witch Weathervanes')){$f1=4;}
+
+if(($cat=='Vinyl Cupolas') || ($cat=='Wood Cupolas')){$f1=5;}
+
+//echo 'f->'.$f;	
+
+		?>
+<?php endif; ?>
+
+<div class="col-left sidebar">
+  <div id="LayoutColumn1" class="Left">
+    <div id="SideCategoryList" class="Block CategoryList Moveable Panel">
+      <h2>Our Products</h2>
+      <div class="BlockContent">
+        <div id="SlideDown">
+          <div class="SideCategoryListClassic">
+            <ul id="leftnav">
+              <li> <a href="<?=$url?>all-weathervanes.html">All Weathervanes<span class="accordsuffix1"><img class="statusicon1" src="<?php if($f1==1){ echo $this->getSkinUrl('images/minus.gif');}else{echo $this->getSkinUrl('images/plus.png');} ?>"></span></a>
+                <ul class="submenu1" id="main-cat" contentindex="0c" <?php if($f1==1) {?>style="display: block;"<?php }else{?>style=" display:none;"<?php }?>>
+                  <li class="sub-sub"> <a href="<?=$url?>all-weathervanes/garden-small-weathervanes.html">Garden/Small Weathervanes</a> </li>
+                  <li class="sub-sub"> <a href="<?=$url?>all-weathervanes/large-estate-weathervanes.html">Large/Estate Weathervanes</a> </li>
+                  <li class="sub-sub"> <a href="<?=$url?>all-weathervanes/standard-weathervanes.html">Standard Weathervanes</a> </li>
+                </ul>
+              </li>
+              <li> <a href="<?=$url?>shop-by-material.html">Shop By Material<span class="accordsuffix2"><img class="statusicon2" src="<?php if($f1==2){ echo $this->getSkinUrl('images/minus.gif');}else{echo $this->getSkinUrl('images/plus.png');} ?>"></span></a>
+                <ul class="submenu2" id="main-cat" contentindex="0c" <?php if($f1==2) {?>style="display: block;"<?php }else{?>style=" display:none;"<?php }?>>
+                  <li class="sub-sub"> <a href="<?=$url?>shop-by-material/aluminum-weathervanes.html">Aluminum Weathervanes</a> </li>
+                  <li class="sub-sub"> <a href="<?=$url?>shop-by-material/copper-weathervanes.html">Copper Weathervanes</a> </li>
+                </ul>
+              </li>
+              <li> <a href="<?=$url?>most-popular-categories.html">Most Popular Categories<span class="accordsuffix3"><img class="statusicon3" src="<?php if($f1==3){ echo $this->getSkinUrl('images/minus.gif');}else{echo $this->getSkinUrl('images/plus.png');} ?>"></span></a>
+                <ul class="submenu3" id="main-cat" contentindex="0c" <?php if($f1==3) {?>style="display: block;"<?php }else{?>style=" display:none;"<?php }?>>
+                  <li class="sub-sub"> <a href="<?=$url?>most-popular-categories/farm-animal-weathervanes.html">Farm Animal Weathervanes</a> </li>
+                  <li class="sub-sub"> <a href="<?=$url?>most-popular-categories/lifestyle-sporting-weathervanes.html">Lifestyle/Sporting Weathervanes</a> </li>
+                  <li class="sub-sub"> <a href="<?=$url?>most-popular-categories/mythology-weathervanes.html">Mythology Weathervanes</a> </li>
+                  <li class="sub-sub"> <a href="<?=$url?>most-popular-categories/ocean-weathervanes.html">Ocean Weathervanes</a> </li>
+                  <li class="sub-sub"> <a href="<?=$url?>most-popular-categories/patriotic-weathervanes.html">Patriotic Weathervanes</a> </li>
+                  <li class="sub-sub"> <a href="<?=$url?>most-popular-categories/plain-train-auto-weathervanes.html">Plain/Train/Auto Weathervanes</a> </li>
+                  <li class="sub-sub"> <a href="<?=$url?>most-popular-categories/wild-animal-weathervanes.html">Wild Animal Weathervanes</a> </li>
+                </ul>
+              </li>
+              <li> <a href="<?=$url?>shop-by-design.html">Shop By Design<span class="accordsuffix4"><img class="statusicon4" src="<?php if($f1==4){ echo $this->getSkinUrl('images/minus.gif');}else{echo $this->getSkinUrl('images/plus.png');} ?>"></span></a>
+                <ul class="submenu4" id="main-cat" contentindex="0c" <?php if($f1==4) {?>style="display: block;"<?php }else{?>style=" display:none;"<?php }?>>
+                  <li class="sub-sub"> <a href="<?=$url?>shop-by-design/airplane-weathervanes.html">Airplane Weathervanes</a> </li>
+                  <li class="sub-sub"> <a href="<?=$url?>shop-by-design/angel-weathervanes.html">Angel Weathervanes</a> </li>
+                  <li class="sub-sub"> <a href="<?=$url?>shop-by-design/arrow-weathervanes.html">Arrow Weathervanes</a> </li>
+                  <li class="sub-sub"> <a href="<?=$url?>shop-by-design/banner-flag-weathervanes.html">Banner &amp; Flag Weathervanes</a> </li>
+                  <li class="sub-sub"> <a href="<?=$url?>shop-by-design/bird-weathervanes.html">Bird Weathervanes</a> </li>
+                  <li class="sub-sub"> <a href="<?=$url?>shop-by-design/deer-weathervanes.html">Deer Weathervanes</a> </li>
+                  <li class="sub-sub"> <a href="<?=$url?>shop-by-design/dog-weathervanes.html">Dog Weathervanes </a> </li>
+                  <li class="sub-sub"> <a href="<?=$url?>shop-by-design/dragon-weathervanes.html">Dragon Weathervanes</a> </li>
+                  <li class="sub-sub"> <a href="<?=$url?>shop-by-design/duck-weathervanes.html">Duck Weathervanes</a> </li>
+                  <li class="sub-sub"> <a href="<?=$url?>shop-by-design/eagle-weathervanes.html">Eagle Weathervanes</a> </li>
+                  <li class="sub-sub"> <a href="<?=$url?>shop-by-design/fireman-weathervanes.html">Fireman Weathervanes</a> </li>
+                  <li class="sub-sub"> <a href="<?=$url?>shop-by-design/fish-weathervanes.html">Fish Weathervanes</a> </li>
+                  <li class="sub-sub"> <a href="<?=$url?>shop-by-design/golf-weathervanes.html">Golf Weathervanes</a> </li>
+                  <li class="sub-sub"> <a href="<?=$url?>shop-by-design/goose-weathervanes.html">Goose Weathervanes</a> </li>
+                  <li class="sub-sub"> <a href="<?=$url?>shop-by-design/gun-weathervanes.html">Gun Weathervanes</a> </li>
+                  <li class="sub-sub"> <a href="<?=$url?>shop-by-design/heron-weathervanes.html">Heron Weathervanes</a> </li>
+                  <li class="sub-sub"> <a href="<?=$url?>shop-by-design/horse-weathervanes.html">Horse Weathervanes</a> </li>
+                  <li class="sub-sub"> <a href="<?=$url?>shop-by-design/hummingbird-weathervanes.html">Hummingbird Weathervanes</a> </li>
+                  <li class="sub-sub"> <a href="<?=$url?>shop-by-design/lighthouse-weathervanes.html">Lighthouse Weathervanes</a> </li>
+                  <li class="sub-sub"> <a href="<?=$url?>shop-by-design/motorcycle-weathervanes.html">Motorcycle Weathervanes</a> </li>
+                  <li class="sub-sub"> <a href="<?=$url?>shop-by-design/pet-weathervanes.html">Pet Weathervanes</a> </li>
+                  <li class="sub-sub"> <a href="<?=$url?>shop-by-design/pig-weathervanes.html">Pig Weathervanes</a> </li>
+                  <li class="sub-sub"> <a href="<?=$url?>shop-by-design/rooster-weathervanes.html">Rooster Weathervanes</a> </li>
+                  <li class="sub-sub"> <a href="<?=$url?>shop-by-design/sailboat-weathervanes.html">Sailboat Weathervanes</a> </li>
+                  <li class="sub-sub"> <a href="<?=$url?>shop-by-design/whale-weathervanes.html">Whale Weathervanes</a> </li>
+                  <li class="sub-sub"> <a href="<?=$url?>shop-by-design/witch-weathervanes.html">Witch Weathervanes</a> </li>
+                </ul>
+              </li>
+              <li class="lastclass"> <a href="<?=$url?>all-cupolas.html">All Cupolas<span class="accordsuffix5"><img class="statusicon5" src="<?php if($f1==5){ echo $this->getSkinUrl('images/minus.gif');}else{echo $this->getSkinUrl('images/plus.png');} ?>"></span></a>
+                <ul class="submenu5" id="main-cat" contentindex="0c" <?php if($f1==5) {?>style="display: block;"<?php }else{?>style=" display:none;"<?php }?>>
+                  <li class="sub-sub"> <a href="<?=$url?>all-cupolas/vinyl-cupolas.html">Vinyl Cupolas</a> </li>
+                  <li class="sub-sub lastclass"> <a href="<?=$url?>all-cupolas/wood-cupolas.html">Wood Cupolas</a> </li>
+                </ul>
+              </li>
+            </ul>
+            <div class="afterSideCategoryList"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div id="SideCategoryList" class="Block CategoryList Moveable Panel">
+      <h2>More Information</h2>
+      <div class="BlockContent">
+        <ul>
+          <li class="sub-sub"><a href="<?=$url?>buyers-guide/">Ultimate Buyer's Guide</a></li>
+		  <li class="sub-sub lastclass"><a href="<?=$url?>faq/">Frequently Asked Questions</a></li>
+        </ul>
+      </div>
+    </div>
+	
+	
+	
+	
+	
+    <div id="SideCategoryList" class="Block CategoryList Moveable Panel">
+      <h2>Why Weathervane Direct!</h2>
+      <div class="BlockContent">
+        <table border="0" cellspacing="0" width="100%">
+          <tbody>
+            <tr>
+              <td class="border" style="width: 19px; height: 25px;" align="right"><img src="<?php echo $this->getSkinUrl('images/money.png') ?>" alt=""></td>
+              <td class="border" style="width: 173px;" align="left"><a href="<?php echo $this->getUrl('moneyback-guarantee')?>">MoneyBack Guarantee</a></td>
+            </tr>
+            <tr>
+              <td class="border" style="height: 25px;" align="right"><img src="<?php echo $this->getSkinUrl('images/dollar.png') ?>" alt=""></td>
+              <td class="border" align="left"><a href="<?php echo $this->getUrl('best-price-guarantee')?>">Best Price Guarantee</a></td>
+            </tr>
+            <tr>
+              <td class="border" style="height: 25px;" align="right"><img src="<?php echo $this->getSkinUrl('images/time.png') ?>" alt=""></td>
+              <td class="border" align="left"><a href="<?php echo $this->getUrl('fast-shipping')?>">Fast Shipping</a></td>
+            </tr>
+            <tr>
+              <td class="border" style="height: 25px;" align="right"><img src="<?php echo $this->getSkinUrl('images/lock.png') ?>" alt=""></td>
+              <td class="border" align="left"><a href="<?php echo $this->getUrl('secure-shopping')?>">Secure Shopping</a></td>
+            </tr>
+            <tr>
+              <td class="border" style="height: 25px;" align="right"><img src="<?php echo $this->getSkinUrl('images/star.png') ?>" alt=""></td>
+              <td class="border" align="left"><a href="<?php echo $this->getUrl('exceptional-service')?>">Exceptional Service</a></td>
+            </tr>
+            <tr>
+              <td class="border" style="height: 25px;" align="right"><img src="<?php echo $this->getSkinUrl('images/boxs.png') ?>" alt=""></td>
+              <td class="border" align="left"><a href="<?php echo $this->getUrl('great-selection')?>">Great Selection</a></td>
+            </tr>
+            <tr>
+              <td style="height: 25px;" align="right"><img src="<?php echo $this->getSkinUrl('images/10.png') ?>" alt=""></td>
+              <td align="left" class="border" ><a href="<?php echo $this->getUrl('free-shipping')?>">Free Shipping</a></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+   <!-- <div class="leftbox_1"> <img src="<?php echo $this->getSkinUrl('images/adv-comodo.jpg') ?>" alt="" border="0"> <br>
+      <img src="<?php echo $this->getSkinUrl('images/verification_seal.gif') ?>" alt="" border="0"><br>
+      <img src="<?php echo $this->getSkinUrl('images/visa.png') ?>" alt="" border="0"> </div>-->
+  </div>
+</div>

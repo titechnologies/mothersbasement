@@ -1,0 +1,114 @@
+/**
+ * BelVG LLC.
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the EULA
+ * that is bundled with this package in the file LICENSE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://store.belvg.com/BelVG-LICENSE-COMMUNITY.txt
+ *
+ /***************************************
+ *         MAGENTO EDITION USAGE NOTICE *
+ *****************************************/
+ /* This package designed for Magento COMMUNITY edition
+ * BelVG does not guarantee correct work of this extension
+ * on any other Magento edition except Magento COMMUNITY edition.
+ * BelVG does not provide extension support in case of
+ * incorrect edition usage.
+ /***************************************
+ *         DISCLAIMER                   *
+ *****************************************/
+ /* Do not edit or add to this file if you wish to upgrade Magento to newer
+ * versions in the future.
+ *****************************************************
+ * @category   Belvg
+ * @package    Belvg_Silver
+ * @copyright  Copyright (c) 2010 - 2011 BelVG LLC. (http://www.belvg.com)
+ * @license    http://store.belvg.com/BelVG-LICENSE-COMMUNITY.txt
+ */
+
+/*===========================================================================*\
+ * Text inputs, buttons, selects styles
+\*===========================================================================*/
+INPUT, BUTTON, SELECT, OPTION, TEXTAREA{
+	font:normal 11px/12px "Droid Sans", Helvetica, sans-serif;
+	color:#666666;
+	-moz-box-sizing:border-box;
+	-webkit-box-sizing:border-box;
+	box-sizing:border-box;
+}
+
+.input-text, TEXTAREA, SELECT{
+	color:#848480;
+	border:1px solid #C6C3C6;
+	border-top-color:#696B69;
+	border-bottom-color:#FFFBFF;
+	background:#FFFFFF;
+	display:inline-block;
+	vertical-align:middle;
+	line-height:12px;
+	-moz-border-radius:8px;
+	-webkit-border-radius:8px;
+	border-radius:8px;
+	-webkit-background-clip:padding-box; /* FIX: background bleed */
+	-moz-box-shadow:inset 1px 1px 4px #666666;
+	-webkit-box-shadow:inset 1px 1px 4px #666666;
+	box-shadow:inset 1px 1px 4px #666666;
+}
+.input-text{
+	padding:6px 4px 7px;
+}
+TEXTAREA{
+	padding:5px 4px;
+}
+SELECT{
+	padding:7px 4px 5px;
+}
+	.input-text:focus,
+	.input-text:active,
+	TEXTAREA:focus,
+	TEXTAREA:active,
+	SELECT:focus,
+	SELECT:active{
+		background-color:#FCFCFC;
+		color:#000000;
+		border-color:#9E9E9E;
+	}
+
+.form-button{
+	background:#CCCCCC url("../../images/bg_button.png") no-repeat 50% 50%;
+	border:1px solid #FAFAFA;
+	border-right-color:#7C7C7C;
+	border-bottom-color:#7C7C7C;
+	-moz-border-radius:9px;
+	-webkit-border-radius:9px;
+	border-radius:9px;
+	-webkit-background-clip:padding-box; /* FIX: background bleed */
+	-moz-box-shadow:0 0 2px #222222;
+	-webkit-box-shadow:0 0 2px #222222;
+	box-shadow:0 0 2px #222222;
+}
+	.form-button SPAN{
+		display:inline-block;
+		line-height:24px;
+		padding:0 10px;
+		font-size:14px;
+		font-weight:bold;
+		color:#63676C;
+		text-shadow:none;
+		-moz-border-radius:9px;
+		-webkit-border-radius:9px;
+		border-radius:9px;
+		-webkit-background-clip:padding-box; /* FIX: background bleed */
+	}
+	.form-button:hover,
+	.form-button:active{
+		-moz-box-shadow:0 0 2px #9E9E9E, 0 0 4px #666666;
+		-webkit-box-shadow:0 0 2px #9E9E9E, 0 0 4px #666666;
+		box-shadow:0 0 2px #9E9E9E, 0 0 4px #666666;
+	}
+		.form-button:hover SPAN,
+		.form-button:active SPAN{
+			color:#000000;
+		}

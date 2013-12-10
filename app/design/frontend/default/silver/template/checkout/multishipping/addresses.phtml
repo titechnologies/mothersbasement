@@ -1,0 +1,80 @@
+<?php
+/**
+ * BelVG LLC.
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the EULA
+ * that is bundled with this package in the file LICENSE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://store.belvg.com/BelVG-LICENSE-COMMUNITY.txt
+ *
+ /***************************************
+ *         MAGENTO EDITION USAGE NOTICE *
+ *****************************************/
+ /* This package designed for Magento COMMUNITY edition
+ * BelVG does not guarantee correct work of this extension
+ * on any other Magento edition except Magento COMMUNITY edition.
+ * BelVG does not provide extension support in case of
+ * incorrect edition usage.
+ /***************************************
+ *         DISCLAIMER                   *
+ *****************************************/
+ /* Do not edit or add to this file if you wish to upgrade Magento to newer
+ * versions in the future.
+ *****************************************************
+ * @category   Belvg
+ * @package    Belvg_Android
+ * @copyright  Copyright (c) 2010 - 2011 BelVG LLC. (http://www.belvg.com)
+ * @license    http://store.belvg.com/BelVG-LICENSE-COMMUNITY.txt
+ */
+?>
+<?php
+/**
+ * Ship to multiple address template
+ *
+ * @see Mage_Checkout_Block_Multishipping_Addresses
+ */
+?>
+<div class="in-page multishipping">
+	<form id="checkout_multishipping_form" action="<?php echo $this->getPostActionUrl() ?>" method="post">
+		<div class="page-head">
+			<h3><?php echo $this->__('Ship to Multiple Addresses') ?></h3>
+		</div>
+		<div class="a-right">
+			<button class="form-button" type="button" onclick="$('add_new_address_flag').value=1; $('checkout_multishipping_form').submit();"><span><?php echo $this->__('New Address') ?></span></button>
+		</div>
+		<br>
+		<?php echo $this->getMessagesBlock()->getGroupedHtml() ?>
+		<input type="hidden" name="continue" value="0" id="can_continue_flag">
+		<input type="hidden" name="new_address" value="0" id="add_new_address_flag">
+		<?php foreach ($this->getItems() as $_index => $_item): ?>
+			<div class="content">
+				<div class="inner-head">
+					<a href="<?php echo $this->getItemDeleteUrl($_item) ?>" title="<?php echo $this->__('Remove Item') ?>" class="remove"><?php echo $this->__('Remove Item') ?></a>
+					<h3><?php echo $this->__('Product') ?></h3>
+				</div>
+				<?php echo $this->getItemHtml($_item->getQuoteItem())?>
+				<ul class="form-list">
+					<li>
+						<label><?php echo $this->__('Qty') ?>:</label>
+						<input name="ship[<?php echo $_index ?>][<?php echo $_item->getQuoteItemId() ?>][qty]" value="<?php echo $this->htmlEscape($_item->getQty()) ?>" class="input-text qty">
+					</li>
+					<li>
+						<label><?php echo $this->__('Send to') ?>:</label>
+						<?php echo $this->getAddressesHtmlSelect($_item, $_index) ?>
+					</li>
+				</ul>
+			</div>
+			<br>
+			<br>
+		<?php endforeach; ?>
+		<div class="button-set">
+			<button class="form-button" onclick="$('can_continue_flag').value=0"><span><?php echo $this->__('Update') ?></span></button>
+		</div>
+		<div class="button-set">
+			<button class="form-button" onclick="$('can_continue_flag').value=1"><span><?php echo $this->__('Continue to Shipping Information') ?></span></button>
+			<a href="<?php echo $this->getBackUrl() ?>" class="left">&laquo;<?php echo $this->__('Back to Shopping Cart') ?></a>
+		</div>
+	</form>
+</div>

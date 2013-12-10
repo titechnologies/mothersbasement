@@ -1,0 +1,63 @@
+<?php
+class Excellence_Custom_Model_Checkout_Type_Onepage extends Mage_Checkout_Model_Type_Onepage{
+
+//////////////////////////////////////////////////////////////////////////////// #1648
+	public function saveExcellence($data){
+		if (empty($data)) {
+			//ORIGINAL	//return array('error' => -1, 'message' => $this->_helper->__('Invalid data.'));
+			$referralEmailId = ''; 
+		}else{
+			////////////////20-11-2013
+			//used to manage blank email id
+			if($data['like']){
+			$referralEmailId = $data['like']; 
+			}else{
+			$referralEmailId = '&nbsp;'; 
+			}
+			////////////////20-11-2013
+		}
+		
+		$this->getQuote()->setExcellenceLike($referralEmailId);
+		$this->getQuote()->collectTotals();
+		$this->getQuote()->save();
+		$this->getCheckout()
+		->setStepData('excellence', 'allow', true)
+		->setStepData('excellence', 'complete', true)
+		->setStepData('billing', 'allow', true);
+		return array();
+	}
+//////////////////////////////////////////////////////////////////////////////// #1648
+
+	public function saveExcellence2($data){
+		if (empty($data)) {
+			return array('error' => -1, 'message' => $this->_helper->__('Invalid data.'));
+		}
+		$this->getQuote()->setExcellenceLike2($data['like']);
+		$this->getQuote()->collectTotals();
+		$this->getQuote()->save();
+
+		$this->getCheckout()
+		->setStepData('excellence2', 'allow', true)
+		->setStepData('excellence2', 'complete', true)
+		->setStepData('shipping_method', 'allow', true);
+
+		return array();
+	}
+	public function saveExcellence3($data){
+		if (empty($data)) {
+			return array('error' => -1, 'message' => $this->_helper->__('Invalid data.'));
+		}
+		$this->getQuote()->setExcellenceLike3($data['like']);
+		$this->getQuote()->collectTotals();
+		$this->getQuote()->save();
+
+		$this->getCheckout()
+		->setStepData('excellence3', 'allow', true)
+		->setStepData('excellence3', 'complete', true);
+
+		return array();
+	}
+
+
+
+}

@@ -1,0 +1,104 @@
+<table border="0" width="100%">
+  <tr>
+    <td valign="top"><?php 
+    $product = Mage::getSingleton('checkout/session')->getLastAddedProductId();
+    $session = Mage::getSingleton('checkout/session');
+    foreach($session->getQuote()->getAllVisibleItems() as $item) {
+    	$product = $item->getProductId();
+    }
+    
+    $store_id = Mage::app()->getStore()->getId();
+    $helper = Mage::helper('automatedproducts');
+    $config = $helper->getConfig("automatedproducts/relatedproducts");
+    $product = Mage::getModel('catalog/product')->load($product);
+    $_productCollection = Mage::getModel('catalog/product')->getCollection()->addAttributeToSelect(Mage::getSingleton('catalog/config')->getProductAttributes());
+    
+    $_productCollection->setStoreId($store_id)->addStoreFilter($store_id);
+ 			$conditionArray = array();
+			$conditionArray[] = array(
+						'attribute' => 'brand',
+						'eq'        => $product->getBrand(),
+					);
+			if($product->getLicense() != null){
+				$conditionArray[] = array(
+					'attribute' => 'license',
+					'eq'        => $product->getLicense(),
+				);
+			}
+			if($product->getSeries() != null){
+				$conditionArray[] = array(
+					'attribute' => 'series',
+					'eq'        => $product->getSeries(),
+				);
+			}
+			if($product->getType() != null){
+				$conditionArray[] = array(
+					'attribute' => 'type',
+					'eq'        => $product->getType(),
+				);
+			}
+			$_productCollection->addAttributeToFilter($conditionArray);
+    $_productCollection->addStoreFilter()
+    ->setPageSize(5)
+    ->setCurPage(1)
+    ->addIdFilter(array($product->getId()), true);
+    $_productCollection->getSelect()->order('rand()');
+    Mage::getSingleton('catalog/product_status')->addSaleableFilterToCollection($_productCollection);
+    Mage::getSingleton('cataloginventory/stock')->addInStockFilterToCollection($_productCollection);
+    Mage::getSingleton('catalog/product_visibility')->addVisibleInCatalogFilterToCollection($_productCollection);
+    $_productCollection->load();
+    
+    ?>
+<?php if(!$_productCollection->count()): ?>
+<p class="note-msg"><?php echo $this->__('There are no products matching the selection.') ?></p>
+<?php else: ?>
+<div class="category-products">
+
+    <?php // Grid Mode ?>
+
+    <?php $_collectionSize = $_productCollection->count() ?>
+    <?php $_columnCount = 5;//$this->getColumnCount(); ?>
+    <?php $i=0; foreach ($_productCollection as $_product): ?>
+	 <?php
+    if($i==5){break;}
+	?>
+        <?php if ($i++%$_columnCount==0): ?>
+        <ul class="products-grid pre-order">
+        <?php endif ?>
+            <li class="item<?php if(($i-1)%$_columnCount==0): ?> first<?php elseif($i%$_columnCount==0): ?> last<?php endif; ?>">
+            <img src="<?php echo $this->getSkinUrl('images/pre-order.png') ?>" class="pre-img" />
+                <a href="<?php echo $_product->getProductUrl() ?>" title="<?php echo $this->htmlEscape($this->getImageLabel($_product, 'small_image')) ?>" class="product-image"><img src="<?php echo $this->helper('catalog/image')->init($_product, 'small_image')->resize(135,135); ?>" width="135" height="135" alt="<?php echo $this->htmlEscape($this->getImageLabel($_product, 'small_image')) ?>" /></a>
+                <h2 class="product-name"><a href="<?php echo $_product->getProductUrl() ?>" title="<?php echo $this->htmlEscape($_product->getName()) ?>"><?php echo $this->htmlEscape($_product->getName()) ?></a></h2>
+               <!-- <div class="shortDescription">
+	                <?php echo nl2br($_product->getShortDescription()); ?>
+                </div>-->
+                <?php if($_product->getRatingSummary()): ?>
+                <?php echo $this->getReviewsSummaryHtml($_product, 'short') ?>
+                <?php endif; ?>
+                <?php echo $this->getPriceHtml($_product, true) ?>
+                <div class="actions">
+                    <?php if($_product->isSaleable()): ?>
+                        <button type="button" title="<?php echo $this->__('Add to Cart') ?>" class="button btn-cart" onclick="setLocation('<?php echo $this->getAddToCartUrl($_product) ?>')"><span><span><?php echo $this->__('Add to Cart') ?></span></span></button>
+                    <?php else: ?>
+                        <p class="availability out-of-stock"><span><?php echo $this->__('Out of stock') ?></span></p>
+                    <?php endif; ?>
+                </div>
+
+            </li>
+        <?php if ($i%$_columnCount==0 || $i==$_collectionSize): ?>
+        </ul>
+        <?php endif ?>
+        <?php endforeach ?>
+        <script type="text/javascript">decorateGeneric($$('ul.products-grid'), ['odd','even','first','last'])</script>
+</div>
+<?php endif; ?>
+
+</td>
+    
+        
+
+  </tr>
+</table>
+
+
+

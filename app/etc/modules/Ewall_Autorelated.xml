@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<config>
+    <modules>
+        <Ewall_Autorelated>
+            <active>true</active>
+            <codePool>local</codePool>
+        </Ewall_Autorelated>
+    </modules>
+</config> 

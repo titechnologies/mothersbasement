@@ -1,0 +1,21 @@
+
+/**
+ * Product:     Pre-Order
+ * Package:     Aitoc_Aitpreorder_1.1.26_425077
+ * Purchase ID: n/a
+ * Generated:   2012-11-07 12:17:45
+ * File path:   skin/frontend/default/default/css/aitpreorder.css
+ * Copyright:   (c) 2012 AITOC, Inc.
+ */
+.product-options p.required { margin-bottom:0; padding:15px 0 0; position:static }
+
+ul.pre-order button.button {
+	background: url(../images/pre-order-add-to-cart.gif) no-repeat 0 0 white;
+	height: 27px;
+	width: 92px;
+	border: none;
+}
+
+
+.buttonpreorder                 {background: url("../images/pre-order-add-to-cart.gif") no-repeat scroll 0 0 #FFFFFF;border: medium none;
+                                height: 27px;text-indent: -9999px;width: 92px;}

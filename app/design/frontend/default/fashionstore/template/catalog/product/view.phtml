@@ -1,0 +1,489 @@
+<?php
+/**
+ * Magento
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Academic Free License (AFL 3.0)
+ * that is bundled with this package in the file LICENSE_AFL.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/afl-3.0.php
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to license@magentocommerce.com so we can send you a copy immediately.
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade Magento to newer
+ * versions in the future. If you wish to customize Magento for your
+ * needs please refer to http://www.magentocommerce.com for more information.
+ *
+ * @category    design
+ * @package     base_default
+ * @copyright   Copyright (c) 2012 Magento Inc. (http://www.magentocommerce.com)
+ * @license     http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
+ */
+
+/**
+ * Product view template
+ *
+ * @see Mage_Catalog_Block_Product_View
+ * @see Mage_Review_Block_Product_View
+ */
+?>
+<style type="text/css">
+.main{ width:auto}
+.product-img-box img{border:1px solid gray}
+.product-img-box{margin-top:10px}
+.more-views img{ margin-top:5px;}
+.more-views ul{margin-top:-5px;}
+</style>
+<?php $_helper = $this->helper('catalog/output'); ?>
+<?php $_product = $this->getProduct(); ?>
+<script type="text/javascript">
+    var optionsPrice = new Product.OptionsPrice(<?php echo $this->getJsonConfig() ?>);
+</script>
+
+
+<?php
+
+$uri = $_SERVER['REQUEST_URI'];
+
+$segment = explode("/", $uri);
+
+$url= $segment[2];
+
+
+
+
+
+
+
+$write = Mage::getSingleton('core/resource')->getConnection('core_write');
+
+$value=$write->query("SELECT * FROM catalog_product_flat_1 where url_path='$url'");
+
+while ($row = $value->fetch() ) {
+
+$product=$row['entity_id'];
+
+}
+
+?>
+
+
+
+<div id="messages_product_view"><?php echo $this->getMessagesBlock()->getGroupedHtml() ?></div>
+<table style="width:965px;" border="0">
+  <tr>
+    <td style="width:645px" valign="top">
+    <div class="top-header"><span><?php echo $_helper->productAttribute($_product, $_product->getName(), 'name') ?></span>
+    <span style="float:right; padding-top:0;">
+	<div class="headercart-top">
+					<?php if($_product->isSaleable() && $_product->getPreorder()): ?>
+						<p class="availability out-of-stock pre-order"><span><?php echo $this->__('Pre Order') ?></span></p>
+					<?php elseif($_product->isSaleable()): ?>
+                      	<p class="availability out-of-stock in-stock"><span><?php echo $this->__('In-stock') ?></span></p>
+                    <?php else: ?>
+                        <p class="availability out-of-stock"><span><?php echo $this->__('OUT OF STOCK') ?></span></p>
+                    <?php endif; ?>
+	<?php /*echo $this->getPriceHtml($_product, false, '_clone') */?>
+	</div>
+	</span>
+    </div>
+
+
+   <div>
+
+        <div class="product-img-box">
+            <?php echo $this->getChildHtml('media') ?>
+        </div>
+
+   </div>
+
+    <div class="product-view">
+    <div class="product-essential">
+
+
+
+  <script type="text/javascript">
+  var $bar = jQuery.noConflict();
+$bar(document).ready(function() {
+$bar("#des a").click(function() {
+  $bar("#description").show();$bar("#technical").hide();$bar("#review").hide();$bar("#addtowish").hide();$bar("#pre-order").hide();
+  $bar("#des").addClass("selected");$bar("#tec").removeClass("selected");$bar("#rev").removeClass("selected");$bar("#add").removeClass("selected");$bar("#pre").removeClass("selected");
+});
+$bar("#tec a").click(function() {
+  $bar("#description").hide();$bar("#technical").show();$bar("#review").hide();$bar("#addtowish").hide();$bar("#pre-order").hide();
+ $bar("#des").removeClass("selected");$bar("#tec").addClass("selected");$bar("#rev").removeClass("selected");$bar("#add").removeClass("selected");$bar("#pre").removeClass("selected");
+});
+$bar("#rev a").click(function() {
+  $bar("#description").hide();$bar("#technical").hide();$bar("#review").show();$bar("#addtowish").hide();$bar("#pre-order").hide();
+$bar("#des").removeClass("selected");$bar("#tec").removeClass("selected");$bar("#rev").addClass("selected");$bar("#add").removeClass("selected");$bar("#pre").removeClass("selected");
+});
+$bar("#add a").click(function() {
+  $bar("#description").hide();$bar("#technical").hide();$bar("#review").hide();$bar("#addtowish").show();$bar("#pre-order").hide();
+$bar("#des").removeClass("selected");$bar("#tec").removeClass("selected");$bar("#rev").removeClass("selected");$bar("#add").addClass("selected");$bar("#pre").removeClass("selected");
+});
+$bar("#pre a").click(function() {
+  $bar("#description").hide();$bar("#technical").hide();$bar("#review").hide();$bar("#addtowish").hide();$bar("#pre-order").show();
+$bar("#des").removeClass("selected");$bar("#tec").removeClass("selected");$bar("#rev").removeClass("selected");$bar("#add").removeClass("selected");$bar("#pre").addClass("selected");
+});
+
+							  });
+  </script>
+
+
+ <form action="<?php echo $this->getSubmitUrl($_product) ?>" method="post" id="product_addtocart_form"<?php if($_product->getOptions()): ?> enctype="multipart/form-data"<?php endif; ?>>
+ <div style="height:30px; width:683px; background:#000">
+        <div class="no-display">
+            <input type="hidden" name="product" value="<?php echo $_product->getId() ?>" />
+            <input type="hidden" name="related_product" id="related-products-field" value="" />
+        </div>
+<div class="tab selected" id="des"><a href="javascript:void(0);">description</a></div>
+<div class="tab" id="tec"><a href="javascript:void(0);">technical spec</a></div>
+<div class="tab" id="rev"><a href="javascript:void(0);">reviews</a></div>
+<?php
+$helper = Mage::helper('flint_feefo/Data');
+
+if($dom = $helper->getReviews($_product)):
+$feedbacks = $dom->getElementsByTagName('FEEDBACK');
+if($feedbacks->length):
+?>
+<div class="tempstars" id="rev1">
+<h2 id="feeforating-stars" style="cursor:pointer; height: 20px; position: absolute; background: url('<?php $helper = Mage::helper('flint_feefo/Data'); echo $helper->getStarsSrc($_product)?>') no-repeat scroll 0px 0px transparent; right: -25px; top: -9px; width: 100px; padding-left: 110px; line-height: 24px; color: rgb(255, 255, 255);">
+	<?php echo $feedbacks->length;?> Review(s)
+</h2>
+</div>
+<?php
+endif;
+endif;
+?>
+<!-- <div class="tab" id="add"><a href="javascript:void(0);">add to wish list</a></div> -->
+<!--<div class="tab" id="pre"><a href="javascript:void(0);">pre-order now</a></div>-->
+
+
+ <div class="content-tab" id="description">
+ 	<div class="content-tab-left">
+ 		<?php $outstock = false;  ?>
+            <?php echo $this->getPriceHtml($_product, false, '') ?>
+		<?php ?>
+		<?php if($_product->getTypeId() == "configurable"):?>
+			<p class="availability">
+            <?php if($_product->isSaleable()): ?>
+
+            <?php if ($_product->getPreorder()):?>
+			<span class="availibity-status"><?php echo $this->__('PRE-ORDER') ?><span class="avaibility-more"><a href="<?php echo $this->getUrl('faq')?>#preorders" target="_blank">(<?php echo $this->__("Learn More")?>)</a></span></span>
+			<span class="dispatch-note"><?php echo $_product->getPreorderdescript()?></span>
+            <?php else: ?>
+            <span class="availibity-status"><?php echo $this->__('IN-STOCK') ?></span>
+            <span class="dispatch-note"><?php echo $_product->getDispatchNote()?></span>
+            <?php endif;?>
+
+
+            <?php else: $outstock = true;?>
+			<span class="availibity-status"><?php /*echo $this->__("OUT OF STOCK")*/  echo $this->__("OUT OF STOCK")?></span>
+			<span class="dispatch-note"><?php echo $this->__("sorry, this product is no longer available")?></span>
+			<?php endif; ?>
+            </p>
+		<?php else: ?>
+			<p class="availability">
+            <?php if($_product->isSaleable()): ?>
+
+            <?php if ($_product->getPreorder()):?>
+			<span class="availibity-status"><?php echo $this->__('PRE-ORDER') ?><span class="avaibility-more"><a href="<?php echo $this->getUrl('faq')?>#preorders" target="_blank">(<?php echo $this->__("Learn More")?>)</a></span></span>
+			<span class="dispatch-note"><?php echo $_product->getPreorderdescript()?></span>
+            <?php else: ?>
+            <span class="availibity-status"><?php echo $this->__('IN-STOCK') ?></span>
+            <span class="dispatch-note"><?php echo $_product->getDispatchNote()?></span>
+            <?php endif;?>
+
+
+            <?php else: $outstock = true;?>
+			<span class="availibity-status"><?php echo $this->__("OUT OF STOCK")?></span>
+			<span class="dispatch-note"><?php echo $this->__("sorry, this product is no longer available")?></span>
+			<?php endif; ?>
+            </p>
+          <!-- <span>DISPATCH TIME: &nbsp;&nbsp;&nbsp;-->
+		<?php endif;?>
+		<?php if(!$outstock):?>
+		<div class="freeuk">
+		<span><?php echo $this->__('FREE UK DELIVERY') ?> <span class="avaibility-more"><a href="<?php echo $this->getUrl('delivery-service');?>" target="_blank">(<?php echo $this->__("Learn More")?>)</a></span></span>
+		</div>
+		<div class="worlwide">
+		<span><?php echo $this->__('WORLDWIDE SHIPPING AVAILABLE') ?> <span class="avaibility-more"><a href="<?php echo $this->getUrl('delivery-service');?>#international-delivery" target="_blank">(<?php echo $this->__("Learn More")?>)</a></span></span>
+		</div>
+		<div class="headercart">
+		<?php if ($_product->getPreorder()){?>
+			<?php echo $this->__("PRE-ORDER PRICE GUARANTEE")?> <a class="promise-links" href="<?php echo $this->getUrl("pre-order-price")?>" target="_blank"><span>(<?php echo $this->__("Learn More")?>)</span></a><br/>
+			<?php echo $this->__("LOWEST PRICE PROMISE")?> <a class="promise-links" href="<?php echo $this->getUrl("lowest-price-promise")?>" target="_blank"><span>(<?php echo $this->__("Learn More")?>)</span></a>
+		<?php }else{ ?>
+			<?php echo $this->__("LOWEST PRICE PROMISE")?> <a class="promise-links" href="<?php echo $this->getUrl("lowest-price-promise")?>" target="_blank"><span>(<?php echo $this->__("Learn More")?>)</span></a>
+		<?php }?>
+	 	</div>
+	 	<?php endif?>
+		<?php if(!$outstock):?>
+		<?php echo $this->getChildHtml('extrahint') ?>
+		<?php endif?>
+		<?php if (!$this->hasOptions()):?>
+			<div class="add-to-box">
+			<?php if($_product->isSaleable()): ?>
+				<?php echo $this->getChildHtml('addtocart') ?>
+				<?php if( $this->helper('wishlist')->isAllow() || $_compareUrl=$this->helper('catalog/product_compare')->getAddUrl($_product)): ?>
+				<span class="or"><?php echo $this->__('OR') ?></span>
+				<?php endif; ?>
+			<?php endif; ?>
+			</div>
+		<?php //echo $this->getChildHtml('extra_buttons') ?>
+		<?php elseif (!$_product->isSaleable()): ?>
+			<div class="add-to-box">
+				<?php //echo $this->getChildHtml('addto') ?>
+			</div>
+		<?php endif; ?>
+		<div class="leftalign">
+
+			<?php if ($_product->isSaleable() && $this->hasOptions()):?>
+	            <?php echo $this->getChildChildHtml('container2', '', true, true) ?>
+	        <?php endif;?>
+
+			<?php if ($_product->isSaleable() && $this->hasOptions()):?>
+				<?php echo $this->getChildChildHtml('container1', '', true, true) ?>
+			<?php endif;?>
+			<?php echo $this->getChildHtml('other');?>
+		</div>
+ 	</div>
+	<div class="scrollable-discription">
+		<div class="productdescriptionscroll" id="productdescriptionscroll">
+			<?php if ($_product->getShortDescription()):?>
+				<?php echo $_helper->productAttribute($_product, nl2br($_product->getShortDescription()), 'short_description') ?>
+			<?php endif;?>
+			<?php echo $_helper->productAttribute($_product, nl2br($_product->getDescription()), 'description') ?>
+		</div>
+	</div>
+	<script type="text/javascript">
+	(function(jQuery){
+		jQuery(document).ready(function(){
+			jQuery('#productdescriptionscroll').enscroll({
+			    verticalTrackClass: 'track1',
+			    verticalHandleClass: 'handle1',
+			    drawScrollButtons: true,
+			    scrollUpButtonClass: 'scroll-up1',
+			    scrollDownButtonClass: 'scroll-down1'
+			});
+			jQuery("#rev1").click(function(){
+				jQuery("#rev a").trigger('click');
+			});
+		});
+	})(jQuery);
+	</script>
+<!-- end of add to box -->
+ </div>
+  <div class="content-tab" id="technical" style="display:none">
+  <?php foreach ($this->getChildGroup('detailed_info', 'getChildHtml') as $alias => $html): if($alias == "description") continue;?>
+        	<div class="box-collateral <?php echo "box-{$alias}"?>">
+            <?php echo $html; ?>
+        </div>
+<?php endforeach;?>
+   <?php /*
+
+$write = Mage::getSingleton('core/resource')->getConnection('core_write');
+
+$value=$write->query("SELECT * FROM catalog_product_entity_text where attribute_id='137' AND entity_id='$product'");
+
+while ($row = $value->fetch() ) {
+
+echo $description = $row['value'];
+
+}
+*/
+?>
+
+ </div>
+ <div class="content-tab" id="review" style=" display:none">
+  <?php //echo $this->getReviewsSummaryHtml($_product, false, true)?>
+    <?php /*echo $this->getChildHtml('reviews') ?>
+
+	  <?php $reviews = $this->getReviews();
+
+	  print_r($reviews); ?>
+
+     <?php echo $this->getLayout()->createBlock('review/form')->setBlockId('product.review.form')->toHtml(); */?>
+     <?php echo $this->getChildHtml("feefo_logo")?>
+     <?php echo $this->getChildHtml("feefo_reviews")?>
+     <?php //echo $this->getChildHtml("product_reviews")?>
+
+ </div>
+ <div class="content-tab" id="addtowish" style="display:none"><!--add to wish list-->
+<?php echo'<a href="'.Mage::helper("wishlist")->getAddUrl($_product).'" class="link-cart">Add to Wishlist </a>'; ?>
+ </div>
+ <div class="content-tab" id="pre-order" style="display:none">pre-order now
+ </div>
+ </div>
+ </form>
+<br>
+<br>
+<!--<div style="margin-top:-15px;"> -->
+
+
+<div class="socialshare">
+	<?php /*?><div class="fb-like1 share-button">
+	<div id="fb-root"></div>
+	<script>(function(d, s, id) {
+	  var js, fjs = d.getElementsByTagName(s)[0];
+	  if (d.getElementById(id)) return;
+	  js = d.createElement(s); js.id = id;
+	  js.src = "//connect.facebook.net/en_US/all.js#xfbml=1&appId=224195121038470";
+	  fjs.parentNode.insertBefore(js, fjs);
+	}(document, 'script', 'facebook-jssdk'));</script>
+	<div class="fb-like" data-href="<?php echo Mage::helper('core/url')->getCurrentUrl()?>" data-send="false" data-layout="button_count" data-width="450" data-show-faces="false" data-font="arial"></div>
+	</div>
+	<div class="twitter-tweet share-button"><a href="https://twitter.com/share" class="twitter-share-button">Tweet</a><script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script></div>
+	<div class="google-plus share-button">
+		<script type="text/javascript" src="https://apis.google.com/js/plusone.js"></script>
+		<g:plusone size="medium" href="<?php echo Mage::helper('core/url')->getCurrentUrl()?>"></g:plusone>
+	</div>
+	<div class="pintrest-btn share-button">
+		<a target="_blank" href="//pinterest.com/pin/create/button/?url=<?php echo urlencode(Mage::helper('core/url')->getCurrentUrl())?>&media=<?php echo Mage::getBaseUrl('media')."catalog/product".$_product->getImage()?>&description=<?php echo $_helper->productAttribute($_product, nl2br($_product->getShortDescription()), 'short_description') ?>" data-pin-do="buttonPin" data-pin-config="beside">
+		<img src="//assets.pinterest.com/images/pidgets/pin_it_button.png" />
+		</a>
+		<script type="text/javascript" src="//assets.pinterest.com/js/pinit.js"></script>
+	</div><?php */?>
+	<div id="fb-root"></div>
+
+	<?php echo $this->getChildHtml("rewardssocial.widgets.bottom")?>
+	<script>(function(d, s, id) {
+	  var js, fjs = d.getElementsByTagName(s)[0];
+	  if (d.getElementById(id)) return;
+	  js = d.createElement(s); js.id = id;
+	  js.src = "//connect.facebook.net/en_US/all.js#xfbml=1&appId=224195121038470";
+	  fjs.parentNode.insertBefore(js, fjs);
+	}(document, 'script', 'facebook-jssdk'));</script>
+</div>
+
+
+<!--</div>-->
+
+
+
+
+
+    <script type="text/javascript">
+    //<![CDATA[
+        var productAddToCartForm = new VarienForm('product_addtocart_form');
+        productAddToCartForm.submit = function(button, url) {
+            if (this.validator.validate()) {
+                var form = this.form;
+                var oldUrl = form.action;
+
+                if (url) {
+                   form.action = url;
+                }
+                var e = null;
+                try {
+                    this.form.submit();
+                } catch (e) {
+                }
+                this.form.action = oldUrl;
+                if (e) {
+                    throw e;
+                }
+
+                if (button && button != 'undefined') {
+                    button.disabled = true;
+                }
+            }
+        }.bind(productAddToCartForm);
+
+        productAddToCartForm.submitLight = function(button, url){
+            if(this.validator) {
+                var nv = Validation.methods;
+                delete Validation.methods['required-entry'];
+                delete Validation.methods['validate-one-required'];
+                delete Validation.methods['validate-one-required-by-name'];
+                // Remove custom datetime validators
+                for (var methodName in Validation.methods) {
+                    if (methodName.match(/^validate-datetime-.*/i)) {
+                        delete Validation.methods[methodName];
+                    }
+                }
+
+                if (this.validator.validate()) {
+                    if (url) {
+                        this.form.action = url;
+                    }
+                    this.form.submit();
+                }
+                Object.extend(Validation.methods, nv);
+            }
+        }.bind(productAddToCartForm);
+    //]]>
+    </script>
+    </div>
+
+  <!--  <div class="product-collateral">
+
+        <?php //echo $this->getChildHtml('upsell_products') ?>
+        1
+        <?php //echo $this->getChildHtml('product_additional_data') ?>
+        2
+    </div>-->
+</div>
+
+    </td>
+	<td style="width:10px;">&nbsp;</td>
+    <td style="width:270px; padding-right:5px;" valign="top">
+    <div class="top-header"><span>Also Available</span></div>
+    <div id="country2" class="product-collateral" style="clear:both;">
+	<?php echo $this->getChildHtml('related_products') ?>
+	</div>
+
+<?php
+// check if product is configurable
+if($_product->isConfigurable()) {
+// loop trough all the simple products of a configurable products and get their stock quantities
+foreach ($_product->getTypeInstance(true)->getUsedProducts ( null, $_product) as $simple) {
+     $stock[] = round(Mage::getModel('cataloginventory/stock_item')->loadByProduct($simple)->getQty(),2);
+
+ }
+ // sum stock values for all products
+$total = array_sum($stock);
+}else{
+$total = Mage::getModel('cataloginventory/stock_item')->loadByProduct($_product)->getQty();
+}
+if($total > 0){
+echo '
+    <div class="top-header"><span>buy together and save</span></div>
+
+	<div class="product-collateral"> ';
+
+        echo $this->getChildHtml('product_additional_data');
+    echo '</div>';
+}
+	?>
+
+	<?php
+	/////////////////////////////////////////////////////////////////#1728
+	/*
+	//display 'Pop Funko' banner in right panel only for 'FUNKO' category products
+	//http://dev.mothers-basement.co.uk/media/wysiwyg/funkopagebutton.jpg
+	$_category_detail=Mage::registry('current_category');
+	//if(($_category_detail->getName() == 'Funko') && ($_category_detail->getId() == '53')){
+	if($_category_detail->getId() == '53'){
+		echo $this->getLayout()->createBlock('cms/block')->setBlockId('funko-multi-buy-deal')->toHtml();
+	}
+	*/
+	$tempCategories = $_product->getCategoryIds();
+	foreach($tempCategories as $k => $_category_id){
+		$_category = Mage::getModel('catalog/category')->load($_category_id);
+		$tempArrName[] =  $_category->getName();
+		$tempArrId[] = $_category->getId();
+	}
+	if((in_array('Funko',$tempArrName)) && (in_array('53',$tempArrId))){
+			echo $this->getLayout()->createBlock('cms/block')->setBlockId('funko-multi-buy-deal')->toHtml();
+	}
+	/////////////////////////////////////////////////////////////////#1728
+	?>
+
+    </td>
+  </tr>
+</table>

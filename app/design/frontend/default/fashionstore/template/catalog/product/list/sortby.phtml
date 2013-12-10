@@ -1,0 +1,47 @@
+<div class="block block-layered-nav">
+	<div class="block-title">
+        <strong><span>Sort</span></strong>
+    </div>
+	<ul class="left-sort-links">
+		<?php
+			$availableOrders = $this->getAvailableOrders();
+			$availableOrders['name'] = "Item Title";
+			$updatedAvailableOrders = array();
+			$updatedAvailableOrders['price'] = $availableOrders['price'];
+			$updatedAvailableOrders['created_at'] = $availableOrders['created_at'];
+			$updatedAvailableOrders['popularity'] = $availableOrders['popularity'];
+			$updatedAvailableOrders['name'] = $availableOrders['name'];
+		?>
+		<?php foreach($updatedAvailableOrders as $_key=>$_order): ?>
+			<li>
+				<a href="<?php echo $this->getOrderUrl($_key, 'desc') ?>" class="<?php if($this->isOrderCurrent($_key) && $this->getCurrentDirection() == "desc"): ?> selected<?php endif; ?>"><?php echo $this->__($_order) ?>
+				<?php if($_key != "popularity"):?>
+					<?php if($_key == "price"):?> 
+					<span>(High to Low)</span>
+					<?php elseif($_key == "name"):?>
+					<span>(Z-A)</span>
+					<?php elseif($_key == "created_at"):?>
+					<span>(Newest-Oldest)</span>
+					<?php else:?>
+					<span>(High to Low)</span>
+					<?php endif;?>
+				<?php endif;?>
+				</a>
+			</li>
+			<?php if($_key == "popularity") continue;?>
+			<li>
+				<a href="<?php echo $this->getOrderUrl($_key, 'asc') ?>" class="<?php if($this->isOrderCurrent($_key) && $this->getCurrentDirection() == "asc"): ?> selected<?php endif; ?>"><?php echo $this->__($_order) ?> 
+					<?php if($_key == "price"):?> 
+					<span>(Low to High)</span>
+					<?php elseif($_key == "name"):?>
+					<span>(A-Z)</span>
+					<?php elseif($_key == "created_at"):?>
+					<span>(Oldest-Newest)</span>
+					<?php else:?>
+					<span>(Low to High)</span>
+					<?php endif;?>
+				</a>
+			</li>
+		<?php endforeach; ?>
+	</ul>
+</div>

@@ -1,0 +1,116 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Flint Technology Ltd
+ *
+ * This module was developed by Flint Technology Ltd (http://www.flinttechnology.co.uk).
+ * For support or questions, contact us via http://www.flinttechnology.co.uk/store/contacts
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the EULA bundled with this package in the file LICENSE.txt.
+ * It is also available online at http://www.flinttechnology.co.uk/store/module-license-1.0
+ *
+ * @package     flint_feefo-ce-1.2.0.zip
+ * @registrant  David Suter
+ * @license     68561092-2FBC-43E2-8F1F-450A55AB97CE
+ * @eula        Flint Module Single Installation License (http://www.flinttechnology.co.uk/store/module-license-1.0
+ * @copyright   Copyright (c) 2012 Flint Technology Ltd (http://www.flinttechnology.co.uk)
+ */
+
+-->
+<config>
+    <modules>
+        <Flint_FeeFo>
+            <version>1.2.0</version>
+        </Flint_FeeFo>
+    </modules>        
+    <frontend>
+        <routers>
+            <flint_feefo>
+                <use>standard</use>
+                <args>
+                    <module>Flint_FeeFo</module>
+                    <frontName>feefo</frontName>
+                </args>
+            </flint_feefo>
+        </routers>
+        <translate>
+            <modules>
+                <Flint_Feefo>
+                    <files>
+                        <default>Flint_Feefo.csv</default>
+                    </files>
+                </Flint_Feefo>
+            </modules>
+        </translate>
+        <layout>
+            <updates>
+                <flint_feefo module="Flint_FeeFo">
+                    <file>flint_feefo.xml</file>
+                </flint_feefo>
+            </updates>
+        </layout>
+    </frontend>
+    <global>
+        <helpers>
+            <flint_feefo>
+                <class>Flint_FeeFo_Helper</class>
+            </flint_feefo>
+        </helpers>
+        <models>
+            <flint_feefo>
+                <class>Flint_FeeFo_Model</class>
+            </flint_feefo>
+        </models>
+        <layouts>
+            <feefo_reviews_popup module="flint_feefo" translate="label">
+                <label>Feefo popup</label>
+                <template>page/empty.phtml</template>
+                <layout_handle>feefo_reviews_popup</layout_handle>
+            </feefo_reviews_popup>
+        </layouts>
+    </global>
+    <adminhtml>
+        <acl>
+            <resources>
+                <all>
+                    <title>Allow Everything</title>
+                </all>
+                <admin>
+                    <children>
+                        <system>
+                            <children>
+                                <config>
+                                    <children>
+                                        <flint_feefo>
+                                            <title>Flint FeeFo</title>
+                                            <sort_order>100</sort_order>
+                                        </flint_feefo>
+                                    </children>
+                                </config>
+                            </children>
+                        </system>
+                    </children>
+                </admin>
+            </resources>
+        </acl>
+        <translate>
+            <modules>
+                <Flint_Feefo>
+                    <files>
+                        <default>Flint_Feefo.csv</default>
+                    </files>
+                </Flint_Feefo>
+            </modules>
+        </translate>
+    </adminhtml>
+    <default>
+        <flint_feefo>
+            <general>
+                <mode>both</mode>
+                <firewall>89.151.77.8,89.151.77.9</firewall>
+            </general>
+        </flint_feefo>
+    </default>
+</config>

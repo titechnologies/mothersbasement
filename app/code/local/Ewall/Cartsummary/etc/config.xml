@@ -1,0 +1,32 @@
+<config>    
+    <modules>
+        <Ewall_Cartsummary>
+            <version>0.1.0</version>
+        </Ewall_Cartsummary>
+    </modules>
+    <frontend>
+        <routers>
+            <cartsummary>
+                <use>standard</use>
+                <args>
+                    <module>Ewall_Cartsummary</module>
+                    <frontName>menu</frontName>
+                </args>
+            </cartsummary>
+        </routers>  
+		<layout>
+            <updates>
+                <cartsummary module="Ewall_Cartsummary">
+                    <file>cart_summary.xml</file>
+                </cartsummary>
+            </updates>
+		</layout>
+   </frontend>
+   <global>
+		<blocks>
+				<cartsummary>
+					<class>Ewall_Cartsummary_Block</class>
+				</cartsummary>
+        </blocks>
+	</global>
+</config> 

@@ -1,0 +1,20 @@
+<?php if (($_products = $this->getProductCollection()) && $_products->getSize()): ?>
+<div class="block block-topseller">
+    <div class="block-title title-topseller">
+        <span>TOP SELLERS</span>
+    </div>
+    <div class="block-content">
+        <ol id="bestseller-sidebar" class="mini-products-list">
+        <?php $i=0; foreach ($_products->getItems() as $_product): ?>
+        <?php if ($i>2): continue; endif; ?>
+            <li class="item">
+                <p class="product-name">
+                    <a style=" font-size:11px" href="<?php echo $_product->getProductUrl() ?>"><?php echo $_product->getName() ?></a>
+                </p>
+            </li>
+         <?php $i++; endforeach; ?>
+         <?php for($i;$i%5!=0;$i++): ?>
+         <?php endfor ?>   
+    </div>
+</div>
+<?php endif; ?>    

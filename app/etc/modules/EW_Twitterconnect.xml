@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<config>
+    <modules>
+        <EW_Twitterconnect>
+            <active>true</active>
+            <codePool>local</codePool>
+        </EW_Twitterconnect>
+    </modules>
+</config>

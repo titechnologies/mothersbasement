@@ -1,0 +1,29 @@
+<?php
+if(sizeof($this->getMatchingProducts()) > 0):
+?>
+	<div class="block block-related">
+	    <div class="block-content1">  
+		<ul class="mini-products-list" id="block-related">
+		<?php //$this->setItemsCount(2);?>
+		<?php foreach($this->getMatchingProducts() as $_item): ?>
+			<li class="item">
+			    <a href="<?php echo $_item['url'] ?>" title="<?php echo $this->htmlEscape($_item['name']) ?>" class="product-image">
+				<img width="115" height="85" src="<?php echo Mage::getBaseUrl('media').'catalog/product'.$_item['image'] ?>" />
+			    </a>
+			    <p class="product-name"><a href="<?php echo $_item['url'] ?>">
+			    <?php echo $this->htmlEscape($_item['name']) ?></a></p>
+			    <!--<p class="price"><?php //echo $this->getPriceHtml($_item, true, '-related') ?></p>-->
+			    <?php //$temprelatedprice = $this->helper('catalog/product')->getFinalPrice($_item['finalprice']); ?>
+			    <p class="price"><span class="price">&pound;<?php echo round($_item['finalprice'],2) ?></span></p>
+			</li>
+		<?php endforeach ?>
+		</ul>
+	    </div>        
+	</div>
+<?php else: ?>
+	<div class="block block-related">
+	    <div class="block-content1">
+		<p class="note-msg">There are no products matching the selection.</p>
+	    </div>        
+	</div>
+<?php endif ?>

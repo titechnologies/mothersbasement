@@ -1,0 +1,122 @@
+<?php
+/**
+ * BelVG LLC.
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the EULA
+ * that is bundled with this package in the file LICENSE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://store.belvg.com/BelVG-LICENSE-COMMUNITY.txt
+ *
+ /***************************************
+ *         MAGENTO EDITION USAGE NOTICE *
+ *****************************************/
+ /* This package designed for Magento COMMUNITY edition
+ * BelVG does not guarantee correct work of this extension
+ * on any other Magento edition except Magento COMMUNITY edition.
+ * BelVG does not provide extension support in case of
+ * incorrect edition usage.
+ /***************************************
+ *         DISCLAIMER                   *
+ *****************************************/
+ /* Do not edit or add to this file if you wish to upgrade Magento to newer
+ * versions in the future.
+ *****************************************************
+ * @category   Belvg
+ * @package    Belvg_Android
+ * @copyright  Copyright (c) 2010 - 2011 BelVG LLC. (http://www.belvg.com)
+ * @license    http://store.belvg.com/BelVG-LICENSE-COMMUNITY.txt
+ */
+?>
+<?php
+/**
+ * Product view template
+ *
+ * @see Mage_Catalog_Block_Product_View
+ */
+?>
+<script>
+	var optionsPrice = new Product.OptionsPrice(<?php echo $this->getJsonConfig() ?>);
+</script>
+<div id="messages_product_view"><?php echo $this->getMessagesBlock()->getGroupedHtml() ?></div>
+<?php $_product=$this->getProduct() ?>
+<form action="<?php echo $this->getAddToCartUrl($_product) ?>" method="post" id="product_addtocart_form"<?php if($_product->getOptions()): ?> enctype="multipart/form-data"<?php endif; ?>>
+	<input type="hidden" name="product" value="<?php echo $_product->getId() ?>">
+	<input type="hidden" name="related_product" id="related-products-field" value="">
+	<div class="product-view">
+		<h3 class="product-name"><?php echo $this->htmlEscape($_product->getName()) ?></h3>
+		<div class="image">
+			<a href="<?php echo $this->helper('catalog/image')->init($_product, 'image')->resize(300, null) ?>" rel="lightbox" title="<?php echo $this->htmlEscape($_product->getName()) ?>" class="product-image">
+				<span class="zoom"></span>
+				<img src="<?php echo $this->helper('catalog/image')->init($_product, 'small_image')->resize(88, 88); ?>" width="88" height="88" alt="<?php echo $this->htmlEscape($_product->getName()) ?>">
+			</a>
+		</div>
+		<div class="details">
+			<?php echo $this->getChildHtml('product_type_data') ?>
+			<?php echo $this->getChildHtml('extrahint') ?>
+			<br>
+			<ul class="links">
+				<li><a href="<?php echo $this->helper('catalog/image')->init($_product, 'image')->resize(300, null) ?>" rel="lightbox" title="<?php echo $this->htmlEscape($_product->getName()) ?>">view large</a></li>
+			</ul>
+			<ul class="links">
+				<?php if($_product->isSaleable()): ?>
+					<?php if ($this->helper('wishlist')->isAllow()) : ?>
+						<li><a href="<?php echo $this->helper('wishlist')->getAddUrl($_product) ?>"><?php echo $this->__('Add to Wishlist') ?></a></li>
+					<?php endif; ?>
+				<?php endif; ?>
+				<?php if ($this->canEmailToFriend()): ?>
+					<li><a href="<?php echo $this->helper('catalog/product')->getEmailToFriendUrl($_product) ?>"><?php echo $this->__('Email to a Friend') ?></a></li>
+				<?php endif; ?>
+			</ul>
+		</div>
+		<div class="add-to-cart">
+			<?php echo $this->getChildHtml('tierprices') ?>
+			<?php if (!$this->hasOptions()):?>
+				<?php if($_product->isSaleable()): ?>
+					<?php echo $this->getChildHtml('addtocart') ?>
+				<?php endif; ?>
+			<?php endif; ?>
+			<?php if ($_product->isSaleable() && $this->hasOptions()):?>
+				<?php echo $this->getChildChildHtml('container1', '', true, true) ?>
+			<?php endif;?>
+		</div>
+		<?php echo $this->getChildHtml('other');?>
+		<div class="description">
+			<?php foreach ($this->getChildGroup('detailed_info', 'getChildHtml') as $alias => $html):?>
+				<div class="content">
+					<h4><?php echo $this->escapeHtml($this->getChildData($alias, 'title'));?></h4>
+					<div class="std">
+						<?php echo $html ?>
+					</div>
+				</div>
+			<?php endforeach;?>
+		</div>
+		<?php if ($_product->isSaleable() && $this->hasOptions()):?>
+			<?php echo $this->getChildChildHtml('container2', '', true, true) ?>
+		<?php endif;?>
+		<?php if($_additional = $this->getAdditionalData()): ?>
+		<div class="attribute-specs">
+			<h4><?php echo $this->__('Additional Information') ?></h4>
+			<table class="data-table">
+				<?php foreach ($_additional as $_data): ?>
+					<tr>
+						<td class="label"><?php echo $_data['label'] ?></td>
+						<td class="data"><?php echo $_data['value'] ?></td>
+					</tr>
+				<?php endforeach; ?>
+			</table>
+		</div>
+		<?php endif; ?>
+		<?php echo $this->getChildHtml('upsell_products') ?>
+		<?php echo $this->getChildHtml('product_additional_data') ?>
+	</div>
+</form>
+<script>
+	var productAddToCartForm = new VarienForm('product_addtocart_form');
+	productAddToCartForm.submit = function(){
+		if (this.validator.validate()) {
+				this.form.submit();
+		}
+	}.bind(productAddToCartForm);
+</script>

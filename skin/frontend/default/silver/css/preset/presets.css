@@ -1,0 +1,85 @@
+/**
+ * BelVG LLC.
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the EULA
+ * that is bundled with this package in the file LICENSE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://store.belvg.com/BelVG-LICENSE-COMMUNITY.txt
+ *
+ /***************************************
+ *         MAGENTO EDITION USAGE NOTICE *
+ *****************************************/
+ /* This package designed for Magento COMMUNITY edition
+ * BelVG does not guarantee correct work of this extension
+ * on any other Magento edition except Magento COMMUNITY edition.
+ * BelVG does not provide extension support in case of
+ * incorrect edition usage.
+ /***************************************
+ *         DISCLAIMER                   *
+ *****************************************/
+ /* Do not edit or add to this file if you wish to upgrade Magento to newer
+ * versions in the future.
+ *****************************************************
+ * @category   Belvg
+ * @package    Belvg_Silver
+ * @copyright  Copyright (c) 2010 - 2011 BelVG LLC. (http://www.belvg.com)
+ * @license    http://store.belvg.com/BelVG-LICENSE-COMMUNITY.txt
+ */
+
+/*===========================================================================*\
+ * Presets
+\*===========================================================================*/
+.a-center	{text-align:center	!important;}
+.a-left		{text-align:left	!important;}
+.a-right	{text-align:right	!important;}
+
+.left		{float:left		!important;}
+.right		{float:right	!important;}
+
+.v-middle	{vertical-align:middle	!important;}
+.v-top		{vertical-align:top		!important;}
+
+.nowrap,
+.nobr		{white-space:nowrap;}
+
+/*===========================================================================*\
+ * Styles for CMS pages
+\*===========================================================================*/
+.std P,
+.std UL,
+.std OL,
+.std TABLE{
+	margin-bottom:0.45em;
+}
+.std TABLE{
+	width:100%;
+}
+.std P:last-child,
+.std UL:last-child,
+.std OL:last-child,
+.std TABLE:last-child{
+	margin-bottom:0;
+}
+
+.std UL,
+.std OL{
+	margin-left:1.8em;
+}
+	.std UL{
+		list-style-type:disc;
+	}
+	.std OL{
+		list-style-type:decimal;
+	}
+	.std LI{
+		display:list-item;
+	}
+
+.std P:empty,
+.std SPAN:empty,
+.std DIV:empty,
+.std BR:last-child{ /* CMS editor empty tags fixed */
+	display:none;
+}

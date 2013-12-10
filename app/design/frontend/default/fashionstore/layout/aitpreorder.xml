@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout version="0.1.0">
+    <default>
+        <reference name="head"> 
+<!--            <action method="addJs"><stylesheet>aitoc/aitpreorder/aitpreorder.js</stylesheet></action> -->
+            <action method="addItem"><type>skin_js</type><name>js/aitoc/aitpreorder/preorder.js</name><params/></action>
+            <action method="addCss"><stylesheet>css/aitpreorder.css</stylesheet></action> 
+
+        </reference>
+    </default>
+</layout>
+<!--
+/**
+ * Product:     Pre-Order
+ * Package:     Aitoc_Aitpreorder_1.1.26_425077
+ * Purchase ID: JajOQtu3UxB8XoMt479nC9qGxjAzaifQKKovgevURc
+ * Generated:   2012-11-07 12:17:45
+ * File path:   app/design/frontend/default/default/layout/aitpreorder.xml
+ * Copyright:   (c) 2012 AITOC, Inc.
+ */
+-->

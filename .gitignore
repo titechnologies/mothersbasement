@@ -1,4 +1,3 @@
-.modgit/
 app/code/community/Find/
 app/code/community/Phoenix/
 app/code/core/
@@ -62,11 +61,7 @@ LICENSE.html
 LICENSE.txt
 LICENSE_EE*
 mage
-media/customer/
-media/downloadable/
-media/.htaccess
-media/import/
-media/xmlconnect/
+media/
 nbproject/
 pear
 pear/
@@ -93,6 +88,7 @@ var/
 BACKUP_10-12-2013/
 .htaccess
 blog/.DS_Store
+blog/wp-content/updraft/*
 blog/.svn
 blog/.cvs
 blog/*.bak
@@ -111,3 +107,4 @@ blog/wp-content/cache/supercache/*
 blog/*.log
 blog/wp-content/cache/
 blog/wp-content/backups/
+blog/wp-content/updraft/

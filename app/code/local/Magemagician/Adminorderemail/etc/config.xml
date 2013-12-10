@@ -1,0 +1,97 @@
+<?xml version="1.0"?>
+<config>
+	<modules>
+		<Magemagician_Adminorderemail>
+			<version>1.0.0</version>
+			<depends>
+			<!-- no dependencies -->
+			</depends>
+		</Magemagician_Adminorderemail>
+	</modules>
+	<frontend>
+    		<routers>
+      			<adminorderemail>
+      				  <use>standard</use>
+       				 <args>
+       				   <module>Magemagician_Adminorderemail</module>
+       				   <frontName>adminorderemail</frontName>
+       				 </args>
+      			</adminorderemail>
+    		</routers>
+  	</frontend>
+	<admin>
+        <routers>
+			<adminorderemail>
+				<use>admin</use>
+				<args>
+					<module>Magemagician_Adminorderemail</module>
+					<frontName>adminorderemail</frontName>
+				</args>
+			</adminorderemail>
+        </routers>
+    </admin>
+	<adminhtml>
+        <acl>
+            <resources>
+                <all>
+                    <title>Allow Everything</title>
+                </all>
+                <admin>
+                    <children>
+                        <Magemagician_Adminorderemail>
+                            <title>Admin Order Email</title>
+                            <sort_order>11</sort_order>
+                        </Magemagician_Adminorderemail>
+                        <system>
+                            <children>
+                                <config>
+                                    <children>
+                                        <adminorderemail>
+                                            <title>Admin Order Email Settings</title>
+                                        </adminorderemail>
+                                    </children>
+                                </config>
+                            </children>
+                        </system>
+                    </children>
+                </admin>
+            </resources>
+        </acl>
+    </adminhtml>
+	<global>
+		<models>
+            <adminorderemail>
+                <class>Magemagician_Adminorderemail_Model</class>               
+            </adminorderemail>            
+        </models>
+		<events>
+            <sales_order_save_after>
+                <observers>
+                    <magemagician_adminorderemail>
+                        <class>adminorderemail/observer</class>
+                        <method>sendAdminNewOrderEmail</method>
+                    </magemagician_adminorderemail>
+                </observers>
+            </sales_order_save_after>
+        </events>
+		<template>
+            <email>
+                <adminorderemail_adminorderemail_template translate="label" module="adminorderemail">
+                    <label>New Order</label>
+                    <file>sales/order_new.html</file>
+                    <type>html</type>
+                </adminorderemail_adminorderemail_template>
+                <adminorderemail_adminorderemail_guest_template translate="label" module="adminorderemail">
+                    <label>New Order for Guest</label>
+                    <file>sales/order_new_guest.html</file>
+                    <type>html</type>
+                </adminorderemail_adminorderemail_guest_template>                
+            </email>
+        </template>
+		<helpers>
+            <adminorderemail>
+                <class>Magemagician_Adminorderemail_Helper</class>
+            </adminorderemail>
+        </helpers>
+	</global>
+</config>

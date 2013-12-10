@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<config>
+    <modules>
+        <Magazento_Easytopsell>
+            <active>true</active>
+            <codePool>community</codePool>
+        </Magazento_Easytopsell>
+    </modules>
+</config>

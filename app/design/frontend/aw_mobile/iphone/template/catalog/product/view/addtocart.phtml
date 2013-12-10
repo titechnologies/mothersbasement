@@ -1,0 +1,102 @@
+<?php
+/**
+* aheadWorks Co.
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the EULA
+ * that is bundled with this package in the file LICENSE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://ecommerce.aheadworks.com/AW-LICENSE.txt
+ *
+ * =================================================================
+ *                 MAGENTO EDITION USAGE NOTICE
+ * =================================================================
+ * This package designed for Magento COMMUNITY edition
+ * aheadWorks does not guarantee correct work of this extension
+ * on any other Magento edition except Magento COMMUNITY edition.
+ * aheadWorks does not provide extension support in case of
+ * incorrect edition usage.
+ * =================================================================
+ *
+ * @category   AW
+ * @package    AW_Mobile
+ * @version    1.6.0
+ * @copyright  Copyright (c) 2010-2012 aheadWorks Co. (http://www.aheadworks.com)
+ * @license    http://ecommerce.aheadworks.com/AW-LICENSE.txt
+ */
+?>
+<?php
+?>
+<?php $_product = $this->getProduct() ?>
+<?php if($_product->isSaleable()): ?>
+                    <?php $simplePricesTax = ($this->helper('tax')->displayPriceIncludingTax() || $this->helper('tax')->displayBothPrices()); ?>
+                    <?php $_minimalPriceValue = $_product->getMinimalPrice() ?>
+                    <?php $_minimalPrice = $this->helper('tax')->getPrice($_product, $_product->getFinalPrice(), $simplePricesTax) ?>
+<div class="product-action">
+<div class="product-addtocart">
+    <ul class="">
+        <li class="first">
+            <?php if (!$_product->isGrouped()): ?>
+                    <?php //echo $this->getPriceHtml($_product, false, '_clone') ?>
+                    <?php 
+                                $price = Mage::getModel('catalog/product')->load($_product->getId())->getPrice(); 
+                                $specialprice = Mage::getModel('catalog/product')->load($_product->getId())->getSpecialPrice(); 
+                                $specialPriceFromDate = Mage::getModel('catalog/product')->load($_product->getId())->getSpecialFromDate();
+                                $specialPriceToDate = Mage::getModel('catalog/product')->load($_product->getId())->getSpecialToDate();
+                                $today =  time();
+                                
+                                 
+                             ?>
+                        
+                            
+                        <?php if ($_product->getPreorder()):?>
+                            <?php if ($specialprice): ?>
+                                    <div class="listPriceBig">Pre-Order price: <span class="listPriceBigPrice"><?php echo $this->helper('core')->currency($specialprice,true,false); ?></span></div>
+                                    <div class="listPriceSmall">Regular price: <span class="listPriceOld"><?php echo $this->helper('core')->currency($price,true,false); ?></span></div>
+                                    
+                            <?php else:?>
+                                    <div class="listPriceBig">Pre-Order Price: <span class="listPriceBigPrice"><?php echo $this->helper('core')->currency($price,true,false); ?></span></div>
+                            <?php endif;?>
+                        <?php else: ?>
+                            <?php if ($specialprice): ?>
+                                    <div class="listPriceBig">Price: <span class="listPriceBigPrice"><?php echo $this->helper('core')->currency($specialprice,true,false); ?></span></div>
+                                    <div class="listPriceSmall">Regular price: <span class="listPriceOld"><?php echo $this->helper('core')->currency($price,true,false); ?></span></div>
+                            <?php else:?>
+                                    <div class="listPriceBig">Price: <span class="listPriceBigPrice"><?php echo $this->helper('core')->currency($price,true,false); ?></span></div>
+                            <?php endif;?>
+                        <?php endif; ?> 
+            <!--span id="product-price-<?php echo $_product->getId(); ?>_clone" class="price"><?php echo Mage::app()->getStore()->convertPrice( $this->helper('tax')->getPrice($_product, $_product->getFinalPrice(), $this->helper('tax')->displayPriceIncludingTax()), true ); ?></span-->
+            <?php endif; ?>
+        </li>
+        <li class="middle">
+            <div class="qty-box">
+                <fieldset class="add-to-cart-box">
+                    <legend><?php echo $this->__('Add Items to Cart') ?></legend>
+                    <?php if(!$_product->isGrouped()): ?>
+                    <span class="qty-box"><label for="qty"><?php echo $this->__('Qty') ?>:</label>
+                    <input name="qty" type="text" class="input-text qty" id="qty" maxlength="12" value="<?php echo $this->getMinimalQty($_product)== null ? 1 : $this->getMinimalQty($_product) ?>" /></span>
+                    <?php endif; ?>
+                </fieldset>
+            </div>
+        </li>
+        <li class="last">
+<?php //if ($_product->getPreorder()): echo $_product->getPreorderdescript(); endif;?>
+	<?php if($_product->isSaleable()): ?>
+        <?php if ($_product->getPreorder()): ?> 
+            <a href="#" class="button cart red" onclick="productAddToCartForm.submit(); return false;" ><?php echo $this->__('Pre Order') ?></a>
+        <?php else: ?>
+            <a href="#" class="button cart red" onclick="productAddToCartForm.submit(); return false;" ><?php echo $this->__('Add to Cart') ?></a>
+        <?php endif;?>
+    <?php else: ?>
+        <p class="availability out-of-stock"><span><?php echo $this->__('Out of stock') ?></span></p>
+    <?php endif; ?>
+	<?php /*echo $this->getPriceHtml($_product, false, '_clone') */?>
+
+            
+        </li>
+    </ul>
+    <div class="clear"></div>
+</div>
+</div>
+<?php endif; ?>
