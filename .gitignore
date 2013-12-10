@@ -111,3 +111,4 @@ blog/wp-content/cache/supercache/*
 blog/*.log
 blog/wp-content/cache/
 blog/wp-content/backups/
+blog/wp-content/updraft/
