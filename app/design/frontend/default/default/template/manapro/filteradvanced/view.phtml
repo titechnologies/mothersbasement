@@ -1,0 +1,290 @@
+
+<?php
+/**
+ * @category    Mana
+ * @package     ManaPro_FilterAdvanced
+ * @copyright   Copyright (c) http://www.manadev.com
+ * @license     http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ */
+/**
+ * Category layered navigation
+ * @author Mana Team
+ * Injected instead of standard catalog/layer/view.phtml.
+ */
+/* @var $this Mana_Filters_Block_View */
+?>
+<?php
+/**
+ * Category layered navigation
+ *
+ * @see Mage_Catalog_Block_Layer_View
+ */
+?>
+<?php $page123 = Mage::app()->getFrontController()->getRequest()->getRouteName();?> 
+<?php
+	$obj 			= new Mage_Catalog_Block_Navigation();
+	$store_cats		= $obj->getStoreCategories();
+	$current_cat 	= $obj->getCurrentCategory(); 
+	$curr_cat 	= $obj->getCurrentCategory();
+	$current_cat	= (is_object($current_cat) ? $current_cat->getName() : ''); 
+	$id             = Mage::getModel('catalog/layer')->getCurrentCategory()->getId();
+	$parent_cat     = Mage::getModel('catalog/category')->load($id)->getParentCategory()->getName();
+    if(strtoupper($current_cat) != 'CLOTHING' && strtoupper($current_cat) != 'ACCESSORIES' && strtoupper($current_cat) != 'SALE' && strtoupper($current_cat) != 'FOOTWEAR' && strtoupper($current_cat) != 'SOCKS' ){
+         $subcat = 'true';
+    }
+
+?>
+
+<?php $page = $_SERVER['REQUEST_URI'];
+$cat = "category";
+$cate = strpos($page, $cat);
+if ($cate == true) {
+    $subcat = 'true';
+ } 
+
+if($current_cat == 'Clothing' || $parent_cat == 'Clothing'){
+    $cat_id = 987;
+}
+if($current_cat == 'Footwear' || $parent_cat == 'Footwear'){
+	$cat_id = 989;
+}
+if($current_cat == 'Socks' || $parent_cat == 'Socks'){
+	$cat_id = 991;
+}
+if($current_cat == 'Accessories' || $parent_cat == 'Accessories'){
+	$cat_id = 988;
+}
+$mainCat = 0;
+$fccat = 0;
+
+if($crrcat = Mage::registry('current_category')){
+	$crrcat->getPath();
+	$PathD = explode("/",$crrcat->getPath());
+	$mainCat = $PathD[2];
+	$fccat = $crrcat->getId();
+	$categories = Mage::getModel('catalog/category')->load($mainCat)->getChildrenCategories(); //getCategories($mainCat); 
+	
+}else{
+	$categories = Mage::getModel('catalog/category')->getCategories(970); 
+} 
+if($page123 == 'catalogsearch'){
+	$page123 = 'psyclesearch';
+}
+?> 
+<?php if($this->canShowBlock()): ?>
+<div class="my_account_lft <?php echo $page123;?>">
+  <?php if($page123 == 'psyclesearch'){?>
+  <?php if($this->canShowOptions()): ?>
+            <?php $_filterGroups = Mage::helper('mana_filters')->renderHtml($this, 'groups'); ?>
+            <?php foreach ($_filterGroups as $_filterGroup): ob_start(); ?>
+                <?php $_filters = $_filterGroup->getFilters(); ?>
+                <?php foreach ($_filters as $_filter): 
+					if($_filter->_filter->getRequestVar() != 'cat'){
+						continue; 
+					}  
+				?>
+				<?php if($_filter->getItemsCount()): ?>
+  <div class="ref_products ref_categories">
+  <div class="block block-layered-nav">
+    <div class="ref_prod_cont psyclesearch">
+        <?php //echo $this->getStateHtml() ?>
+        
+                    <dt class="prod_type dt<?php echo $_filter->_filter->getRequestVar();?> <?php Mage::helper('mana_filters')->renderHtml($this, 'name_css', array('filter' => $_filter)); ?>"
+                        <?php Mage::helper('mana_filters')->renderHtml($this, 'name_attributes', array('filter' => $_filter)); ?>
+                    >
+                        <?php Mage::helper('mana_filters')->renderHtml($this, 'name_before', array('filter' => $_filter)); ?>
+                        <h4><?php if($this->__($_filter->getName()) == 'Select Type'){ echo 'Category';}else{ echo $this->__($_filter->getName());} ?></h4>
+                        <?php Mage::helper('mana_filters')->renderHtml($this, 'name_after', array('filter' => $_filter)); ?>
+                    </dt>
+                    <dd class="dd<?php echo $_filter->_filter->getRequestVar();?>"><?php echo $_filter->getHtml() ?></dd>
+    </div>
+  </div>
+</div>
+                <?php endif; ?>
+
+                
+                <?php endforeach; ?>
+                
+            <?php endforeach; ?>
+        <?php endif; ?>
+
+  <?php }else{?>
+  <?php 
+  $categories = array();
+  if($crrcat = Mage::registry('current_category') && Mage::registry('current_category')->getData('level') != 2){
+  	$categories = Mage::getModel('catalog/category')->getCollection()->addAttributeToFilter('level',2)->addAttributeToFilter('include_in_menu', 1)->addAttributeToFilter('is_active', 1)->setOrder('position','ASC');  
+  }else{
+  	if(Mage::registry('current_category')->getData('level') != 2){
+  		$categories = Mage::getModel('catalog/category')->getCollection()->addAttributeToFilter('level',2)->addAttributeToFilter('include_in_menu', 1)->addAttributeToFilter('is_active', 1)->setOrder('position','ASC');
+  	}
+  }
+  if(count($categories)): /*?>
+  <div class="ref_products ref_categories">
+  <div class="block block-layered-nav">
+    <div class="ref_prod_cont">
+      <dl id="narrow-by-list-0" class="narrow-by-list">
+        <dt data-id="m_left_fit_filter" class="prod_type  even">
+          <h4>Categories</h4>
+        </dt>
+        <dd class="even">
+          <ol class="m-filter-css-checkboxes">
+          <?php
+          $fccat = $this->getRequest()->getParam('cat');
+          foreach($categories as $category) {
+          	$category = Mage::getModel('catalog/category')->load($category->getId());
+			  $products = Mage::getResourceModel('catalog/product_collection')->addCategoryFilter($category);
+												Mage::getSingleton('catalog/product_status')->addVisibleFilterToCollection($products);
+												Mage::getSingleton('catalog/product_visibility')->addVisibleInCatalogFilterToCollection($products);
+												Mage::getSingleton('cataloginventory/stock')->addInStockFilterToCollection($products);
+												if(count($products)>0){
+			  ?>
+            <li class="m-checkbox-unchecked<?php if($fccat == $category->getId()){ echo " active";}?>"><a title="<?php echo $category->getName();?>" href="?cat=<?php echo $category->getId()?>" class="<?php if($fccat == $category->getId()){ echo " m-checkbox-checked";} else { echo "m-checkbox-unchecked";}?>"><?php echo $category->getName();?></a> </li>
+		  <?php }}?>
+          </ol>
+        </dd>
+      </dl>
+      
+    </div>
+  </div>
+</div>
+<?php */ endif;?>
+  <?php }?>
+ <div class="ref_products">
+  <div class="block block-layered-nav">
+    <?php /*?><h2><?php echo $this->__('REFINE RESULTS:') ?> <?php if ($this->getLayer()->getState()->getFilters()) : ?>
+        <span class="actions"><a href="<?php echo $this->getClearUrl() ?>"><?php echo $this->__('Clear All') ?></a></span>
+        <?php endif; ?></h2><?php */?>
+    <?php if($page123 == 'psyclesearch'){?>
+    <div class="ref_prod_cont psyclesearch">
+        <?php //echo $this->getStateHtml() ?>
+        
+        <?php if($this->canShowOptions()): ?>
+            <?php $_filterGroups = Mage::helper('mana_filters')->renderHtml($this, 'groups'); ?>
+            <?php foreach ($_filterGroups as $_filterGroup): ob_start(); ?>
+                <?php $_filters = $_filterGroup->getFilters(); ?>
+                <?php foreach ($_filters as $_filter): 
+					if($_filter->_filter->getRequestVar() == 'cat'){
+						continue; 
+					}  
+				?>
+
+                <?php if(strtoupper($current_cat) == 'FOOTWEAR' || strtoupper($current_cat) == 'SOCKS' || $subcat == 'true'){?>
+
+
+				<?php if($_filter->getItemsCount()): ?>
+                    <dt class="prod_type dt<?php echo $_filter->_filter->getRequestVar();?> <?php Mage::helper('mana_filters')->renderHtml($this, 'name_css', array('filter' => $_filter)); ?>"
+                        <?php Mage::helper('mana_filters')->renderHtml($this, 'name_attributes', array('filter' => $_filter)); ?>
+                    >
+                        <?php Mage::helper('mana_filters')->renderHtml($this, 'name_before', array('filter' => $_filter)); ?>
+                        <h4><?php if($this->__($_filter->getName()) == 'Select Type'){ echo 'Category';}else{ echo $this->__($_filter->getName());} ?></h4>
+                        <?php Mage::helper('mana_filters')->renderHtml($this, 'name_after', array('filter' => $_filter)); ?>
+                    </dt>
+                    <dd class="dd<?php echo $_filter->_filter->getRequestVar();?>"><?php echo $_filter->getHtml() ?></dd>
+                <?php endif; ?>
+
+
+
+
+				<?php }else{ ?>
+
+                <?php if($_filter->getName() != 'Size' && $_filter->getName() != 'Leg Length' ){?>
+
+
+				<?php if($_filter->getItemsCount()): ?>
+                    <dt class="prod_type dt<?php echo $_filter->_filter->getRequestVar();?> <?php Mage::helper('mana_filters')->renderHtml($this, 'name_css', array('filter' => $_filter)); ?>"
+                        <?php Mage::helper('mana_filters')->renderHtml($this, 'name_attributes', array('filter' => $_filter)); ?>
+                    >
+                        <?php Mage::helper('mana_filters')->renderHtml($this, 'name_before', array('filter' => $_filter)); ?>
+                        <h4><?php echo $this->__($_filter->getName()) ?></h4>
+                        <?php Mage::helper('mana_filters')->renderHtml($this, 'name_after', array('filter' => $_filter)); ?>
+                    </dt>
+                    <dd class="dd<?php echo $_filter->_filter->getRequestVar();?>"><?php echo $_filter->getHtml() ?></dd>
+                <?php endif; ?>
+
+				<?php } ?>
+
+                
+                <?php } ?>
+                
+                <?php endforeach; ?>
+                <?php if($_filterGroupHtml = trim(ob_get_clean())) : ?>
+                    <?php $_filterGroupName = $_filterGroup->getName() ? $this->__($_filterGroup->getName()) : $this->__('Shopping Options'); ?>
+
+                    <div class="block-subtitle m-filter-group <?php Mage::helper('mana_filters')->renderHtml($this, 'group_css', array('group' => $_filterGroup)); ?>"
+                        <?php Mage::helper('mana_filters')->renderHtml($this, 'group_attributes', array('group' => $_filterGroup)); ?>
+                    >
+                        <?php Mage::helper('mana_filters')->renderHtml($this, 'group_before', array('group' => $_filterGroup)); ?>
+                        <?php echo $_filterGroupName ?>
+                        <?php Mage::helper('mana_filters')->renderHtml($this, 'group_after', array('group' => $_filterGroup)); ?>
+                    </div>
+
+                    <dl class="narrow-by-list" id="narrow-by-list-<?php echo $_filterGroup->getId() ?>">
+                        <?php echo $_filterGroupHtml ?>
+                    </dl>
+                    <script type="text/javascript">decorateDataList('narrow-by-list-<?php echo $_filterGroup->getId() ?>')</script>
+                <?php endif; ?>
+            <?php endforeach; ?>
+        <?php endif; ?>
+    </div>
+    <?php }else{?> 
+    <div class="ref_prod_cont">
+        <?php //echo $this->getStateHtml() ?>
+        <?php /*if (Mage::helper('mana_core')->isMageVersionEqualOrGreater('1.7') && $this->getLayer()->getState()->getFilters()) : ?>
+        <div class="actions"><a href="<?php echo $this->getClearUrl() ?>"><?php echo $this->__('Clear All') ?></a></div>
+        <?php endif; */?>
+        <?php if($this->canShowOptions()): ?>
+            <?php $_filterGroups = Mage::helper('mana_filters')->renderHtml($this, 'groups'); ?>
+            <?php foreach ($_filterGroups as $_filterGroup): ob_start(); ?>
+                <?php $_filters = $_filterGroup->getFilters(); ?>
+                <?php foreach ($_filters as $_filter): 
+					if($_filter->_filter->getRequestVar() == 'cat'){
+						continue; 
+					}  
+				?>
+
+                
+
+
+				<?php if($_filter->getItemsCount()):
+				if($_filter->_filter->getRequestVar() == "category_filter" && $curr_cat->getLevel() == 2){
+					continue;
+				} 
+				?>
+                    <dt class="prod_type dt<?php echo $_filter->_filter->getRequestVar();?> <?php Mage::helper('mana_filters')->renderHtml($this, 'name_css', array('filter' => $_filter)); ?>"
+                        <?php Mage::helper('mana_filters')->renderHtml($this, 'name_attributes', array('filter' => $_filter)); ?>
+                    >
+                        <?php Mage::helper('mana_filters')->renderHtml($this, 'name_before', array('filter' => $_filter)); ?>
+                        <h4><?php echo $this->__($_filter->getName()) ?></h4>
+                        <?php Mage::helper('mana_filters')->renderHtml($this, 'name_after', array('filter' => $_filter)); ?>
+                    </dt>
+                    <dd class="dd<?php echo $_filter->_filter->getRequestVar();?>"><?php echo $_filter->getHtml() ?></dd>
+                <?php endif; ?>
+
+
+                
+                
+                <?php endforeach; ?>
+                <?php if($_filterGroupHtml = trim(ob_get_clean())) : ?>
+                    <?php $_filterGroupName = $_filterGroup->getName() ? $this->__($_filterGroup->getName()) : $this->__('Shopping Options'); ?>
+
+                    <div class="block-subtitle m-filter-group <?php Mage::helper('mana_filters')->renderHtml($this, 'group_css', array('group' => $_filterGroup)); ?>"
+                        <?php Mage::helper('mana_filters')->renderHtml($this, 'group_attributes', array('group' => $_filterGroup)); ?>
+                    >
+                        <?php Mage::helper('mana_filters')->renderHtml($this, 'group_before', array('group' => $_filterGroup)); ?>
+                        <?php echo $_filterGroupName ?>
+                        <?php Mage::helper('mana_filters')->renderHtml($this, 'group_after', array('group' => $_filterGroup)); ?>
+                    </div>
+
+                    <dl class="narrow-by-list" id="narrow-by-list-<?php echo $_filterGroup->getId() ?>">
+                        <?php echo $_filterGroupHtml ?>
+                    </dl>
+                    <script type="text/javascript">decorateDataList('narrow-by-list-<?php echo $_filterGroup->getId() ?>')</script>
+                <?php endif; ?>
+            <?php endforeach; ?>
+        <?php endif; ?>
+    </div>
+    <?php }?>
+   </div>
+  </div>
+</div>
+<?php endif; ?>

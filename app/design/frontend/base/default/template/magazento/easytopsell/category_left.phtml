@@ -1,0 +1,153 @@
+<?php if ((Mage::getStoreConfig('easytopsell/options/enable')) && (Mage::getStoreConfig('easytopsell/catpageoptions/catsidebarleft'))):?>
+<?php $_products = $this->getProductCollection(); ?>
+<?php if (sizeof($_products)): ?>
+    <div class="block block-topseller">
+        <div class="block-title title-topseller">
+            <span><?php echo $this->getModel()->getTitle() ?></span>
+        </div>
+    <div class="block-content">
+
+            <ol class="mini-products-list" id="bestseller-sidebar">
+            <?php $i=0; foreach ($_products->getItems() as $_product): ?>
+                <?php if($i >= 3) continue; ?>
+                <?php if ($_product->getData('is_salable')): ?>
+                    <li class="item<?php if($i==sizeof($_products) ): ?> last<?php endif; ?>">
+                        <a href="<?php echo $_product->getProductUrl() ?>" title="<?php echo $this->htmlEscape($_product->getName()) ?>" class="product-image"><img src="<?php echo $this->helper('catalog/image')->init($_product, 'thumbnail')->resize(50); ?>" width="50" height="50" alt="" /></a>
+                        <div class="product-details">
+                            <p class="product-name"><a href="<?php echo $this->getProductUrl($_product) ?>"><?php echo $this->htmlEscape($_product->getName()) ?></a></p>
+                            <?php if (Mage::getStoreConfig('easytopsell/catpageoptions/catprice')):?>
+                                <?php echo $this->getPriceHtml($_product, true) ?>
+                            <?php endif; ?>
+                            <?php if (Mage::getStoreConfig('easytopsell/catpageoptions/catactions')):?>
+                                <a class="link-cart" href="<?php echo $this->getAddToCartUrl($_product) ?>" title="<?php echo $this->htmlEscape($_product->getName()) ?>"><?php echo $this->__('Add to Cart') ?></a>
+                            <?php endif; ?>
+                        </div>
+                    </li>
+                <?php $i++; else: ?>
+                    <?php if($this->getModel()->isOutOfStock()): ?>
+                        <li class="item">
+                            <a href="<?php echo $_product->getProductUrl() ?>" title="<?php echo $this->htmlEscape($_product->getName()) ?>" class="product-image"><img src="<?php echo $this->helper('catalog/image')->init($_product, 'thumbnail')->resize(50); ?>" width="50" height="50" alt="" /></a>
+                            <div class="product-details">
+                                <p class="product-name"><a href="<?php echo $this->getProductUrl($_product) ?>"><?php echo $this->htmlEscape($_product->getName()) ?></a></p>
+                                <?php if (Mage::getStoreConfig('easytopsell/catpageoptions/catprice')):?>
+                                    <?php echo $this->getPriceHtml($_product, true) ?>
+                                <?php endif; ?>
+                                <p class="availability out-of-stock"><span>Out of stock</span></p>
+                            </div>
+                        </li>
+                    <?php endif; ?>
+
+                <?php endif; ?>
+            <?php endforeach; ?>
+            </ol>
+
+
+    </div>
+   </div>
+<?php else: ?>
+<?php if ((Mage::getStoreConfig('easytopsell/options/enable')) && (Mage::getStoreConfig('easytopsell/homepageoptions/homesidebarleft'))):?>
+
+
+
+
+<?php
+$storeId = Mage::app()->getStore()->getId();
+                $sellDate=$this->getModel()->getSellDate($this->getModel()->getHomepageDaysLimit());
+		$collection = Mage::getResourceModel('reports/product_sold_collection')
+                                ->addOrderedQty()
+                                ->setStoreId($storeId)
+                                ->addStoreFilter($storeId)
+				->setDateRange($sellDate['startdate'], $sellDate['todaydate']) //
+                                ->addUrlRewrite()
+				->addAttributeToFilter('visibility', array('in' => array(Mage_Catalog_Model_Product_Visibility::VISIBILITY_IN_CATALOG, Mage_Catalog_Model_Product_Visibility::VISIBILITY_BOTH)))
+				->addAttributeToFilter('status', Mage_Catalog_Model_Product_Status::STATUS_ENABLED)
+                                ->setOrder('ordered_qty', 'desc')
+                                ->setPageSize($this->getModel()->getHomepageProductsLimit())
+                                ->setCurPage(1)
+				->setOrder('ordered_qty', 'desc');
+
+                $catId=$this->getModel()->getHomepageCatID();
+                if ($catId>0) {
+                    $category = $this->getModel()->getCategory($catId);
+                    $collection->addCategoryFilter($category); 
+                }
+
+
+		$this->setProductCollection2($collection);
+?>
+
+
+
+<?php $_products2 = $this->getProductCollection2(); ?>
+    <div class="block block-topseller">
+        <div class="block-title title-topseller">
+            <span><?php echo $this->getModel()->getTitle() ?></span>
+        </div>
+    <div class="block-content">
+
+            <ol class="mini-products-list" id="bestseller-sidebar">
+            <?php $i=0; foreach ($_products2->getItems() as $_product2): ?>
+                <?php $i++; ?>
+                <?php if ($_product2->getData('is_salable')): ?>
+                    <li class="item<?php if($i==sizeof($_products2) ): ?> last<?php endif; ?>">
+                        <a href="<?php echo $_product2->getProductUrl() ?>" title="<?php echo $this->htmlEscape($_product2->getName()) ?>" class="product-image"><img src="<?php echo $this->helper('catalog/image')->init($_product2, 'thumbnail')->resize(50); ?>" width="50" height="50" alt="" /></a>
+                        <div class="product-details">
+                            <p class="product-name"><a href="<?php echo $this->getProductUrl($_product2) ?>"><?php echo $this->htmlEscape($_product2->getName()) ?></a></p>
+                            <?php if (Mage::getStoreConfig('easytopsell/catpageoptions/catprice')):?>
+                                <?php echo $this->getPriceHtml($_product2, true) ?>
+                            <?php endif; ?>
+                            <?php if (Mage::getStoreConfig('easytopsell/catpageoptions/catactions')):?>
+                                <a class="link-cart" href="<?php echo $this->getAddToCartUrl($_product2) ?>" title="<?php echo $this->htmlEscape($_product2->getName()) ?>"><?php echo $this->__('Add to Cart') ?></a>
+                            <?php endif; ?>
+                        </div>
+                    </li>
+                <?php else: ?>
+                    <?php if($this->getModel()->isOutOfStock()): ?>
+                        <li class="item">
+                            <a href="<?php echo $_product2->getProductUrl() ?>" title="<?php echo $this->htmlEscape($_product2->getName()) ?>" class="product-image"><img src="<?php echo $this->helper('catalog/image')->init($_product2, 'thumbnail')->resize(50); ?>" width="50" height="50" alt="" /></a>
+                            <div class="product-details">
+                                <p class="product-name"><a href="<?php echo $this->getProductUrl($_product2) ?>"><?php echo $this->htmlEscape($_product2->getName()) ?></a></p>
+                                <?php if (Mage::getStoreConfig('easytopsell/catpageoptions/catprice')):?>
+                                    <?php echo $this->getPriceHtml($_product2, true) ?>
+                                <?php endif; ?>
+                                <p class="availability out-of-stock"><span>Out of stock</span></p>
+                            </div>
+                        </li>
+                    <?php endif; ?>
+
+                <?php endif; ?>
+            <?php endforeach; ?>
+            </ol>
+
+
+    </div>
+   </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<?php endif;?>   
+<?php endif; ?>
+
+
+<?php endif; ?>

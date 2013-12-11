@@ -1,0 +1,13 @@
+.soldtogether-block h2 { border-bottom:0; padding:0; margin:0 0 10px; border-bottom: 1px solid #E5DCC3; }
+.soldtogether-block .select-all { float: right; font-size: 12px; font-weight: normal; }
+.soldtogether-block .products-grid { width:100%; border:1px solid #e5dcc3; }
+.soldtogether-block .products-grid li.item { padding-bottom: 20px; }
+.soldtogether-block .images {  }
+.soldtogether-block .images li { padding-left: 25px; display: inline;
+    background: url(../images/soldtogether/Plus.png) no-repeat 5px 50%; float: left; }
+.soldtogether-block .images .first { background: none; padding-left: 0; }
+.soldtogether-block .check { clear: both; }
+.soldtogether-block .check .price-box { display: inline; margin: 10px 0; }
+.soldtogether-block .check h3 { margin: 1px; padding: 5px; }
+.soldtogether-block .totalprice h5 { display: inline; margin: 5px; }
+.soldtogether-block .button-cart { margin: 5px; }

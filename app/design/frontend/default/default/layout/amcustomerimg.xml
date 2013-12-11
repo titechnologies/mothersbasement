@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<layout version="1.0.0">
+    <catalog_product_view>
+        <reference name="head">
+            <action method="addJs"><stylesheet>amasty/amcustomerimg/renderer.js</stylesheet></action>
+            <action method="addJs"><stylesheet>amasty/amcustomerimg/upload.js</stylesheet></action>
+            <action method="addJs"><stylesheet>amasty/amcustomerimg/slider.js</stylesheet></action>
+            <action method="addCss"><stylesheet>css/amasty/amcustomerimg/images.css</stylesheet></action>
+            <action method="addCss"><stylesheet>css/amasty/amcustomerimg/slider.css</stylesheet></action>
+            
+            <action method="addJs"><stylesheet>amasty/amcustomerimg/lightbox/js/lightbox.js</stylesheet></action>
+            <action method="addItem"><type>js_css</type><name>amasty/amcustomerimg/lightbox/css/lightbox.css</name><params/></action>
+        </reference>
+        
+        <reference name="content">
+            <block type="amcustomerimg/renderer_slider" name="amcustomerimg.renderer_slider"></block>
+            <block type="amcustomerimg/renderer_form" name="amcustomerimg.renderer_form"></block>
+        </reference>
+    </catalog_product_view>
+</layout>

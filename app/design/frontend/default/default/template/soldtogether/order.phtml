@@ -1,0 +1,233 @@
+<?php if (Mage::getStoreConfig('soldtogether/order/enabled')) : ?>
+    <?php if (Mage::getStoreConfig('soldtogether/order/amazonestyle')) : ?>
+	<?php
+            $_helper = $this->helper('catalog/output');
+            $currentProduct = Mage::registry('current_product');
+            $i = 0;
+        ?>
+
+	<?php
+	////////////////////////////////////////////////////////////////////////#1615
+	//This section showed in product view page.
+	//deduct one from display limit admin configuration because, one of the 'buy together' item is current product in product view page.
+	$displayLimit = (Mage::getStoreConfig('automatedproducts/upsellproducts/limit')-1);
+
+	//getting buytogether products
+	$buytogetherProductCollection = getMatchingProducts();
+	////////////////////////////////////////////////////////////////////////#1615
+	?>
+
+        <?php 
+	//ORIGINAL //if($_productCollection->count()):
+	if(sizeof($buytogetherProductCollection) > 0):
+	 ?>
+        <div class="box-collateral soldtogether-block">
+            <!--<h2><?php //echo Mage::helper('soldtogether')->__('Frequently bought together') ?>:</h2>
+            <p class="a-left">
+            <?php //echo Mage::helper('soldtogether')->__('Customers who bought this product also commonly purchased the following combination of items.') ?>
+            </p>-->
+            <?php 
+		/* ORIGINAL
+		$_collectionSize = $_productCollection->count();
+                $_columnCount = $this->getColumnsCount();
+		*/
+		$_collectionSize = sizeof($buytogetherProductCollection);
+                $_columnCount = 2; //display products in two columns
+	    ?>
+            <ul class="images">
+
+		<?php //current product display section - starts ?>
+                <li id="image<?php echo $currentProduct->getId() ?>" class="order0">
+                    <img src="<?php echo $this->helper('catalog/image')->init($currentProduct, 'small_image')->resize(115,85); ?>" width="115" height="85" alt="<?php echo $this->stripTags($this->getImageLabel($currentProduct, 'small_image'), null, true) ?>" />
+                </li>
+                <?php foreach ($buytogetherProductCollection as $_product): ?>
+		        <li id="image<?php echo $_product['id']?>"<?php //if(++$i == $_collectionSize) : ?> class="order<?php echo ++$i;?>"<?php //endif;?>>
+		            	<a href="<?php echo $_product['url'] ?>" title="<?php $_product['smallimagelabel'] ?>" 
+		            class="product-image">
+
+				<img width="115" height="85" src="<?php echo Mage::getBaseUrl('media').'catalog/product'.$_product['smallimage'] ?>" alt="<?php $_product['smallimagelabel'] ?>" />
+		            </a>
+		        </li>
+                <?php endforeach ?>
+		<?php //current product display section - ends ?>
+
+
+  	    <?php //buy together product display section - starts ?>
+            <li class="check">
+                <!--<h3 class="product-name">-->
+                <?php
+                $totalPrice = 0;
+                $totalPrice += round(Mage::helper('core')->currency($currentProduct->getFinalPrice(),false,false), 2);
+                ?>
+                <input type="hidden" id="relatedorderamazon-hiddenboss" value="<?php echo round(Mage::helper('core')->currency($currentProduct->getFinalPrice(),false,false), 2); ?>">
+		<?php foreach ($buytogetherProductCollection as $_product): ?>
+			<input type="hidden" id="relatedorderamazon-hidden<?php echo $_product['id']?>" value="<?php echo round($_product['finalprice'], 2) ?>">
+
+			<?php if (($_product['producttype']) === 'configurable' || ($_product['producttype']) === 'bundle' || $_product['hasoptions']) : ?>
+				<input type="checkbox" disabled="disabled" class="checkbox relatedorderamazon-checkbox" id="relatedorderamazon-checkbox<?php echo $_product['id'] ?>" name="bought_related_products[]" value="<?php echo $_product['id'] ?>"/>
+			<?php else : ?>
+				<?php $totalPrice += round($_product['finalprice'], 2); ?>
+				<input type="hidden" class="checkbox relatedorderamazon-checkbox" id="relatedorderamazon-checkbox<?php echo $_product['id'] ?>" name="bought_related_products[]" value="<?php echo $_product['id'] ?>" checked/>
+			<?php endif;?>
+		<?php endforeach ?>
+		<?php //buy together product display section - ends ?>
+
+                
+                <div id="totalPrice" class="totalprice regular-price">
+                    <?php /*echo '<h5>buy all 3 for only 
+                    <span class="price"> ' . Mage::app()->getLocale()->currency(Mage::app()->getStore()->getCurrentCurrencyCode())->getSymbol() . $totalPrice ?></span></h5>*/;?>
+                    <?php 
+                    $discount = $totalPrice  * ((100-2.5) / 100);
+                    $saving = $totalPrice - $discount; ?>
+                    <p>buy all <?php echo ($_collectionSize+1); ?></p><p class="bottom">save <?php echo '&pound;'.$saving = number_format($saving,2)?></p><span style="display:block;" class="price">
+                    <?php $afterapplyingsaving = $totalPrice - $saving;?>
+                    <?php echo Mage::helper('core')->formatPrice($afterapplyingsaving) ;?>
+                    </span>
+                    
+                </div>
+                <div class="button-cart">
+                    <button type="button" title="Add to Cart" class="button btn-cart" onclick="addBoughtProductToCart()"><span><span><?php echo Mage::helper('soldtogether')->__('Add All to Cart') ?></span></span></button>
+                    <?php echo $this->getProductId(); ?>
+                </div>
+                </li>
+            </ul>
+        </div>
+	<?php else: ?>
+		<div class="block block-related">
+		    <div class="block-content1">
+			<p class="note-msg">There are no products matching the selection.</p>
+		    </div>        
+		</div>
+	<?php endif ?>
+
+
+
+        <?php endif;?>
+        <script type="text/javascript">
+        function addBoughtProductToCart(){
+            var checkboxesorderamazon = $$('.relatedorderamazon-checkbox');
+            var values = [];
+            $('related-products-field').value = '';
+            for(var i = 0;i < checkboxesorderamazon.length;i++){
+                if(checkboxesorderamazon[i].checked) values.push(checkboxesorderamazon[i].value);
+            }
+
+            if($('related-products-field')){
+                $('related-products-field').value += values.join(',');
+            }
+            productAddToCartForm.submit();
+        }
+        </script>
+<?php endif;?>
+
+<?php
+////////////////////////////////////////////////////////////////////////#1615
+//function to get matching product based on current product
+function getMatchingProducts(){
+	//the '4' used in this loop represtn four attributes ie. brand, license, series and type
+	//this four attributes are used to filter the result
+	for($i=0;$i<4;$i++){
+		$tempArrayCollection = getProductsByConditionalAttributes($i);
+
+		foreach($tempArrayCollection as $_item){
+			$tempArray[$_item->getSku()]['id'] = $_item->getEntityId();
+			$tempArray[$_item->getSku()]['url'] = $_item->getProductUrl();
+			$tempArray[$_item->getSku()]['name'] = $_item->getName();
+			$tempArray[$_item->getSku()]['image'] = $_item->getImage();
+			$tempArray[$_item->getSku()]['finalprice'] = $_item->getFinalPrice();
+			$tempArray[$_item->getSku()]['sku'] = $_item->getSku();
+			$tempArray[$_item->getSku()]['brand'] = $_item->getBrand();
+			$tempArray[$_item->getSku()]['license'] = $_item->getLicense();
+			$tempArray[$_item->getSku()]['series'] = $_item->getSeries();
+			$tempArray[$_item->getSku()]['type'] = $_item->getType();
+			$tempArray[$_item->getSku()]['smallimage'] = $_item->getSmallImage();
+			$tempArray[$_item->getSku()]['smallimagelabel'] = $_item->getSmallImageLabel();
+			$tempArray[$_item->getSku()]['producttype'] = $_item->getTypeId();
+			$tempArray[$_item->getSku()]['hasoptions'] = $_item->getHasOptions();
+		}
+	}//for ends
+
+	//remove all duplicate products (if any)
+	$tempBuytogetherProductCollection = super_unique($tempArray,'sku');
+
+	//deduct one from display limit admin configuration because, one of the buy together item is current product in product view page.
+	$displayLimit = (Mage::getStoreConfig('automatedproducts/upsellproducts/limit')-1);
+
+	//slice array to limit display and return
+	return array_slice($tempBuytogetherProductCollection, 0, $displayLimit); 
+
+}//function ends 'getMatchingProducts()'
+
+function getProductsByConditionalAttributes($tempFlagCount){
+        $helper = Mage::helper('automatedproducts');
+        $config = $helper->getConfig("automatedproducts/relatedproducts");
+    	$product = Mage::registry('product');
+	$_productCollection = Mage::getModel('catalog/product')->getCollection()->addAttributeToSelect("*");
+
+	//deduct one from display limit admin configuration because, one of the buy together item is current product in product view page.
+	$displayLimit = (Mage::getStoreConfig('automatedproducts/upsellproducts/limit')-1);
+
+	//conditional query
+	if($tempFlagCount == 0){
+		// filter by brand, license, series and type
+		$_productCollection->addAttributeToFilter('brand', array('eq' => $product->getBrand()));
+		if($product->getLicense() != null){
+			$_productCollection->addAttributeToFilter('license', array('eq' => $product->getLicense()));
+		}
+		if($product->getSeries() != null){
+			$_productCollection->addAttributeToFilter('series', array('eq' => $product->getSeries()));
+		}
+		if($product->getType() != null){
+			$_productCollection->addAttributeToFilter('type', array('eq' => $product->getType()));
+		}
+	}else if($tempFlagCount == 1){
+		// filter by brand, license and series
+		$_productCollection->addAttributeToFilter('brand', array('eq' => $product->getBrand()));
+		if($product->getLicense() != null){
+			$_productCollection->addAttributeToFilter('license', array('eq' => $product->getLicense()));
+		}
+		if($product->getSeries() != null){
+			$_productCollection->addAttributeToFilter('series', array('eq' => $product->getSeries()));
+		}
+	}else if($tempFlagCount == 2){
+		// filter by brand and license
+		$_productCollection->addAttributeToFilter('brand', array('eq' => $product->getBrand()));
+		if($product->getLicense() != null){
+			$_productCollection->addAttributeToFilter('license', array('eq' => $product->getLicense()));
+		}
+	}else if($tempFlagCount == 3){
+		// filter by brand only
+		$_productCollection->addAttributeToFilter('brand', array('eq' => $product->getBrand()));
+	}else{
+	/*do nothing*/
+	}
+
+	$_productCollection->addStoreFilter()
+		//->setPageSize(2)
+		->setPageSize($displayLimit)
+		->setCurPage(1)
+		->addIdFilter(array($product->getId()), true);
+	Mage::getSingleton('catalog/product_status')->addSaleableFilterToCollection($_productCollection);
+	Mage::getSingleton('cataloginventory/stock')->addInStockFilterToCollection($_productCollection);
+	$_productCollection->addAttributeToFilter('visibility', array('in' => array(Mage_Catalog_Model_Product_Visibility::VISIBILITY_IN_CATALOG, Mage_Catalog_Model_Product_Visibility::VISIBILITY_BOTH) ));
+
+	//ORIGINAL //$_productCollection->getSelect()->order('rand()');
+	$_productCollection->addAttributeToSort('name', 'asc');
+	$_productCollection->getSelect();
+	$_productCollection->load();
+
+return $_productCollection;
+}
+
+/// function to set unique a mutidimentional array
+function super_unique($array,$key){
+   $temp_array = array();
+   foreach ($array as &$v) {
+       if (!isset($temp_array[$v[$key]]))
+       $temp_array[$v[$key]] =& $v;
+   }
+   $array = array_values($temp_array);
+   return $array;
+}
+////////////////////////////////////////////////////////////////////////#1615
+?>

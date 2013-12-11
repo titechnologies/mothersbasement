@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<layout>
+    <reference_adminhtml_myform_index>
+        <update handle="reference_myform_index"/>
+        <reference name="content">
+            <block type="adminhtml/template" name="myform" template="reference/myform.phtml"/>
+        </reference>
+    </reference_adminhtml_myform_index>
+</layout>

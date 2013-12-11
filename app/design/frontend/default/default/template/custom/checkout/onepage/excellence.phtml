@@ -1,0 +1,143 @@
+<?php
+/*
+<style>
+#opc-excellence .number{background:#FFF !important; color:#FFF !important;}
+#opc-excellence .step-title{background:#FFF !important;}
+</style>
+*/
+?>
+<form id="co-excellence-form" action="">
+<fieldset>
+    <ul class="form-list">
+
+<?php
+//////////////////////////////////////////////////////////////////////////////// #1648
+if(!Mage::getSingleton('customer/session')->getId()){
+?>
+				<li id="excellence-form">
+					<fieldset>
+						<ul>
+							<li class="wide">
+							<label for="excellence:like"><?php echo $this->__('Have you been referred to us by an existing customer?') ?></label>
+					</li>
+					 <li class="wide">
+					   <input id="rdoReferral_yes" class="radio validate-one-required-by-name" type="radio" value="40" name="rdoReferral" />Yes
+					   <input id="rdoReferral_no" class="radio" type="radio" value="40" name="rdoReferral" />No
+					</li>
+						</ul>
+					</fieldset>
+					
+				<fieldset id="fsreferral">
+						<ul>
+							<li class="wide"><br />
+								<label class="required" for="excellence:like"><?php echo $this->__('Please Enter Their Registered Email Address Here') ?><em>*</em></label>
+								<div class="input-box">
+									<input type='text' name='excellence[like]'  class="required-entry input-text validate-email" id="excellence:like" value='<?php echo $this->getQuote()->getExcellenceLike()?>' />
+								</div>
+							</li>
+						</ul>
+					</fieldset>
+				<fieldset id="details">
+						<ul>
+							<li class="wide">
+								<label for="excellence2:like" class="required"><em>*</em><?php echo $this->__('Specify: ') ?></label>
+								<div class="input-box">
+									<input type='text' name='excellence2[like]'  class="required-entry input-text" id="excellence2:like" value='<?php echo $this->getQuote()->getExcellenceLike2()?>'/>
+								</div>
+							</li>
+						</ul>
+					</fieldset>
+				 </li>
+<?php
+}else{
+?>
+	<li id="excellence-form">
+		<fieldset>
+			<ul>
+			<li class="wide"><?php echo $this->__('This feature is not available for existing customers. Please continue to the next step') ?></li>
+			</ul>
+		</fieldset>
+	</li>
+<?php
+}
+//////////////////////////////////////////////////////////////////////////////// #1648
+?>
+    </ul>
+    <div class="buttons-set" id="excellence-buttons-container">
+
+<?php
+//////////////////////////////////////////////////////////////////////////////// #1648
+if(!Mage::getSingleton('customer/session')->getId()){
+?>
+  <p class="required"><?php echo $this->__('* Required Fields') ?></p>
+  <button type="button" title="<?php echo $this->__('Continue') ?>" class="button" onclick="excellence.save(),checkDetails()"><span><span><?php echo $this->__('Continue') ?></span></span></button>
+<?php
+}else{
+?>
+  <button id="btnReferral_no" type="button" title="<?php echo $this->__('Continue') ?>" class="button"><span><span><?php echo $this->__('Continue') ?></span></span></button>
+<?php
+}
+?>
+
+        <span class="please-wait" id="excellence-please-wait" style="display:none;">
+            <img src="<?php echo $this->getSkinUrl('images/opc-ajax-loader.gif') ?>" alt="<?php echo $this->__('Loading next step...') ?>" title="<?php echo $this->__('Loading next step...') ?>" class="v-middle" /> <?php echo $this->__('Loading next step...') ?>
+        </span>
+    </div>
+</fieldset>
+</form>
+<script type="text/javascript">
+//<![CDATA[
+<?php
+/////////////////////start/////////////////////////////////////////////////////////// #1648
+if(!Mage::getSingleton('customer/session')->getId()){
+?>
+	document.getElementById("details").style.display = 'none';
+	document.getElementById("fsreferral").style.display = 'none';
+<?php
+}
+////////////////////////end//////////////////////////////////////////////////////// #1648
+?>
+/////////////////////////////start/////////////////////////////////////////////////// #1648
+	//ORIGINAL	//var excellence = new ExcellenceMethod('co-excellence-form','<?php echo $this->getUrl('custom/onepage/saveExcellence') ?>');
+	var excellence = new ExcellenceMethod('co-excellence-form','<?php echo $this->getUrl('custom/onepage/saveExcellence') ?>');
+    var excellenceForm = new VarienForm('co-excellence-form');
+    var radioReferralYes = document.getElementById("rdoReferral_yes");
+    var radioReferralNo = document.getElementById("rdoReferral_no");
+    var btnNoReferral = document.getElementById("btnReferral_no");
+///////////////////////////end///////////////////////////////////////////////////// #1648
+
+
+
+
+<?php
+/////////////////////////////start/////////////////////////////////////////////////// #1648
+if(!Mage::getSingleton('customer/session')->getId()){
+?>
+    radioReferralYes.onclick = function() {
+	   	document.getElementById("fsreferral").style.display = '';
+	}
+
+    radioReferralNo.onclick = function() {
+	   	document.getElementById("fsreferral").style.display = 'none';
+	   	document.getElementById("excellence:like").value = '';
+		excellence.save();
+		checkDetails();
+	}
+<?php
+}
+/////////////////////////////end/////////////////////////////////////////////////// #1648
+?>
+
+
+<?php
+/////////////////////////////start/////////////////////////////////////////////////// #1648
+?>
+    btnNoReferral.onclick = function() {
+		excellence.save();
+		//checkDetails();
+	}
+<?php
+////////////////////////////end//////////////////////////////////////////////////// #1648
+?>
+//]]>
+</script>

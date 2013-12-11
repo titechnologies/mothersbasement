@@ -1,0 +1,37 @@
+<?php $_order = $this->getOrder() ?>
+<div class="box-left">
+    <div class="entry-edit">
+        <div class="entry-edit-head">
+			<?php //////////////////////////////////////////////////////////////////////////////// #1648 ?>
+            <h4 class="icon-head head-account"><?php echo Mage::helper('sales')->__('Referred to us by an existing customer') ?></h4>
+            <?php //////////////////////////////////////////////////////////////////////////////// #1648 ?>
+        </div>
+        <div class="fieldset">
+            <table cellspacing="0" class="form-list">
+		<tr>
+		    <td style="width:10%" class="label"><strong><?php /*echo Mage::helper('sales')->__($key)*/ ?>Email ID: </strong></td>
+		</tr>
+            <?php 
+            	$custom = $this->getCustomVars();
+            	foreach($custom as $key => $value){ 
+            ?>
+            <tr>
+                <td class="value">
+					<?php
+					//////////////////////////////////////////////////////////////////////////////// #1648
+					///  ORIGINAL	//echo $value;
+					if(($value != '') && ($value != '&nbsp;')){
+						echo $value;
+					}else{
+						echo 'Nil';
+					}
+					//////////////////////////////////////////////////////////////////////////////// #1648
+					?>					
+				</td>
+            </tr>
+            <?php } ?>
+            </table>
+        </div>
+    </div>
+</div>
+<div class="clear"></div>

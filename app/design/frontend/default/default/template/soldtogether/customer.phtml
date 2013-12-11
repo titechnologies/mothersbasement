@@ -1,0 +1,46 @@
+<?php if (Mage::getStoreConfig('soldtogether/customer/enabled')) : ?>
+<?php
+    $_productCollection=$this->getProductCollection();
+    $_helper = $this->helper('catalog/output');
+?>
+<?php if($_productCollection->count()): ?>
+<div class="box-collateral soldtogether-block">
+    <h2>
+        <?php echo Mage::helper('soldtogether')->__('Customers Who Bought This Item Also Bought') ?>
+        <?php if (Mage::getStoreConfig('soldtogether/customer/addtocartcheckbox')) : ?>
+            <a class="select-all" href="#" onclick="selectAllRelated(this, 'customer'); return false;"><?php echo Mage::helper('soldtogether')->__('select all') ?></a>
+        <?php endif ?>
+    </h2>
+    <?php $_collectionSize = $_productCollection->count() ?>
+    <?php $_columnCount = $this->getColumnsCount(); ?>
+    <?php $i=0; foreach ($_productCollection as $_product): ?>
+        <?php if ($i++%$_columnCount==0): ?>
+        <ul class="products-grid">
+        <?php endif ?>
+            <li class="item<?php if(($i-1)%$_columnCount==0): ?> first<?php elseif($i%$_columnCount==0): ?> last<?php endif; ?>">
+
+                <a href="<?php echo $_product->getProductUrl() ?>" title="<?php echo $this->stripTags($this->getImageLabel($_product, 'small_image'), null, true) ?>" class="product-image">
+                    <img src="<?php echo $this->helper('catalog/image')->init($_product, 'small_image')->resize(135); ?>" width="135" height="135" alt="<?php echo $this->stripTags($this->getImageLabel($_product, 'small_image'), null, true) ?>" />
+                </a>
+            <?php if (Mage::getStoreConfig('soldtogether/customer/addtocartcheckbox')) : ?>
+                <div align="center">
+                    <?php if (($_product['type_id']) === 'configurable' || ($_product['type_id']) === 'bundle' || $_product['has_options']) : ?>
+                    <input type="checkbox" disabled="disabled" class="checkbox relatedcustomer-checkbox" id="relatedcustomer-checkbox<?php echo $_product->getId() ?>" name="bought_related_products[]" value="<?php echo $_product->getId() ?>"/>
+                    <?php else : ?>
+                    <input type="checkbox" class="checkbox relatedcustomer-checkbox" id="relatedcustomer-checkbox<?php echo $_product->getId() ?>" name="bought_related_products[]" value="<?php echo $_product->getId() ?>"/>
+                    <?php endif;?>
+                </div>
+            <?php endif ?>
+                <h3 class="product-name"><a href="<?php echo $_product->getProductUrl() ?>" title="<?php echo $this->stripTags($_product->getName(), null, true) ?>"><?php echo $_helper->productAttribute($_product, $_product->getName(), 'name') ?></a></h3>
+                <?php echo $this->getReviewsSummaryHtml($_product, 'short') ?>
+                <?php echo $this->getPriceHtml($_product, true) ?>
+
+            </li>
+        <?php if ($i%$_columnCount==0 || $i==$_collectionSize): ?>
+        </ul>
+        <?php endif ?>
+    <?php endforeach ?>
+    <script type="text/javascript">decorateGeneric($$('ul.products-grid'), ['odd','even','first','last'])</script>
+</div>
+<?php endif; ?>
+<?php endif; ?>

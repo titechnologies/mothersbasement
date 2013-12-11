@@ -1,0 +1,81 @@
+<form id="co-excellence-form" action="">
+<fieldset>
+    <ul class="form-list">
+    <li id="excellence-form">
+        <fieldset>
+            <ul>
+                <li class="wide">
+                    <label for="excellence:like" class="required"><em>*</em><?php echo $this->__('Where did you first hear about Mother\'s Basement?') ?></label>
+                    <div class="input-box">
+                        <select id="reference_dropdown" class="required-entry" name="excellence[like]" id="excellence:like">
+                        	<option value=''><?php echo $this->__('Please Choose..');?></option>
+<option value='Empire' <?php if($this->getQuote()->getExcellenceLike() == 'Empire'){echo 'selected="selected"';} ?>><?php echo $this->__('Empire');?></option>
+<option value='Total Film' <?php if($this->getQuote()->getExcellenceLike() == 'Total Film'){echo 'selected="selected"';} ?>><?php echo $this->__('Total Film');?></option>
+<option value='SFX' <?php if($this->getQuote()->getExcellenceLike() == 'SFX'){echo 'selected="selected"';} ?>><?php echo $this->__('SFX');?></option>
+<option value='Sci Fi Now' <?php if($this->getQuote()->getExcellenceLike() == 'Sci Fi Now'){echo 'selected="selected"';} ?>><?php echo $this->__('Sci Fi Now');?></option>
+<option value='Starburst' <?php if($this->getQuote()->getExcellenceLike() == 'Starburst'){echo 'selected="selected"';} ?>><?php echo $this->__('Starburst');?></option>
+<option value='Bizarre' <?php if($this->getQuote()->getExcellenceLike() == 'Bizarre'){echo 'selected="selected"';} ?>><?php echo $this->__('Bizarre');?></option>
+<option value='Front' <?php if($this->getQuote()->getExcellenceLike() == 'Front'){echo 'selected="selected"';} ?>><?php echo $this->__('Front');?></option>
+<option value='Other Magazine' <?php if($this->getQuote()->getExcellenceLike() == 'Other Magazine'){echo 'selected="selected"';} ?>><?php echo $this->__('Other Magazine (Please Specify)');?></option>
+<option value='Facebook' <?php if($this->getQuote()->getExcellenceLike() == 'Facebook'){echo 'selected="selected"';} ?>><?php echo $this->__('Facebook');?></option>
+<option value='Twitter' <?php if($this->getQuote()->getExcellenceLike() == 'Twitter'){echo 'selected="selected"';} ?>><?php echo $this->__('Twitter');?></option>
+<option value='Other Social Media Site' <?php if($this->getQuote()->getExcellenceLike() == 'Other Social Media Site'){echo 'selected="selected"';} ?>><?php echo $this->__('Other Social Media Site (Please Specify)');?></option>
+<option value='Google - Search' <?php if($this->getQuote()->getExcellenceLike() == 'Google - Search'){echo 'selected="selected"';} ?>><?php echo $this->__('Google - Search');?></option>
+<option value='Google - Ads' <?php if($this->getQuote()->getExcellenceLike() == 'Google - Ads'){echo 'selected="selected"';} ?>><?php echo $this->__('Google - Ads');?></option>
+<option value='Other Search Engine' <?php if($this->getQuote()->getExcellenceLike() == 'Other Search Engine'){echo 'selected="selected"';} ?>><?php echo $this->__('Other Search Engine (Please Specify)');?></option>
+<option value='MCM Expo / Memorabilia' <?php if($this->getQuote()->getExcellenceLike() == 'MCM Expo / Memorabilia'){echo 'selected="selected"';} ?>><?php echo $this->__('MCM Expo / Memorabilia');?></option>
+<option value='Sci Fi Weekender' <?php if($this->getQuote()->getExcellenceLike() == 'Sci Fi Weekender'){echo 'selected="selected"';} ?>><?php echo $this->__('Sci Fi Weekender');?></option>
+<option value='Collectormania' <?php if($this->getQuote()->getExcellenceLike() == 'Collectormania'){echo 'selected="selected"';} ?>><?php echo $this->__('Collectormania');?></option>
+<option value='London Film & Comic Con' <?php if($this->getQuote()->getExcellenceLike() == 'London Film & Comic Con'){echo 'selected="selected"';} ?>><?php echo $this->__('London Film & Comic Con');?></option>
+<option value='Bristol Comic Con' <?php if($this->getQuote()->getExcellenceLike() == 'Bristol Comic Con'){echo 'selected="selected"';} ?>><?php echo $this->__('Bristol Comic Con');?></option>
+<option value='Wales Comic Con' <?php if($this->getQuote()->getExcellenceLike() == 'Wales Comic Con'){echo 'selected="selected"';} ?>><?php echo $this->__('Wales Comic Con');?></option>
+<option value='Other Event' <?php if($this->getQuote()->getExcellenceLike() == 'Other Event'){echo 'selected="selected"';} ?>><?php echo $this->__('Other Event (Please Specify)');?></option>
+<option value='Newspaper' <?php if($this->getQuote()->getExcellenceLike() == 'Newspaper'){echo 'selected="selected"';} ?>><?php echo $this->__('Newspaper (Please Specify)');?></option>
+<option value='Radio' <?php if($this->getQuote()->getExcellenceLike() == 'Radio'){echo 'selected="selected"';} ?>><?php echo $this->__('Radio (Please Specify)');?></option>
+<option value='Website' <?php if($this->getQuote()->getExcellenceLike() == 'Website'){echo 'selected="selected"';} ?>><?php echo $this->__('Website (Please Specify)');?></option>
+<option value='Existing Customer' <?php if($this->getQuote()->getExcellenceLike() == 'Existing Customer'){echo 'selected="selected"';} ?>><?php echo $this->__('Existing Customer (Please Specify)');?></option>
+<option value='Other' <?php if($this->getQuote()->getExcellenceLike() == 'Other'){echo 'selected="selected"';} ?>><?php echo $this->__('Other (Please Specify)');?></option>
+                        </select>
+                    </div>
+                </li>
+            </ul>
+        </fieldset>
+	<fieldset id="details">
+            <ul>
+                <li class="wide">
+                    <label for="excellence2:like" class="required"><em>*</em><?php echo $this->__('Specify: ') ?></label>
+                    <div class="input-box">
+                        <input type='text' name='excellence2[like]'  class="required-entry input-text" id="excellence2:like" value='<?php echo $this->getQuote()->getExcellenceLike2()?>'/>
+                    </div>
+                </li>
+            </ul>
+        </fieldset>
+     </li>
+    </ul>
+    <div class="buttons-set" id="excellence-buttons-container">
+        <p class="required"><?php echo $this->__('* Required Fields') ?></p>
+        <button type="button" title="<?php echo $this->__('Continue') ?>" class="button" onclick="excellence.save(),checkDetails()"><span><span><?php echo $this->__('Continue') ?></span></span></button>
+        <span class="please-wait" id="excellence-please-wait" style="display:none;">
+            <img src="<?php echo $this->getSkinUrl('images/opc-ajax-loader.gif') ?>" alt="<?php echo $this->__('Loading next step...') ?>" title="<?php echo $this->__('Loading next step...') ?>" class="v-middle" /> <?php echo $this->__('Loading next step...') ?>
+        </span>
+    </div>
+</fieldset>
+</form>
+<script type="text/javascript">
+//<![CDATA[
+    document.getElementById("details").style.display = 'none';
+    var excellence = new ExcellenceMethod('co-excellence-form','<?php echo $this->getUrl('custom/onepage/saveExcellence') ?>');
+    var excellenceForm = new VarienForm('co-excellence-form');
+    var Dropdown = document.getElementById("reference_dropdown");
+    Dropdown.onchange = function() {
+    var dropdownValue = document.getElementById("reference_dropdown").value;
+    if(dropdownValue.indexOf("Other Magazine")>=0 || dropdownValue.indexOf("Other Social Media Site")>=0  || dropdownValue.indexOf("Other Search Engine")>=0 || dropdownValue.indexOf("Other Event")>=0  || dropdownValue.indexOf("Newspaper")>=0  || dropdownValue.indexOf("Radio")>=0  || dropdownValue.indexOf("Website")>=0  || dropdownValue.indexOf("Existing Customer")>=0  || dropdownValue.indexOf("Other")>=0){
+    // specify details
+    document.getElementById("details").style.display = 'block';
+    }else{
+    document.getElementById("details").style.display = 'none';
+    document.getElementById('excellence2:like').value = " ";
+    }
+    }
+//]]>
+</script>

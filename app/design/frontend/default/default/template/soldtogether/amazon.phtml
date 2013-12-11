@@ -1,0 +1,51 @@
+<script type="text/javascript">
+    //<![CDATA[
+    $$('.relatedorderamazon-checkbox').each(function(elem){
+        Event.observe(elem, 'click', showhideImage)
+    });
+    addRelatedToProduct();
+
+    function totalPrice(){
+        var checkboxes = $$('.relatedorderamazon-checkbox');
+        var total = parseFloat($('relatedorderamazon-hiddenboss').value);
+        for(var i = 0; i < checkboxes.length; i++){
+            if(checkboxes[i].checked){
+                total = total + parseFloat($('relatedorderamazon-hidden' + checkboxes[i].value).value);
+            }
+        }
+        currency = "<?php echo Mage::app()->getLocale()->currency(Mage::app()->getStore()->getCurrentCurrencyCode())->getSymbol(); ?>";
+
+        $$('#totalPrice .price')[0].update(currency + total.toFixed(2));
+    }
+
+    function showhideImage() {
+        if (this.checked) {
+            $('image' + this.value).appear();
+        } else {
+            $('image' + this.value).fade();
+        }
+        totalPrice();
+    }
+
+    function addBoughtProductToCart(){
+
+        var checkboxesorderamazon = $$('.relatedorderamazon-checkbox');
+
+        var values = [];
+
+        $('related-products-field').value = '';
+
+        for(var i = 0;i < checkboxesorderamazon.length;i++){
+            if(checkboxesorderamazon[i].checked) values.push(checkboxesorderamazon[i].value);
+        }
+
+        values = values.unique();
+
+        if($('related-products-field')){
+            $('related-products-field').value += values.join(',');
+        }
+
+        productAddToCartForm.submit();
+    }
+    //]]>
+    </script>

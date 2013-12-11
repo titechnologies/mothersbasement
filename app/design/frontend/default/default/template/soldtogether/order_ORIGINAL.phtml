@@ -1,0 +1,150 @@
+<?php if (Mage::getStoreConfig('soldtogether/order/enabled')) : ?>
+    <?php if (Mage::getStoreConfig('soldtogether/order/amazonestyle')) : ?>
+        <?php
+	        $helper = Mage::helper('automatedproducts');
+	        $config = $helper->getConfig("automatedproducts/relatedproducts");
+            $product = Mage::registry('product');
+			$_productCollection = Mage::getModel('catalog/product')->getCollection()->addAttributeToSelect("*");
+			
+			$conditionArray = array();
+			$conditionArray[] = array(
+							'attribute' => 'brand',
+							'eq'        => $product->getBrand(),
+					);
+			if($product->getLicense() != null){
+				$conditionArray[] = array(
+					'attribute' => 'license',
+					'eq'        => $product->getLicense(),
+				);
+			}
+			if($product->getSeries() != null){
+				$conditionArray[] = array(
+						'attribute' => 'series',
+						'eq'        => $product->getSeries(),
+				);
+			}
+			if($product->getType() != null){
+				$conditionArray[] = array(
+						'attribute' => 'type',
+						'eq'        => $product->getType(),
+				);
+			}
+			$_productCollection->addAttributeToFilter($conditionArray);
+ 			
+ 			$_productCollection->addStoreFilter()
+ 									->setPageSize(2)
+ 									->setCurPage(1)
+ 									->addIdFilter(array($product->getId()), true);
+
+ 			Mage::getSingleton('catalog/product_status')->addSaleableFilterToCollection($_productCollection);
+ 			Mage::getSingleton('cataloginventory/stock')->addInStockFilterToCollection($_productCollection);
+ 			$_productCollection->addAttributeToFilter('visibility', array('in' => array(Mage_Catalog_Model_Product_Visibility::VISIBILITY_IN_CATALOG, Mage_Catalog_Model_Product_Visibility::VISIBILITY_BOTH) ));
+ 			$_productCollection->getSelect()->order('rand()');
+ 			$_productCollection->load();
+            $_helper = $this->helper('catalog/output');
+            $currentProduct = Mage::registry('current_product');
+            $i = 0;
+        ?>
+        <?php if($_productCollection->count()): ?>
+
+        <div class="box-collateral soldtogether-block">
+                    <!--<h2><?php //echo Mage::helper('soldtogether')->__('Frequently bought together') ?>:</h2>
+                    <p class="a-left">
+                    <?php //echo Mage::helper('soldtogether')->__('Customers who bought this product also commonly purchased the following combination of items.') ?>
+                    </p>-->
+            <?php $_collectionSize = $_productCollection->count() ?>
+            <?php $_columnCount = $this->getColumnsCount(); ?>
+            <ul class="images">
+                <li id="image<?php echo $currentProduct->getId() ?>" class="order0">
+                    <img src="<?php echo $this->helper('catalog/image')->init($currentProduct, 'small_image')->resize(115,85); ?>" width="115" height="85" alt="<?php echo $this->stripTags($this->getImageLabel($currentProduct, 'small_image'), null, true) ?>" />
+                </li>
+                <?php foreach ($_productCollection as $_product): ?>
+                <li id="image<?php echo $_product->getId() ?>"<?php //if(++$i == $_collectionSize) : ?> class="order<?php echo ++$i;?>"<?php //endif;?>>
+                    <a href="<?php echo $_product->getProductUrl() ?>" title="<?php echo $this->stripTags($this->getImageLabel($_product, 'small_image'), null, true) ?>" 
+                    class="product-image">
+                    <img src="<?php echo $this->helper('catalog/image')->init($_product, 'small_image')->resize(115,85); ?>" 
+                    width="115" height="85" alt="<?php echo $this->stripTags($this->getImageLabel($_product, 'small_image'), null, true) ?>" />
+                    </a>
+                </li>
+            <?php endforeach ?>
+            
+
+            <li class="check">
+                <!--<h3 class="product-name">-->
+                    <?php
+                        $totalPrice = 0;
+                        $totalPrice += round(Mage::helper('core')->currency($currentProduct->getFinalPrice(),false,false), 2);
+                    ?>
+
+                    <input type="hidden" id="relatedorderamazon-hiddenboss" value="<?php echo round(Mage::helper('core')->currency($currentProduct->getFinalPrice(),false,false), 2); ?>">
+                    <!--<input type="checkbox" class="checkbox www" id="www<?php echo  $currentProduct->getId() ?>" onclick ="addRelatedToProduct" name="bought_related_products[]" value="<?php echo $_product->getId() ?>" checked disabled/>-->
+                    <!--This Item:-->
+                    <?php //echo $currentProduct->getName(); ?>
+
+                <!--</h3>-->
+                <?php foreach ($_productCollection as $_product): ?>
+
+                    
+
+                        <input type="hidden" id="relatedorderamazon-hidden<?php echo $_product->getId() ?>" value="<?php echo round(Mage::helper('core')->currency($_product->getFinalPrice(),false,false), 2) ?>">
+                        <?php if (($_product['type_id']) === 'configurable' || ($_product['type_id']) === 'bundle' || $_product['has_options']) : ?>
+                        <input type="checkbox" disabled="disabled" class="checkbox relatedorderamazon-checkbox" id="relatedorderamazon-checkbox<?php echo $_product->getId() ?>" name="bought_related_products[]" value="<?php echo $_product->getId() ?>"/>
+                        <?php else : ?>
+                        <?php $totalPrice += round(Mage::helper('core')->currency($_product->getFinalPrice(),false,false), 2); ?>
+                        <input type="hidden" class="checkbox relatedorderamazon-checkbox" id="relatedorderamazon-checkbox<?php echo $_product->getId() ?>" name="bought_related_products[]" value="<?php echo $_product->getId() ?>" checked/>
+                        <?php endif;?>
+                        <!--<a href="<?php //echo $_product->getProductUrl() ?>" title="<?php //echo $this->stripTags($_product->getName(), null, true) ?>"><?php //echo $_helper->productAttribute($_product, $_product->getName(), 'name') ?></a>-->
+                        <?php //echo $this->getPriceHtml($_product, true) ?>
+                    
+                <?php endforeach ?>
+                
+                
+                
+                <div id="totalPrice" class="totalprice regular-price">
+                    <?php /*echo '<h5>buy all 3 for only 
+                    <span class="price"> ' . Mage::app()->getLocale()->currency(Mage::app()->getStore()->getCurrentCurrencyCode())->getSymbol() . $totalPrice ?></span></h5>*/;?>
+                    <?php 
+                    $discount = $totalPrice  * ((100-2.5) / 100);
+                    $saving = $totalPrice - $discount; ?>
+                    <p>buy all 3</p><p class="bottom">save <?php echo '&pound;'.$saving = number_format($saving,2)?></p><span style="display:block;" class="price">
+                    <?php $afterapplyingsaving = $totalPrice - $saving;?>
+                    <?php echo Mage::helper('core')->formatPrice($afterapplyingsaving) ;?>
+                    </span>
+                    
+                </div>
+                <div class="button-cart">
+                    <button type="button" title="Add to Cart" class="button btn-cart" onclick="addBoughtProductToCart()"><span><span><?php echo Mage::helper('soldtogether')->__('Add All to Cart') ?></span></span></button>
+                    <?php echo $this->getProductId(); ?>
+                </div>
+                </li>
+            </ul>
+            
+            
+            
+            
+        </div>
+        <?php endif; ?>
+        <?php endif;?>
+        <script type="text/javascript">
+        function addBoughtProductToCart(){
+
+            var checkboxesorderamazon = $$('.relatedorderamazon-checkbox');
+
+            var values = [];
+
+            $('related-products-field').value = '';
+
+            for(var i = 0;i < checkboxesorderamazon.length;i++){
+                if(checkboxesorderamazon[i].checked) values.push(checkboxesorderamazon[i].value);
+            }
+
+            
+
+            if($('related-products-field')){
+                $('related-products-field').value += values.join(',');
+            }
+
+            productAddToCartForm.submit();
+        }
+        </script>
+<?php endif;?>
