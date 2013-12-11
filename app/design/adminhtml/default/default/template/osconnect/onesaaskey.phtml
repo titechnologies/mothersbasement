@@ -1,0 +1,27 @@
+
+<?php
+$mod_info = (array)Mage::getConfig()->getNode('modules/Onesaas_Connect')->children();
+$os_version = $mod_info['version'];
+$helper = Mage::helper('osconnect');
+$key = $helper->getKey();
+$ApiUrl = Mage::getUrl('osconnect/index'); 
+$os_url = $helper->getUrl();
+$magento_store = Mage::app()->getStore();
+$CompanyName = $magento_store->getName();
+$ContactName = '';
+$ContactEmail = Mage::getStoreConfig('contacts/email/recipient_email');
+$ContactPhone = Mage::getStoreConfig('general/store_information/phone');
+$os_link = $os_url. "?servicetype=magento&c_ApiUrl=" . urlencode($ApiUrl) . "&c_ApiVersion=" . $os_version . "&c_ApiToken=" . urlencode($key) . "&CompanyName=" . urlencode($CompanyName) . "&ContactName=" . urlencode($ContactName) . "&ContactEmail=" . urlencode($ContactEmail) . "&ContactPhone=" . urlencode($ContactPhone);
+?>
+
+<div class="content-header">
+    <table cellspacing="0" class="grid-header">
+        <tr>
+		<td><h3><?php echo $this->__('Onesaas Connect') . ' (v. ' . $os_version .')'; ?></h3></td>
+	</tr>
+    </table>
+</div>
+
+<div style="width: 990px; margin: 0 auto; height: 1600px">
+	<iframe src=<?php echo '"' . $os_link . '"' ?> name="onesaas_frame" frameborder="0" height="1600" width="990"></iframe>
+</div>

@@ -1,0 +1,103 @@
+<?xml version="1.0"?>
+<layout version="0.1.0">
+
+    
+    <cms_index_index>
+	<reference name="head">
+	    <action method="addCss"><stylesheet>magazento/easytopseller/style.css</stylesheet></action>
+        </reference>
+	<reference name="left">
+	    <block type="easytopsell/home" name="easytopsell.home.left">
+                <action method="setTemplate">
+                    <template>magazento/easytopsell/home_left.phtml</template>
+                </action>
+            </block>
+	</reference>
+	<reference name="right">
+	    <block type="easytopsell/home" name="easytopsell.home.right" >
+                <action method="setTemplate">
+                    <template>magazento/easytopsell/home_right.phtml</template>
+                </action>
+	    </block>
+	</reference>
+    </cms_index_index>
+    
+    <catalog_category_default>
+	<reference name="head">
+	    <action method="addCss"><stylesheet>magazento/easytopseller/style.css</stylesheet></action>
+        </reference>
+	<reference name="left">
+	    <block type="easytopsell/category" name="easytopsell.cat.left" >
+                <action method="setTemplate">
+                    <template>magazento/easytopsell/category_left.phtml</template>
+                </action>
+            </block>
+	</reference>
+	<reference name="right">
+	    <block type="easytopsell/category" name="easytopsell.cat.right" >
+                <action method="setTemplate">
+                    <template>magazento/easytopsell/category_right.phtml</template>
+                </action>
+	    </block>
+	</reference>
+    </catalog_category_default>
+
+    <catalog_category_layered>
+	<reference name="head">
+	    <action method="addCss"><stylesheet>magazento/easytopseller/style.css</stylesheet></action>
+        </reference>
+	<reference name="left">
+	    <block type="easytopsell/category" name="easytopsell.cat.left" >
+                <action method="setTemplate">
+                    <template>magazento/easytopsell/category_left.phtml</template>
+                </action>
+            </block>
+	</reference>
+	<reference name="right">
+	    <block type="easytopsell/category" name="easytopsell.cat.right" >
+                <action method="setTemplate">
+                    <template>magazento/easytopsell/category_right.phtml</template>
+                </action>
+	    </block>
+	</reference>
+    </catalog_category_layered>
+    <catalogsearch_result_index>
+	<reference name="left">
+	    <block type="easytopsell/home" name="easytopsell.home.left">
+                <action method="setTemplate">
+                    <template>magazento/easytopsell/home_left.phtml</template>
+                </action>
+            </block>
+	</reference>
+        </catalogsearch_result_index>
+
+
+    
+</layout>
+
+
+
+
+
+
+
+
+
+
+
+<!--    <catalog_category_default>
+	<reference name="left">
+	    <block type="easytopsell/home" name="left.easytopsell" as="easytopsell" >
+                <action method="setTemplate" ifconfig="easytopsell/catpageoptions/catsidebarleft">
+                    <template>magazento/easytopsell/category.phtml</template>
+                </action>
+            </block>
+	</reference>
+	<reference name="right">
+	    <block type="easytopsell/category" name="right.easytopsell" as="easytopsell" >
+                <action method="setTemplate" ifconfig="easytopsell/catpageoptions/catsidebarright">
+                    <template>magazento/easytopsell/category.phtml</template>
+                </action>
+	    </block>
+	</reference>
+    </catalog_category_default>-->

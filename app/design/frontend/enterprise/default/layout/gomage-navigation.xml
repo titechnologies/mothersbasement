@@ -1,0 +1,44 @@
+<?xml version="1.0"?>
+<!--
+ /**
+ * GoMage Advanced Navigation Extension
+ *
+ * @category     Extension
+ * @copyright    Copyright (c) 2010-2011 GoMage (http://www.gomage.com)
+ * @author       GoMage
+ * @license      http://www.gomage.com/license-agreement/  Single domain license
+ * @terms of use http://www.gomage.com/terms-of-use
+ * @version      Release: 2.1
+ * @since        Available since Release 1.0
+ */
+ -->
+<layout version="0.1.0">
+    <catalogsearch_result_index>
+        <reference name="left">
+            <remove name="enterprisesearch.leftnav"/>
+            <block type="catalogsearch/layer" name="gomage.enterprise.catalogsearch.leftnav" before="-" />
+        </reference>
+    </catalogsearch_result_index>
+    <catalog_category_layered>
+        <reference name="left">
+            <remove name="enterprisecatalog.leftnav"/>
+            <block type="catalog/layer_view" name="gomage.enterprise.catalog.leftnav" before="-" />
+        </reference>
+    </catalog_category_layered>
+    <catalog_category_default>
+		<reference name="left">
+			<remove name="catalog.leftnav" />
+		</reference>
+	</catalog_category_default>
+    <default>
+		<reference name="catalog.topnav">
+			<action method="setTemplate"><template>gomage/navigation/catalog/navigation/top.phtml</template></action>
+		</reference>
+		<reference name="right">
+			<block type="gomage_navigation/navigation_right"></block>
+		</reference>
+		<reference name="left">
+			<block type="gomage_navigation/navigation_left"></block>
+		</reference>
+	</default>
+</layout>

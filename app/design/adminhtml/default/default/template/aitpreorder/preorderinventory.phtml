@@ -1,0 +1,28 @@
+<?php
+/**
+ * Product:     Pre-Order
+ * Package:     Aitoc_Aitpreorder_1.1.26_425077
+ * Purchase ID: JajOQtu3UxB8XoMt479nC9qGxjAzaifQKKovgevURc
+ * Generated:   2012-11-07 12:17:45
+ * File path:   app/design/adminhtml/default/default/template/aitpreorder/preorderinventory.phtml
+ * Copyright:   (c) 2012 AITOC, Inc.
+ */
+?>
+<script type="text/javascript">
+	Event.observe(window,'load', function(){
+		Event.observe($('inventory_backorders'), 'change', function() {
+			var isPreorder = (3 == $('inventory_backorders').selectedIndex);
+			$('preorderdescript').disabled = !isPreorder;
+			$('preorder').value = isPreorder ? 1 : 0;
+		});
+	});
+</script>
+
+<input type="hidden" name="product[preorder]" id="preorder" value="<?php echo $this->getIsPreorder();?>">
+<tr id="preorderdescript_tr" >
+    <td class="label"><label for="preorderdescript">Pre-Order Note</label></td>
+    <td class="value"><input type="text" class=" input-text"  name="product[preorderdescript]" id="preorderdescript" <?php echo $this->getDisabled(); ?> value="<?php echo $this->getPreorderDescription(); ?>"></td>
+    <td class="scope-label"><span class="nobr">[GLOBAL]</span></td>
+    <td><small>&nbsp;</small></td>
+</tr>
+</table>

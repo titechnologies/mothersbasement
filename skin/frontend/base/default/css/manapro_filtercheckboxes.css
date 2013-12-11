@@ -1,0 +1,15 @@
+/**
+ * @category    Mana
+ * @package     ManaPro_FilterCheckboxes
+ * @copyright   Copyright (c) http://www.manadev.com
+ * @license     http://www.manadev.com/license  Proprietary License
+ */
+ol#m-tree-left_category li .m-tree-item a, ol.m-filter-css-checkboxes li a.m-checkbox-unchecked { background:  url("../images/checkbox-inactive.png") no-repeat scroll left 50% transparent;  padding: 4px 0 5px 20px;text-transform: none;}
+ol#m-tree-left_category li.m-selected-ln-item a.m-checkbox-checked, ol.m-filter-css-checkboxes li a.m-checkbox-checked { background: url("../images/checkbox-active.png") no-repeat scroll left 50% transparent; padding: 4px 0 5px 20px;text-transform: none;}
+ol#m-tree-left_category li .m-tree-item a, ol.m-filter-css-checkboxes li a.m-checkbox-unchecked:hover { background: url("../images/checkbox-inactive.png") no-repeat scroll left 50% transparent; padding: 4px 0 5px 20px;text-transform: none;}
+ol#m-tree-left_category li.m-selected-ln-item a.m-checkbox-checked, ol.m-filter-css-checkboxes li a.m-checkbox-checked:hover { background: url("../images/checkbox-active.png") no-repeat scroll left 50% transparent; padding: 4px 0 5px 20px;text-transform: none;}
+
+ol.m-filter-css-checkboxes li a.m-checkbox-unchecked,
+ol.m-filter-css-checkboxes li a.m-checkbox-checked { padding-left: 20px; text-decoration: none; text-transform: none;}
+
+.m-filter-checkboxes li input { margin-right: 5px; position: relative; bottom: 2px; }

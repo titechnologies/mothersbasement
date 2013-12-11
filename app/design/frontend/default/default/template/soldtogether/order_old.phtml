@@ -1,0 +1,119 @@
+<?php if (Mage::getStoreConfig('soldtogether/order/enabled')) : ?>
+    <?php if (Mage::getStoreConfig('soldtogether/order/amazonestyle')) : ?>
+        <?php
+            $_productCollection=$this->getProductCollection();
+            $_helper = $this->helper('catalog/output');
+            $currentProduct = Mage::registry('current_product');
+            $i = 0;
+        ?>
+        <?php if($_productCollection->count()): ?>
+
+        <div class="box-collateral soldtogether-block">
+            <h2><?php echo Mage::helper('soldtogether')->__('Frequently bought together') ?>:</h2>
+			<p class="a-left"><?php echo Mage::helper('soldtogether')->__('Customers who bought this product also commonly purchased the following combination of items.') ?></p>
+            <?php $_collectionSize = $_productCollection->count() ?>
+            <?php $_columnCount = $this->getColumnsCount(); ?>
+            <ul class="images">
+                <li id="image<?php echo $currentProduct->getId() ?>" class="first">
+                    <img src="<?php echo $this->helper('catalog/image')->init($currentProduct, 'small_image')->resize(135); ?>" width="135" height="135" alt="<?php echo $this->stripTags($this->getImageLabel($currentProduct, 'small_image'), null, true) ?>" />
+                </li>
+            <?php foreach ($_productCollection as $_product): ?>
+                <li id="image<?php echo $_product->getId() ?>"<?php if(++$i == $_collectionSize) : ?> class="last"<?php endif;?>>
+                    <a href="<?php echo $_product->getProductUrl() ?>" title="<?php echo $this->stripTags($this->getImageLabel($_product, 'small_image'), null, true) ?>" class="product-image">
+                        <img src="<?php echo $this->helper('catalog/image')->init($_product, 'small_image')->resize(135); ?>" width="135" height="135" alt="<?php echo $this->stripTags($this->getImageLabel($_product, 'small_image'), null, true) ?>" />
+                    </a>
+                </li>
+            <?php endforeach ?>
+            </ul>
+
+            <div class="check">
+                <h3 class="product-name">
+                    <?php
+                        $totalPrice = 0;
+                        $totalPrice += round(Mage::helper('core')->currency($currentProduct->getFinalPrice(),false,false), 2);
+                    ?>
+
+                    <input type="hidden" id="relatedorderamazon-hiddenboss" value="<?php echo round(Mage::helper('core')->currency($currentProduct->getFinalPrice(),false,false), 2); ?>">
+                    <input type="checkbox" class="checkbox www" id="www<?php echo  $currentProduct->getId() ?>" onclick ="addRelatedToProduct" name="bought_related_products[]" value="<?php echo $_product->getId() ?>" checked disabled/>
+                    This Item:
+                    <?php echo $currentProduct->getName(); ?>
+
+                </h3>
+                <?php foreach ($_productCollection as $_product): ?>
+
+                    <h3 class="product-name">
+
+                        <input type="hidden" id="relatedorderamazon-hidden<?php echo $_product->getId() ?>" value="<?php echo round(Mage::helper('core')->currency($_product->getFinalPrice(),false,false), 2) ?>">
+                        <?php if (($_product['type_id']) === 'configurable' || ($_product['type_id']) === 'bundle' || $_product['has_options']) : ?>
+                        <input type="checkbox" disabled="disabled" class="checkbox relatedorderamazon-checkbox" id="relatedorderamazon-checkbox<?php echo $_product->getId() ?>" name="bought_related_products[]" value="<?php echo $_product->getId() ?>"/>
+                        <?php else : ?>
+                        <?php $totalPrice += round(Mage::helper('core')->currency($_product->getFinalPrice(),false,false), 2); ?>
+                        <input type="checkbox" class="checkbox relatedorderamazon-checkbox" id="relatedorderamazon-checkbox<?php echo $_product->getId() ?>" name="bought_related_products[]" value="<?php echo $_product->getId() ?>" checked/>
+                        <?php endif;?>
+                        <a href="<?php echo $_product->getProductUrl() ?>" title="<?php echo $this->stripTags($_product->getName(), null, true) ?>"><?php echo $_helper->productAttribute($_product, $_product->getName(), 'name') ?></a>
+                        <?php echo $this->getPriceHtml($_product, true) ?>
+                    </h3>
+                <?php endforeach ?>
+                <div id="totalPrice" class="totalprice regular-price">
+                    <?php echo '<h5>Price for all: <span class="price"> ' . Mage::app()->getLocale()->currency(Mage::app()->getStore()->getCurrentCurrencyCode())->getSymbol() . $totalPrice ?></span></h5>
+                </div>
+                <div class="button-cart">
+                    <button type="button" title="Add to Cart" class="button btn-cart" onclick="addBoughtProductToCart()"><span><span><?php echo Mage::helper('soldtogether')->__('Add All to Cart') ?></span></span></button>
+                    <?php echo $this->getProductId(); ?>
+                </div>
+            </div>
+        </div>
+        <?php endif; ?>
+
+    <?php endif; ?>
+
+    <?php if (!Mage::getStoreConfig('soldtogether/order/amazonestyle')) : ?>
+        <?php
+            $_productCollection=$this->getProductCollection();
+            $_helper = $this->helper('catalog/output');
+            $i = 0;
+        ?>
+        <?php if($_productCollection->count()): ?>
+        <div class="box-collateral soldtogether-block">
+            <h2>
+                Frequently Bought Together
+                <?php if (Mage::getStoreConfig('soldtogether/order/addtocartcheckbox')) : ?>
+                <a class="select-all" href="#" onclick="selectAllRelated(this, 'order'); return false;"><?php echo Mage::helper('soldtogether')->__('select all') ?></a>
+                <?php endif ?>
+            </h2>
+
+            <?php $_collectionSize = $_productCollection->count() ?>
+            <?php $_columnCount = $this->getColumnsCount(); ?>
+            <?php $i=0; foreach ($_productCollection as $_product): ?>
+                <?php if ($i++%$_columnCount==0): ?>
+                <ul>
+                <?php endif ?>
+                    <li class="item<?php if(($i-1)%$_columnCount==0): ?> first<?php elseif($i%$_columnCount==0): ?> last<?php endif; ?>">
+
+                        <a href="<?php echo $_product->getProductUrl() ?>" title="<?php echo $this->stripTags($this->getImageLabel($_product, 'small_image'), null, true) ?>" class="product-image"><img style="border: 0 solid #000000;" src="<?php echo $this->helper('catalog/image')->init($_product, 'small_image')->resize(115,85); ?>" width="115" height="85" alt="<?php echo $this->stripTags($this->getImageLabel($_product, 'small_image'), null, true) ?>" /></a>
+
+                    <?php if (Mage::getStoreConfig('soldtogether/order/addtocartcheckbox')) : ?>
+                        <div align="center">
+                            <?php if (($_product['type_id']) === 'configurable' || ($_product['type_id']) === 'bundle' || $_product['has_options']) : ?>
+                            <input type="checkbox" disabled="disabled" class="checkbox relatedorder-checkbox" id="relatedorder-checkbox<?php echo $_product->getId() ?>" name="bought_related_products[]" value="<?php echo $_product->getId() ?>"/>
+                            <?php else : ?>
+                            <input type="checkbox" class="checkbox relatedorder-checkbox" id="relatedorder-checkbox<?php echo $_product->getId() ?>" name="bought_related_products[]" value="<?php echo $_product->getId() ?>"/>
+                            <?php endif;?>
+                        </div>
+                    <?php endif ?>
+
+                        <h3 class="product-name"><a href="<?php echo $_product->getProductUrl() ?>" title="<?php echo $this->stripTags($_product->getName(), null, true) ?>"><?php echo $_helper->productAttribute($_product, $_product->getName(), 'name') ?></a></h3>
+                        <?php echo $this->getReviewsSummaryHtml($_product, 'short') ?>
+                        <?php echo $this->getPriceHtml($_product, true) ?>
+
+                    </li>
+                <?php if ($i%$_columnCount==0 || $i==$_collectionSize): ?>
+                </ul>
+                <?php endif ?>
+            <?php endforeach ?>
+            <script type="text/javascript">decorateGeneric($$('ul.products-grid'), ['odd','even','first','last'])</script>
+        </div>
+        <?php endif; ?>
+    <?php endif; ?>
+
+<?php endif; ?>

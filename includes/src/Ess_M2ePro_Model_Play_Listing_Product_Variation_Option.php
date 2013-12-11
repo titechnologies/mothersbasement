@@ -1,0 +1,148 @@
+<?php
+
+/*
+ * @copyright  Copyright (c) 2012 by  ESS-UA.
+ */
+
+class Ess_M2ePro_Model_Play_Listing_Product_Variation_Option extends Ess_M2ePro_Model_Component_Child_Play_Abstract
+{
+    // ########################################
+
+    public function _construct()
+    {
+        parent::_construct();
+        $this->_init('M2ePro/Play_Listing_Product_Variation_Option');
+    }
+
+    // ########################################
+
+    /**
+     * @return Ess_M2ePro_Model_Magento_Product
+     */
+    public function getMagentoProduct()
+    {
+        return $this->getParentObject()->getMagentoProduct();
+    }
+
+    //-----------------------------------------
+
+    /**
+     * @return Ess_M2ePro_Model_Listing
+     */
+    public function getListing()
+    {
+        return $this->getParentObject()->getListing();
+    }
+
+    /**
+     * @return Ess_M2ePro_Model_Listing_Product
+     */
+    public function getListingProduct()
+    {
+        return $this->getParentObject()->getListingProduct();
+    }
+
+    /**
+     * @return Ess_M2ePro_Model_Listing_Product_Variation
+     */
+    public function getListingProductVariation()
+    {
+        return $this->getParentObject()->getListingProductVariation();
+    }
+
+    //-----------------------------------------
+
+    /**
+     * @return Ess_M2ePro_Model_Template_General
+     */
+    public function getGeneralTemplate()
+    {
+        return $this->getParentObject()->getGeneralTemplate();
+    }
+
+    /**
+     * @return Ess_M2ePro_Model_Template_SellingFormat
+     */
+    public function getSellingFormatTemplate()
+    {
+        return $this->getParentObject()->getSellingFormatTemplate();
+    }
+
+    /**
+     * @return Ess_M2ePro_Model_Template_Description
+     */
+    public function getDescriptionTemplate()
+    {
+        return $this->getParentObject()->getDescriptionTemplate();
+    }
+
+    /**
+     * @return Ess_M2ePro_Model_Template_Synchronization
+     */
+    public function getSynchronizationTemplate()
+    {
+        return $this->getParentObject()->getSynchronizationTemplate();
+    }
+
+    //-----------------------------------------
+
+    /**
+     * @return Ess_M2ePro_Model_Play_Listing
+     */
+    public function getPlayListing()
+    {
+        return $this->getListing()->getChildObject();
+    }
+
+    /**
+     * @return Ess_M2ePro_Model_Play_Listing_Product
+     */
+    public function getPlayListingProduct()
+    {
+        return $this->getListingProduct()->getChildObject();
+    }
+
+    /**
+     * @return Ess_M2ePro_Model_Play_Listing_Product_Variation
+     */
+    public function getPlayListingProductVariation()
+    {
+        return $this->getListingProductVariation()->getChildObject();
+    }
+
+    //-----------------------------------------
+
+    /**
+     * @return Ess_M2ePro_Model_Play_Template_General
+     */
+    public function getPlayGeneralTemplate()
+    {
+        return $this->getGeneralTemplate()->getChildObject();
+    }
+
+    /**
+     * @return Ess_M2ePro_Model_Play_Template_SellingFormat
+     */
+    public function getPlaySellingFormatTemplate()
+    {
+        return $this->getSellingFormatTemplate()->getChildObject();
+    }
+
+    /**
+     * @return Ess_M2ePro_Model_Play_Template_Description
+     */
+    public function getPlayDescriptionTemplate()
+    {
+        return $this->getDescriptionTemplate()->getChildObject();
+    }
+
+    /**
+     * @return Ess_M2ePro_Model_Play_Template_Synchronization
+     */
+    public function getPlaySynchronizationTemplate()
+    {
+        return $this->getSynchronizationTemplate()->getChildObject();
+    }
+
+    // ########################################
+}

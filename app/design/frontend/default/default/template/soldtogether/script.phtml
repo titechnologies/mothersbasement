@@ -1,0 +1,130 @@
+<script type="text/javascript">
+    //<![CDATA[
+    $$('.related-checkbox').each(function(elem){
+        Event.observe(elem, 'click', addRelatedToProduct)
+    });
+
+    $$('.relatedorder-checkbox').each(function(elem){
+        Event.observe(elem, 'click', addRelatedToProduct)
+    });
+
+    $$('.relatedcustomer-checkbox').each(function(elem){
+        Event.observe(elem, 'click', addRelatedToProduct)
+    });
+
+    var relatedOrderProductsCheckFlag = false;
+    var relatedCustomerProductsCheckFlag = false;
+    var relatedProductsCheckFlag = false;
+
+    function selectAllRelated(txt, mode){
+        if (mode == 'order') {
+            if (relatedOrderProductsCheckFlag == false) {
+                $$('.relatedorder-checkbox').each(function(elem){
+                    if (!elem.disabled) {
+                        elem.checked = true;
+                    }
+                });
+                relatedOrderProductsCheckFlag = true;
+                txt.innerHTML="<?php echo Mage::helper('soldtogether')->__('unselect all')?>";
+            } else {
+                $$('.relatedorder-checkbox').each(function(elem){
+                    if (!elem.disabled) {
+                        elem.checked = false;
+                    }
+                });
+                relatedOrderProductsCheckFlag = false;
+                txt.innerHTML="<?php echo Mage::helper('soldtogether')->__('select all') ?>";
+            }
+
+        }
+
+        if (mode == 'customer') {
+            if (relatedCustomerProductsCheckFlag == false) {
+
+                $$('.relatedcustomer-checkbox').each(function(elem){
+                    if (!elem.disabled) {
+                        elem.checked = true;
+                    }
+                });
+                relatedCustomerProductsCheckFlag = true;
+                txt.innerHTML="<?php echo Mage::helper('soldtogether')->__('unselect all') ?>";
+            } else {
+
+                $$('.relatedcustomer-checkbox').each(function(elem){
+                    if (!elem.disabled) {
+                        elem.checked = false;
+                    }
+                });
+                relatedCustomerProductsCheckFlag = false;
+                txt.innerHTML="<?php echo Mage::helper('soldtogether')->__('select all') ?>";
+            }
+
+        }
+
+        if (undefined === mode) {
+           if (relatedProductsCheckFlag == false) {
+            $$('.related-checkbox').each(function(elem){
+                if (!elem.disabled) {
+		    elem.checked = true;
+		}
+            });
+            relatedProductsCheckFlag = true;
+            txt.innerHTML="<?php echo Mage::helper('soldtogether')->__('unselect all') ?>";
+        } else {
+            $$('.related-checkbox').each(function(elem){
+                if (!elem.disabled) {
+                    elem.checked = false;
+                }
+            });
+            relatedProductsCheckFlag = false;
+            txt.innerHTML="<?php echo Mage::helper('soldtogether')->__('select all') ?>";
+        }
+        }
+
+        addRelatedToProduct();
+    }
+
+    Array.prototype.unique =
+        function() {
+            var a = [];
+            var l = this.length;
+            for(var i=0; i<l; i++) {
+              for(var j=i+1; j<l; j++) {
+                if (this[i] === this[j])
+                  j = ++i;
+              }
+              a.push(this[i]);
+            }
+            return a;
+        };
+    function addRelatedToProduct(){
+
+        var checkboxes = $$('.related-checkbox');
+        var checkboxesorder = $$('.relatedorder-checkbox');
+        var checkboxescustomer = $$('.relatedcustomer-checkbox');
+
+        var values = [];
+
+        $('related-products-field').value = '';
+
+        for(var i = 0;i < checkboxes.length;i++){
+            if(checkboxes[i].checked) values.push(checkboxes[i].value);
+        }
+
+        for(var i = 0;i < checkboxesorder.length;i++){
+            if(checkboxesorder[i].checked) values.push(checkboxesorder[i].value);
+        }
+
+        for(var i = 0;i < checkboxescustomer.length;i++){
+            if(checkboxescustomer[i].checked) values.push(checkboxescustomer[i].value);
+        }
+
+        values = values.unique();
+
+        if($('related-products-field')){
+            $('related-products-field').value += values.join(',');
+        }
+
+    }
+    //]]>
+    </script>

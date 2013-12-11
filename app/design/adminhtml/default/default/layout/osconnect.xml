@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<layout>
+	<osconnect_adminhtml_admin_index>
+		<reference name="content">
+			<block type="adminhtml/template" name="onesaaskey" template="osconnect/onesaaskey.phtml"/>
+		</reference>
+	</osconnect_adminhtml_admin_index>
+</layout>

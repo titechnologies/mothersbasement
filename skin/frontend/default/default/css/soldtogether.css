@@ -1,0 +1,17 @@
+.product-collateral .soldtogether-block {margin-bottom: 0px !important; margin-left:10px;}
+.soldtogether-block h2 { border-bottom:0; padding:0; margin:0 0 10px; border-bottom: 1px solid #E5DCC3; }
+.soldtogether-block .select-all { float: right; font-size: 12px; font-weight: normal; }
+.soldtogether-block .products-grid { width:100%; border:1px solid #e5dcc3; }
+.soldtogether-block .products-grid li.item { padding-bottom: 20px; }
+.soldtogether-block .images { }
+.soldtogether-block .images li,.soldtogether-block .images .check {display: inline;float: left; border: 1px solid #A9A9A9;margin-top:10px}
+.soldtogether-block .images li.order0 {margin-right:10px;}
+.soldtogether-block .images li.order2 {margin-right:10px;}
+.soldtogether-block .images .check {border: none; width: 115px !important; text-align: center;padding-top:4px}
+.soldtogether-block .images .first { background: none; padding-left: 0; }
+
+.soldtogether-block .check .price-box { display: inline; margin: 10px 0; }
+.soldtogether-block .check h3 { margin: 1px; padding: 5px; }
+.soldtogether-block .totalprice p{ margin: 0px; font-size:13px;  color:#000;text-transform: uppercase;font-weight:bold;line-height:12px;}
+.soldtogether-block .totalprice p.bottom {margin-bottom: 6px;;}
+.soldtogether-block .button-cart { margin: 5px; }

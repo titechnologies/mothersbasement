@@ -1,0 +1,142 @@
+<?php
+/**
+ * Flint Technology Ltd
+ *
+ * This module was developed by Flint Technology Ltd (http://www.flinttechnology.co.uk).
+ * For support or questions, contact us via http://www.flinttechnology.co.uk/store/contacts
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the EULA bundled with this package in the file LICENSE.txt.
+ * It is also available online at http://www.flinttechnology.co.uk/store/module-license-1.0
+ *
+ * @package     flint_feefo-ce-1.2.0.zip
+ * @registrant  David Suter
+ * @license     68561092-2FBC-43E2-8F1F-450A55AB97CE
+ * @eula        Flint Module Single Installation License (http://www.flinttechnology.co.uk/store/module-license-1.0
+ * @copyright   Copyright (c) 2012 Flint Technology Ltd (http://www.flinttechnology.co.uk)
+ */
+
+?>
+<?php if (Mage::getStoreConfig('flint_feefo/product/active')):
+    $helper = Mage::helper('flint_feefo/Data');
+    $product = Mage::registry('current_product');
+    if($dom = $helper->getReviews($product)):
+        $feedbacks = $dom->getElementsByTagName('FEEDBACK');
+        ?>
+        <h2><?php echo $this->__('FeeFo Reviews') ?> <img style="float:right" src="<?php echo $helper->getStarsSrc($product)?>" /></h2>
+
+            <div class="std" id="feefo_reviews_block">
+
+               <?php
+                    if($feedbacks->length):
+                       ?>
+                        <table class="data-table" id="product-feefo-reviews">
+                            <colgroup><col width="60%"><col></colgroup>
+                            <thead>
+                                <tr>
+                                    <th colspan="2"><?php echo $this->__('Date / Score') ?></th>
+                                </tr>
+                                <tr>
+                                    <th><?php echo $this->__('Customer Comment') ?></th>
+                                    <th><?php echo $this->__('Our Response') ?> </th>
+                                </tr>
+                            <thead> 
+                            <tbody>
+                       <?php
+                        $i = 0;
+                        foreach($feedbacks as $feedback){
+                            ?>
+                                <tr>
+                                    <th colspan="2">
+                                        <?php print($feedback->getElementsByTagName('DATE')->item(0)->nodeValue); ?>
+                                        <span style="float:right"><?php 
+                                            if($feedback->getElementsByTagName('SERVICERATING')->length):
+                                                print( 'Service: ');
+                                                foreach(str_split($feedback->getElementsByTagName('SERVICERATING')->item(0)->nodeValue) as $img){
+                                                    if($img === '+' || $img === '-') print('<img src="'.$this->getSkinUrl('images/flint_feefo'.$img.'.gif').'" />');
+                                                }
+                                            endif;
+                                            if($feedback->getElementsByTagName('PRODUCTRATING')->length):
+                                                print( ' Product: ');
+                                                foreach(str_split($feedback->getElementsByTagName('PRODUCTRATING')->item(0)->nodeValue) as $img){
+                                                    if($img === '+' || $img === '-') print('<img src="'.$this->getSkinUrl('images/flint_feefo'.$img.'.gif').'" />');
+                                                }
+                                            endif;
+                                        ?>
+                                        </span>
+                                    </th>
+                                  </tr>
+                                  <tr>
+                                    <td>
+                                        <?php
+                                        $shorCusCom = $feedback->getElementsByTagName('SHORTCUSTOMERCOMMENT')->item(0)->nodeValue;
+                                        $CusCom = $feedback->getElementsByTagName('CUSTOMERCOMMENT')->item(0)->nodeValue;
+                                        
+                                        ?>
+                                        <font id="shortCus<?php echo $feedback->getElementsByTagName('COUNT')->item(0)->nodeValue;?>"><?php print($shorCusCom); ?></font>
+                                        <?php if($shorCusCom != $CusCom): ?>
+                                            <a href="<?php echo $this->__('Read More.') ?>" onclick="$('shortCus<?php echo $feedback->getElementsByTagName('COUNT')->item(0)->nodeValue;?>').style.display = 'none';this.style.display = 'none';$('longCus<?php echo $feedback->getElementsByTagName('COUNT')->item(0)->nodeValue;?>').style.display = '';return false;"><?php echo $this->__('Read More.') ?></a>
+                                            <font id="longCus<?php echo $feedback->getElementsByTagName('COUNT')->item(0)->nodeValue;?>" style="display: none"><?php print($CusCom); ?></font>
+                                        <?php endif; ?>
+                                    </td>
+                                    <td>
+                                        <?php
+                                        $shorVenCom = $feedback->getElementsByTagName('SHORTVENDORCOMMENT')->item(0)->nodeValue;
+                                        $VenCom = $feedback->getElementsByTagName('VENDORCOMMENT')->item(0)->nodeValue;
+                                        
+                                        ?>
+                                        <font id="short<?php echo $feedback->getElementsByTagName('COUNT')->item(0)->nodeValue;?>"><?php print($shorVenCom); ?></font>
+                                        <?php if($shorVenCom != $VenCom): ?>
+                                            <a href="<?php echo $this->__('Read More.') ?>" onclick="$('short<?php echo $feedback->getElementsByTagName('COUNT')->item(0)->nodeValue;?>').style.display = 'none';this.style.display = 'none';$('long<?php echo $feedback->getElementsByTagName('COUNT')->item(0)->nodeValue;?>').style.display = '';return false;"><?php echo $this->__('Read More.') ?></a>
+                                            <font id="long<?php echo $feedback->getElementsByTagName('COUNT')->item(0)->nodeValue;?>" style="display: none"><?php print($VenCom); ?></font>
+                                        <?php endif; ?>
+                                    </td>
+                                </tr>
+                            <?php
+                        }
+                       ?>
+                                <tr>
+                                    <td colspan="3" style="text-align: center;padding: 15px">
+                                        <a href="<?php echo 'http://www.feefo.com/feefo/viewvendor.jsp?logon='.$helper->getConfig()->getConfigData('flint_feefo/general/logon'); ?>" onclick="popWin('<?php echo 'http://www.feefo.com/feefo/viewvendor.jsp?logon='.$helper->getConfig()->getConfigData('flint_feefo/general/logon'); ?>', '<?php echo $this->__("Feefo reviews")?>', 'width=1000, height=600, toolbar=no, location=no, scrollbars=1'); return false;">
+                                            <?php print(Mage::helper('flint_feefo')->__('Read more reviews on Feefo')); ?>
+                                            <?php print(Mage::helper('flint_feefo')->__('test')); ?>
+                                        </a>
+                                    </td>
+                                <tr>
+                            </tbody>
+                        </table>
+                        <script type="text/javascript">decorateTable('product-feefo-reviews')</script>
+                       <?php
+                    else:
+                        ?>
+                       <table class="data-table" id="product-feefo-reviews">  
+                           <tr>
+                               <th>
+                                   <?php echo  $this->__('This product has no reviews yet.'); ?>
+                               </th>
+                           </tr>
+                       </table>
+                       <script type="text/javascript">decorateTable('product-feefo-reviews')</script>
+                       <?php
+                    endif;
+                 ?>
+            </div>
+               <?php
+              if($helper->getConfig()->getConfigData('flint_feefo/product/googleStars')):
+               
+                   $summary = $dom->getElementsByTagName('SUMMARY')->item(0); ?>
+                   <span style="display:none" class="hreview-aggregate">
+                      <span class="item"><span class="fn">Feefo reviews</span></span>
+                      <span class="rating"><?php echo $summary->getElementsByTagName('AVERAGE')->item(0)->nodeValue; ?>%</span>
+                      <span class="count"><?php echo $summary->getElementsByTagName('TOTALPRODUCTCOUNT')->item(0)->nodeValue; ?></span>
+                    </span>
+              <?php endif; ?>  
+    <?php else: ?>
+        <h2><?php echo $this->__('FeeFo Reviews') ?><img style="float:right" src="<?php echo $helper->getStarsSrc($product)?>" /></h2>
+
+            <div class="std" id="feefo_reviews_block">
+                <?php echo  $this->__('Connection problem to Feefo server.'); ?>
+            </div>
+    <?php endif; ?>
+<?php endif; ?>

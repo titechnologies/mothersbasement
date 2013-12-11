@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<layout version="0.1.0">
+    <catalog_product_view>
+        <reference name="head">
+            <action method="addItem" ifconfig="soldtogether/general/enabled">
+                <type>skin_css</type>
+                <name>css/soldtogether.css</name>
+            </action>
+        </reference>
+        <reference name="product.info.additional">
+            <block type="soldtogether/order" name="product.info.soldtogetherorder" before="-">
+                <action method="setTemplate" ifconfig="soldtogether/general/enabled"><template>soldtogether/order.phtml</template></action>
+            </block>
+        </reference>
+
+        <reference name="product.info.additional">
+            <block type="soldtogether/customer" name="product.info.soldtogethercustomer" after="product.info.soldtogetherorder">
+                <action method="setTemplate" ifconfig="soldtogether/general/enabled"><template>soldtogether/customer.phtml</template></action>
+            </block>
+        </reference>
+        <reference name="before_body_end">
+            <block type="core/template" name="product.info.soldtogetherscript">
+                <action method="setTemplate" ifconfig="soldtogether/general/enabled"><template>soldtogether/script.phtml</template></action>
+            </block>
+            <block type="core/template" name="product.info.soldtogetheramazonescript">
+                <action method="setTemplate" ifconfig="soldtogether/general/enabled"><template>soldtogether/amazon.phtml</template></action>
+            </block>
+        </reference>
+    </catalog_product_view>
+
+    <suggestpage_index_index>
+        <reference name="content">
+            <block type="soldtogether/order" name="suggestpage.soldtogetherorder">
+                <action method="setTemplate" ifconfig="soldtogether/suggestpage/order_enabled"><template>soldtogether/suggestpage/list.phtml</template></action>
+                <action method="setTitle"><title>This Product is Frequently Bought With</title></action>
+                <action method="setProductsCount"><count>5</count></action>
+                <action method="setColumnsCount"><count>5</count></action>
+            </block>
+            <block type="soldtogether/customer" name="suggestpage.soldtogethercustomer">
+                <action method="setTemplate" ifconfig="soldtogether/suggestpage/customer_enabled"><template>soldtogether/suggestpage/list.phtml</template></action>
+                <action method="setTitle"><title>Customers Who Bought This Item Also Bought</title></action>
+                <action method="setProductsCount"><count>5</count></action>
+                <action method="setColumnsCount"><count>5</count></action>
+            </block>
+        </reference>
+    </suggestpage_index_index>
+</layout>
