@@ -36,14 +36,33 @@
     $methods = $this->getMethods();
     $oneMethod = count($methods) <= 1;
 ?>
+
+<?php
+//#2137 - starts
+ 	// checking any of the cart items is preorder
+	$tempPreorderFlag = 'preorderno';
+	$tempCartItemSession = Mage::getSingleton('checkout/session');
+	foreach ($tempCartItemSession->getQuote()->getAllVisibleItems() as $_tempCartItems){
+		if(Mage::getModel('catalog/product')->load($_tempCartItems->getProductId())->getPreorder()){
+		$tempPreorderFlag = 'preorderyes';
+		break;
+		}
+	}
+//#2137 - ends
+?>
 <?php
     foreach ($methods as $_method):
       $_code = $_method->getCode();
 
-      //Display only 'No payment required' and hide all other payment methods from display if grandtotal=0 (.ie 100% applied to order)
-      if((Mage::getSingleton('checkout/session')->getQuote()->getGrandTotal() =='0') && $_code != 'free'){
-        continue;
-      }
+	//#1737 - Display only 'No payment required' and hide all other payment methods from display if grandtotal=0 (.ie 100% applied to order)
+	if((Mage::getSingleton('checkout/session')->getQuote()->getGrandTotal() =='0') && $_code != 'free'){
+	  continue;
+	}else{
+	   //#2137 - hide all payment methods except 'cashondelivery' and 'banktransfer' if one of the items in cart is preorder.
+	   if(($tempPreorderFlag == 'preorderyes') && (($_code != 'cashondelivery') && ($_code != 'banktransfer') && ($_code != 'free'))){
+	     continue;
+	   }
+	}
 ?>
     <dt>
     <?php if(!$oneMethod): ?>
