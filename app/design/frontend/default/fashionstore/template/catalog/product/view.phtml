@@ -46,34 +46,29 @@
 
 
 <?php
-
 $uri = $_SERVER['REQUEST_URI'];
-
 $segment = explode("/", $uri);
-
 $url= $segment[2];
-
-
-
-
-
-
-
 $write = Mage::getSingleton('core/resource')->getConnection('core_write');
-
 $value=$write->query("SELECT * FROM catalog_product_flat_1 where url_path='$url'");
-
 while ($row = $value->fetch() ) {
-
 $product=$row['entity_id'];
-
 }
-
 ?>
 
-
-
 <div id="messages_product_view"><?php echo $this->getMessagesBlock()->getGroupedHtml() ?></div>
+	<?php
+		//#2158
+		$now 	= Mage::getModel('core/date')->gmtDate('U'); //current date
+		$start 	= Mage::getModel('core/date')->gmtDate('U', mktime(0, 0, 0, 12, 16, 2013)); //decembar 16st 2013 12AM
+		$end 	= Mage::getModel('core/date')->gmtDate('U', mktime(13, 59, 0, 12, 23, 2013)); //dec 23rd 2013 2PM
+		if ($now >= $start && $now <= $end){
+			if(($_product->isSaleable() == '1') && ($_product->getPreorder() != '1')){
+			echo $this->getLayout()->createBlock('cms/block')->setBlockId('christmas-delivery-banner')->toHtml();
+			}
+		}
+		//#2158
+	?>
 <table style="width:965px;" border="0">
   <tr>
     <td style="width:645px" valign="top">
@@ -94,44 +89,38 @@ $product=$row['entity_id'];
 
 
    <div>
-
         <div class="product-img-box">
             <?php echo $this->getChildHtml('media') ?>
         </div>
-
    </div>
-
     <div class="product-view">
     <div class="product-essential">
 
-
-
   <script type="text/javascript">
   var $bar = jQuery.noConflict();
-$bar(document).ready(function() {
-$bar("#des a").click(function() {
-  $bar("#description").show();$bar("#technical").hide();$bar("#review").hide();$bar("#addtowish").hide();$bar("#pre-order").hide();
-  $bar("#des").addClass("selected");$bar("#tec").removeClass("selected");$bar("#rev").removeClass("selected");$bar("#add").removeClass("selected");$bar("#pre").removeClass("selected");
+		$bar(document).ready(function() {
+		$bar("#des a").click(function() {
+		$bar("#description").show();$bar("#technical").hide();$bar("#review").hide();$bar("#addtowish").hide();$bar("#pre-order").hide();
+		$bar("#des").addClass("selected");$bar("#tec").removeClass("selected");$bar("#rev").removeClass("selected");$bar("#add").removeClass("selected");$bar("#pre").removeClass("selected");
+		});
+		$bar("#tec a").click(function() {
+		$bar("#description").hide();$bar("#technical").show();$bar("#review").hide();$bar("#addtowish").hide();$bar("#pre-order").hide();
+		$bar("#des").removeClass("selected");$bar("#tec").addClass("selected");$bar("#rev").removeClass("selected");$bar("#add").removeClass("selected");$bar("#pre").removeClass("selected");
+		});
+		$bar("#rev a").click(function() {
+		$bar("#description").hide();$bar("#technical").hide();$bar("#review").show();$bar("#addtowish").hide();$bar("#pre-order").hide();
+		$bar("#des").removeClass("selected");$bar("#tec").removeClass("selected");$bar("#rev").addClass("selected");$bar("#add").removeClass("selected");$bar("#pre").removeClass("selected");
+		});
+		$bar("#add a").click(function() {
+		$bar("#description").hide();$bar("#technical").hide();$bar("#review").hide();$bar("#addtowish").show();$bar("#pre-order").hide();
+		$bar("#des").removeClass("selected");$bar("#tec").removeClass("selected");$bar("#rev").removeClass("selected");$bar("#add").addClass("selected");$bar("#pre").removeClass("selected");
+		});
+		$bar("#pre a").click(function() {
+		$bar("#description").hide();$bar("#technical").hide();$bar("#review").hide();$bar("#addtowish").hide();$bar("#pre-order").show();
+		$bar("#des").removeClass("selected");$bar("#tec").removeClass("selected");$bar("#rev").removeClass("selected");$bar("#add").removeClass("selected");$bar("#pre").addClass("selected");
+		});
 });
-$bar("#tec a").click(function() {
-  $bar("#description").hide();$bar("#technical").show();$bar("#review").hide();$bar("#addtowish").hide();$bar("#pre-order").hide();
- $bar("#des").removeClass("selected");$bar("#tec").addClass("selected");$bar("#rev").removeClass("selected");$bar("#add").removeClass("selected");$bar("#pre").removeClass("selected");
-});
-$bar("#rev a").click(function() {
-  $bar("#description").hide();$bar("#technical").hide();$bar("#review").show();$bar("#addtowish").hide();$bar("#pre-order").hide();
-$bar("#des").removeClass("selected");$bar("#tec").removeClass("selected");$bar("#rev").addClass("selected");$bar("#add").removeClass("selected");$bar("#pre").removeClass("selected");
-});
-$bar("#add a").click(function() {
-  $bar("#description").hide();$bar("#technical").hide();$bar("#review").hide();$bar("#addtowish").show();$bar("#pre-order").hide();
-$bar("#des").removeClass("selected");$bar("#tec").removeClass("selected");$bar("#rev").removeClass("selected");$bar("#add").addClass("selected");$bar("#pre").removeClass("selected");
-});
-$bar("#pre a").click(function() {
-  $bar("#description").hide();$bar("#technical").hide();$bar("#review").hide();$bar("#addtowish").hide();$bar("#pre-order").show();
-$bar("#des").removeClass("selected");$bar("#tec").removeClass("selected");$bar("#rev").removeClass("selected");$bar("#add").removeClass("selected");$bar("#pre").addClass("selected");
-});
-
-							  });
-  </script>
+</script>
 
 
  <form action="<?php echo $this->getSubmitUrl($_product) ?>" method="post" id="product_addtocart_form"<?php if($_product->getOptions()): ?> enctype="multipart/form-data"<?php endif; ?>>
