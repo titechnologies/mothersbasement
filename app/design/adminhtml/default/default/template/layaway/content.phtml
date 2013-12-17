@@ -1,0 +1,149 @@
+<?php
+	$layawayID = 0;$price='';$status=0;$fee=0;$config_fee=1;$config_price =1;$config_maxinstallments=1;$config_status=1;$period=0;$config_period=1;$freq=0;$config_freq=1;
+	$maxinstallments=0;
+	try {
+		$id = $this->getRequest()->getParam('id');
+		if($id != "" && $id != 0 && $id != NULL) {
+			$collection  = Mage::getModel('layaway/products')->getCollection()->addFieldToFilter('product_id', $id)->getData();
+			if(count($collection)){
+				$layawayID  = $collection[0]['layaway_id'];
+				$price=$collection[0]['layaway_first'];
+				$status=$collection[0]['layaway_status'];
+				$fee=$collection[0]['layaway_fees'];
+				$maxinstallments=$collection[0]['layaway_maxinstallments'];
+				$period=$collection[0]['layaway_period'];
+				$config_period=$collection[0]['config_layaway_period']?$collection[0]['config_layaway_period']:0;
+				$freq=$collection[0]['layaway_period_frequency'];
+				$config_freq=$collection[0]['config_layaway_period_frequency']?$collection[0]['config_layaway_period_frequency']:0;
+				$config_status=$collection[0]['config_layaway_status']?$collection[0]['config_layaway_status']:0;
+				$config_price=$collection[0]['config_layaway_first']?$collection[0]['config_layaway_first']:0;
+				$config_fee=$collection[0]['config_layaway_fees']?$collection[0]['config_layaway_fees']:0;
+				$config_maxinstallments=$collection[0]['config_layaway_maxinstallments']?$collection[0]['config_layaway_maxinstallments']:0;
+			}
+		}
+	} catch (Exception $e) {}
+?>
+<div class="entry-edit">
+	<div class="entry-edit-head">
+		<h4 class="icon-head head-edit-form fieldset-legend"><?php echo Mage::helper('layaway')->getLabelsStoredDatafor('layaway')?></h4>
+	</div>
+	<div id="group_fields4" class="fieldset fieldset-wide">
+		<div class="hor-scroll">
+			<table cellspacing="0" class="form-list">
+				<tbody>
+					<tr>
+						<td>
+							<h4 class="icon-head head-edit-form fieldset-legend"><?php echo Mage::helper('layaway')->__('Empty fields, after deselecting the config checkbox, will be considered zero value')?></h4>
+						</td>
+						<td>
+							<input type="hidden" name="default_layaway_status" value="<?php echo  $status; ?>" ></input>
+							<input type="hidden" name="default_layaway_fees" value="<?php echo  $fee; ?>" ></input>
+							<input type="hidden" name="default_layaway_first" value="<?php echo  $price; ?>" ></input>
+							<input type="hidden" name="default_layaway_maxinstallments" value="<?php echo  $maxinstallments; ?>" ></input>
+							<input type="hidden" class="input-text" name="layaway_id" id="layaway_id" value="<?php echo  $layawayID; ?>" ></input>
+							<input type="hidden" name="default_layaway_period" value="<?php echo  $period; ?>" ></input>
+							<input type="hidden" name="default_layaway_period_frequency" value="<?php echo  $freq; ?>" ></input>
+							<table cellspacing="0" class="form-list">
+							    <tbody>
+								<tr>
+								    <td class="label"><label for="layaway_status"><?php echo Mage::helper('layaway')->__('Enable %1s',Mage::helper('layaway')->getLabelsStoredDatafor('layaway')); ?></label></td>
+								    <td class="value">
+									
+									<select class="select" name="layaway_status" id="layaway_status">
+										<option value="0" <?php if($status == 0):?>selected<?php endif;?>><?php echo  $this->__('No'); ?></option>
+										<option value="1" <?php if($status == 1):?>selected<?php endif;?>><?php echo  $this->__('Yes'); ?></option>
+									</select>
+									<input id="config_layaway_status" class="checkbox" type="checkbox" onclick="toggleValueElements(this, this.parentNode);" <?php if($config_status){ ?>checked="checked"<?php } ?> value="1" name="config_layaway_status">
+									<label class="normal" for="config_layaway_status"><?php echo  $this->__('Use Config Settings'); ?></label>
+									<script type="text/javascript">
+									toggleValueElements($('config_layaway_status'), $('config_layaway_status').parentNode);
+									</script>
+								    </td>
+								    <td class="scope-label"><span class="nobr"><?php echo $this->__('[GLOBAL]') ?></span></td>
+								    <td><small>&nbsp;</small></td>
+								</tr>
+								<tr>
+								    <td class="label"><label for="layaway_fees"><?php echo Mage::helper('layaway')->__('Enter %1s (Non Refundable)',Mage::helper('layaway')->getLabelsStoredDatafor('fees'))?></label></td>
+								    <td class="value">
+									<input type="text" class="input-text validate-integers" name="layaway_fees" id="layaway_fees" value="<?php echo  $fee; ?>" ></input>
+									<input id="config_layaway_fees" class="checkbox" type="checkbox" onclick="toggleValueElements(this, this.parentNode);" <?php if($config_fee){ ?>checked="checked"<?php } ?> value="1" name="config_layaway_fees">
+									<label class="normal" for="config_layaway_fees"><?php echo  $this->__('Use Config Settings'); ?></label>
+									<script type="text/javascript">
+									toggleValueElements($('config_layaway_fees'), $('config_layaway_fees').parentNode);
+									</script>
+								    </td>
+								    <td class="scope-label"><span class="nobr"><?php echo $this->__('[GLOBAL]') ?></span></td>
+								    <td><small>&nbsp;</small></td>
+								</tr>
+								<tr>
+								    <td class="label"><label for="layaway_first"><?php echo Mage::helper('layaway')->__('Enter Percent of the Product price to be paid at first time')?></label></td>
+								    <td class="value">
+									<input type="text" class="input-text validate-digits" name="layaway_first" id="layaway_first" value="<?php echo  $price; ?>" ></input>
+									<input id="config_layaway_first" class="checkbox" type="checkbox" onclick="toggleValueElements(this, this.parentNode);" <?php if($config_price){ ?>checked="checked"<?php } ?> value="1" name="config_layaway_first">
+									<label class="normal" for="config_layaway_first"><?php echo  $this->__('Use Config Settings'); ?></label>
+									<script type="text/javascript">
+									toggleValueElements($('config_layaway_first'), $('config_layaway_first').parentNode);
+									</script>
+								    </td>
+								    <td class="scope-label"><?php echo $this->__('% ') ?><span class="nobr"><?php echo $this->__('[GLOBAL]') ?></span></td>
+								    <td><small>&nbsp;</small></td>
+								</tr>
+								<tr>
+								    <td class="label"><label for="layaway_maxinstallments"><?php echo Mage::helper('layaway')->__('Maximum %1s',Mage::helper('layaway')->getLabelsStoredDatafor('installment'))?></label></td>
+								    <td class="value">
+									<input type="text" class="input-text validate-digits" name="layaway_maxinstallments" id="layaway_maxinstallments" value="<?php echo  $maxinstallments; ?>" ></input>
+									
+									<input id="config_layaway_maxinstallments" class="checkbox" type="checkbox" onclick="toggleValueElements(this, this.parentNode);" <?php if($config_maxinstallments){ ?>checked="checked"<?php } ?> value="1" name="config_layaway_maxinstallments">
+									<label class="normal" for="config_layaway_maxinstallments"><?php echo  $this->__('Use Config Settings'); ?></label>
+									<script type="text/javascript">
+									toggleValueElements($('config_layaway_maxinstallments'), $('config_layaway_maxinstallments').parentNode);
+									</script>
+								    </td>
+								    <td class="scope-label"><span class="nobr"><?php echo $this->__('[GLOBAL]') ?></span></td>
+								    <td><small>&nbsp;</small></td>
+								</tr>
+								<tr><?php $periods = Mage::getModel('layaway/period')->toOptionArray(); ?>
+								    <td class="label"><label for="layaway_period"><?php echo Mage::helper('layaway')->__('%1s Period Unit',Mage::helper('layaway')->getLabelsStoredDatafor('installment'))?></label></td>
+								    <td class="value">
+									<?php $select = Mage::getModel('core/layout')->createBlock('adminhtml/html_select')
+										->setData(array(
+										    'id'    => 'layaway_period',
+										    'class' => 'select',
+										    'value' => $period
+										))
+										->setName('layaway_period')
+										->setOptions($periods);
+										echo $select->getHtml(); ?>
+									
+									<input id="config_layaway_period" class="checkbox" type="checkbox" onclick="toggleValueElements(this, this.parentNode);" <?php if($config_period){ ?>checked="checked"<?php } ?> value="1" name="config_layaway_period">
+									<label class="normal" for="config_layaway_period"><?php echo  $this->__('Use Config Settings'); ?></label>
+									<script type="text/javascript">
+									toggleValueElements($('config_layaway_period'), $('config_layaway_period').parentNode);
+									</script>
+								    </td>
+								    <td class="scope-label"><span class="nobr"><?php echo $this->__('[GLOBAL]') ?></span></td>
+								    <td><small>&nbsp;</small></td>
+								</tr>
+								<tr>
+								    <td class="label"><label for="layaway_period_frequency"><?php echo Mage::helper('layaway')->__('Maximum Period for %1s',Mage::helper('layaway')->getLabelsStoredDatafor('installment'))?></label></td>
+								    <td class="value">
+									<input type="text" class="input-text validate-digits" name="layaway_period_frequency" id="layaway_period_frequency" value="<?php echo  $freq; ?>" ></input>
+									
+									<input id="config_layaway_period_frequency" class="checkbox" type="checkbox" onclick="toggleValueElements(this, this.parentNode);" <?php if($config_freq){ ?>checked="checked"<?php } ?> value="1" name="config_layaway_period_frequency">
+									<label class="normal" for="config_layaway_period_frequency"><?php echo  $this->__('Use Config Settings'); ?></label>
+									<script type="text/javascript">
+									toggleValueElements($('config_layaway_period_frequency'), $('config_layaway_period_frequency').parentNode);
+									</script>
+								    </td>
+								    <td class="scope-label"><span class="nobr"><?php echo $this->__('[GLOBAL]') ?></span></td>
+								    <td><small>&nbsp;</small></td>
+								</tr>
+							    </tbody>
+							</table>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+</div>

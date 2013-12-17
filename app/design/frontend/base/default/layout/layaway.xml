@@ -1,0 +1,130 @@
+<?xml version="1.0"?>
+<layout version="0.1.0">
+    
+	<default>
+	
+		
+		
+	</default>
+	<customer_account>
+		<reference name="customer_account_navigation">
+		    <action method="addLink" translate="label" module="layaway"><name>layaway</name><path>layaway/customer</path><label helper="layaway/getCustomerLabel" /></action>
+		</reference>
+	</customer_account>
+	<checkout_onepage_index>
+		<reference name="head">	
+			<action method="addCss"><stylesheet>css/layaway/layaway.css</stylesheet></action>
+		</reference>
+	</checkout_onepage_index>
+	<catalog_product_view>
+		<reference name="head">	
+			<action method="addCss"><stylesheet>css/layaway/layaway.css</stylesheet></action>
+			<!--<action method="addJs"><script>layaway/layaway.js</script></action>	-->
+		</reference>
+		<reference name="product.info.extrahint">
+			<block type="layaway/layaway" name="layaway" as="layaway" template="layaway/productview.phtml"></block>
+		</reference>
+		
+		<reference name="product.info">
+			<!--<reference name="alert.urls">-->
+				<block type="layaway/layaway" name="layaway" as="layaway" template="layaway/productview.phtml"></block>
+			<!--</reference>-->
+		</reference>
+		
+	</catalog_product_view>
+	
+	<layaway_customer_index>
+		<update handle="customer_account"/>
+		<reference name="content">
+			<block type="layaway/main" name="layaway" as="layaway" template="layaway/customer/main.phtml"></block>
+		</reference>
+	</layaway_customer_index>
+	<layaway_customer_order>
+		<label>Customer My Account Layaway Order View</label>
+		<update handle="customer_account"/>
+		<reference name="my.account.wrapper">
+			<block type="layaway/info" as="info" name="layaway.order.info">
+				<block type="sales/order_info_buttons" as="buttons" name="sales.order.info.buttons" />
+			</block>
+			<block type="layaway/view" name="layaway.order.view">
+				<block type="sales/order_items" name="order_items" template="layaway/customer/items.phtml">
+					<action method="addItemRender"><type>default</type><block>sales/order_item_renderer_default</block><template>layaway/customer/items/renderer/default.phtml</template></action>
+					<action method="addItemRender"><type>grouped</type><block>sales/order_item_renderer_grouped</block><template>layaway/customer/items/renderer/default.phtml</template></action>
+					<action method="addItemRender"><type>bundle</type><block>bundle/sales_order_items_renderer</block><template>bundle/sales/order/items/renderer.phtml</template></action>
+					<action method="addItemRender"><type>downloadable</type><block>downloadable/sales_order_item_renderer_downloadable</block><template>layaway/customer/downloadable/sales/order/items/renderer/downloadable.phtml</template></action>
+					<block type="sales/order_totals" name="order_totals" template="layaway/customer/totals.phtml">
+						<block type="layaway/sales_layawayfee" name="layawayfee.order.total" />
+						<block type="layaway/sales_layawayremaining" name="layawayremaining.order.total" />
+						<action method="setLabelProperties"><value>colspan="4" class="a-right"</value></action>
+						<action method="setValueProperties"><value>class="last a-right"</value></action>
+						<block type="tax/sales_order_tax" name="tax" template="tax/order/tax.phtml" />
+					</block>
+					
+				</block>
+				<!--<block type="checkout/onepage_payment_methods" name="layaway.payment.method" as="payment_method" template="layaway/customer/methods.phtml">
+				    <action method="setMethodFormTemplate"><method>purchaseorder</method><template>payment/form/purchaseorder.phtml</template></action>
+				</block>-->
+			</block>
+		</reference>
+		<block type="core/text_list" name="additional.product.info" translate="label">
+		    <label>Additional Product Info</label>
+		</block>
+	</layaway_customer_order>
+	<sales_order_view>
+		<reference name="order_totals">
+		    <block type="layaway/sales_layawayfee" name="layawayfee.order.total" />
+		    <block type="layaway/sales_layawayremaining" name="layawayremaining.order.total" />
+		</reference>
+	</sales_order_view>
+	<sales_order_print>
+		<reference name="order_totals">
+		    <block type="layaway/sales_layawayfee" name="layawayfee.order.total" />
+		    <block type="layaway/sales_layawayremaining" name="layawayremaining.order.total" />
+		</reference>
+	</sales_order_print>
+	<sales_email_order_items>
+		<reference name="order_totals">
+		   <block type="layaway/sales_layawayfee" name="layawayfee.order.total" />
+		   <block type="layaway/sales_layawayremaining" name="layawayremaining.order.total" />
+		</reference>
+	</sales_email_order_items>
+    
+	<sales_order_invoice>
+		<reference name="invoice_totals">
+		    <block type="layaway/sales_layawayfee" name="layawayfee.order.total" />
+		    <block type="layaway/sales_layawayremaining" name="layawayremaining.order.total" />
+		</reference>
+	</sales_order_invoice>
+	<sales_order_printinvoice>
+		<reference name="invoice_totals">
+		    <block type="layaway/sales_layawayfee" name="layawayfee.order.total" />
+		    <block type="layaway/sales_layawayremaining" name="layawayremaining.order.total" />
+		</reference>
+	</sales_order_printinvoice>
+	<sales_email_order_invoice_items>
+		<reference name="invoice_totals">
+		    <block type="layaway/sales_layawayfee" name="layawayfee.order.total" />
+		    <block type="layaway/sales_layawayremaining" name="layawayremaining.order.total" />
+		</reference>
+	</sales_email_order_invoice_items>
+    
+	<sales_order_creditmemo>
+		<reference name="creditmemo_totals">
+		    <block type="layaway/sales_layawayfee" name="layawayfee.order.total" />
+		    <block type="layaway/sales_layawayremaining" name="layawayremaining.order.total" />
+		</reference>
+	</sales_order_creditmemo>
+	<sales_order_printcreditmemo>
+		<reference name="creditmemo_totals">
+		    <block type="layaway/sales_layawayfee" name="layawayfee.order.total" />
+		    <block type="layaway/sales_layawayremaining" name="layawayremaining.order.total" />
+		</reference>
+	</sales_order_printcreditmemo>
+	<sales_email_order_creditmemo_items>
+		<reference name="creditmemo_totals">
+		    <block type="layaway/sales_layawayfee" name="layawayfee.order.total" />
+		    <block type="layaway/sales_layawayremaining" name="layawayremaining.order.total" />
+		</reference>
+	</sales_email_order_creditmemo_items>
+		
+</layout> 

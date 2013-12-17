@@ -1,0 +1,70 @@
+<?php 
+/*////////////////////////////////////////////////////////////////////////////////
+ \\\\\\\\\\\\\\\\\\\\\\\\\   FME Layaway extension  \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+ /////////////////////////////////////////////////////////////////////////////////
+ \\\\\\\\\\\\\\\\\\\\\\\\\ NOTICE OF LICENSE\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+ ///////                                                                   ///////
+ \\\\\\\ This source file is subject to the Open Software License (OSL 3.0)\\\\\\\
+ ///////   that is bundled with this package in the file LICENSE.txt.      ///////
+ \\\\\\\   It is also available through the world-wide-web at this URL:    \\\\\\\
+ ///////          http://opensource.org/licenses/osl-3.0.php               ///////
+ \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+ ///////                      * @category   FME                            ///////
+ \\\\\\\                      * @package    FME_Layaway                    \\\\\\\
+ ///////    * @author     Malik Tahir Mehmood <malik.tahir786@gmail.com>   ///////
+ \\\\\\\                                                                   \\\\\\\
+ /////////////////////////////////////////////////////////////////////////////////
+ \\* @copyright  Copyright 2010 © free-magentoextensions.com All right reserved\\\
+ /////////////////////////////////////////////////////////////////////////////////
+ */
+?>
+<?php echo $this->getMessagesBlock()->getGroupedHtml() ?>
+<?php $_orders = $this->getOrders(); ?>
+<div class="page-title">
+    <h1><?php echo Mage::helper('layaway')->__('%1s Orders:',Mage::helper('layaway')->getLabelsStoredDatafor('layaway'));?></h1>
+</div>
+
+<?php echo $this->getPagerHtml(); ?>
+<?php if($_orders->getSize()): ?>
+<table class="data-table" id="layaway-orders-table">
+    <col width="1" />
+    <col width="1" />
+    <col />
+    <col width="1" />
+    <col width="1" />
+    <col width="1" />
+    <thead>
+        <tr>
+            <th><?php echo Mage::helper('layaway')->__('Order #') ?></th>
+            <th><?php echo Mage::helper('layaway')->__('Date') ?></th>
+            <th><?php echo Mage::helper('layaway')->__('Ship To') ?></th>
+            <th><span class="nobr"><?php echo Mage::helper('layaway')->__('Order Total') ?></span></th>
+            <th><span class="nobr"><?php echo Mage::helper('layaway')->getLabelsStoredDatafor('remaining') ?></span></th>
+            <th>&nbsp;</th>
+        </tr>
+    </thead>
+    <tbody>
+        <?php $_odd = ''; ?>
+        <?php foreach ($_orders as $_order): ?>
+        <tr>
+            <td><?php echo $_order->getRealOrderId() ?></td>
+            <td><span class="nobr"><?php echo $this->formatDate($_order->getCreatedAtStoreDate()) ?></span></td>
+            <td><?php echo $_order->getShippingAddress() ? $this->htmlEscape($_order->getShippingAddress()->getName()) : '&nbsp;' ?></td>
+            <td><?php echo $_order->formatPrice($_order->getGrandTotal()+$_order->getLayawayRemaining()) ?></td>
+            <td><?php echo $_order->formatPrice($_order->getLayawayRemaining()) ?></td>
+            <!--<td><em><?php //echo $_order->getStatusLabel() ?></em></td>-->
+            <td class="a-center">
+                <span class="nobr"><a href="<?php echo $this->getViewUrl($_order) ?>"><?php echo Mage::helper('layaway')->__('View Order') ?></a></span>
+            </td>
+        </tr>
+        <?php endforeach; ?>
+    </tbody>
+</table>
+<script type="text/javascript">decorateTable('layaway-orders-table');</script>
+<?php echo $this->getPagerHtml(); ?>
+<?php else: ?>
+<p><?php echo Mage::helper('layaway')->__('Sorry, No orders Found.');?></p>
+<?php endif; ?>
+<div class="buttons-set">
+    <p class="back-link"><a href="<?php echo $this->escapeUrl($this->getBackUrl()) ?>"><small>&laquo; </small><?php echo Mage::helper('layaway')->__('Back') ?></a></p>
+</div>

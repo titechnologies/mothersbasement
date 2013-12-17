@@ -1,0 +1,169 @@
+<?php
+    $helper = Mage::helper('layaway');
+    $multiple = Mage::helper('layaway')->getGlobalStoredDatafor('multiple');
+    //$installment = $this->getInstallmentsPaid();
+    $_order = $this->getOrder();
+    $items =  $_order->getAllVisibleItems();
+    if(count($items)):
+        $_item = $helper->getOrderProduct($_order);
+        
+        $global = count($items)>1 && $multiple;
+        $_layawayData = $helper->getLayawayProductData($_item->getProductId());
+        $nxttimestamp = $helper->getLayawayTimeLeft($_layawayData, $_order->getCreatedAtStoreDate(),null, $global);
+        $nxtdate = 0;
+        if($nxttimestamp){
+            $nxtdate = date('d M Y', $nxttimestamp);
+        }
+        $maxinstallments = $helper->getLayawayData('layaway_maxinstallments',$_layawayData , $global);
+    ?>
+        <?php $_installments = $this->getInstallments(); ?>
+        <div class="order-items order-details">
+            <form method="post" id="pay_installment" action="<?php echo $this->getUrl('layaway/customer/postData',array('_secure' => true));?>">
+                            
+            <?php ?>
+            <?php echo $this->getChildHtml('order_items') ?>
+            <div class="order-additional ">
+                <h2 class="sub-title"><?php echo $helper->__('%1s Payments Section',$helper->getLabelsStoredDatafor('layaway')) ?></h2>
+            </div>
+            <div class="col2-set order-info-box">
+                <?php if($_order->getLayawayRemaining() > 0): ?>
+                <div class="col-2">
+                    <div class="box">
+                        <div class="box-title">
+                            <h2><?php echo $helper->__('Pay %1s:',$helper->getLabelsStoredDatafor('installment')) ?></h2>
+                        </div>
+                        <div class="box-content form-list">
+                                <ul class="fields">
+                                    <li>
+                                        <label><?php echo $helper->getLabelsStoredDatafor('remaining')//$helper->__('Outstanding Amount: ') ?><?php echo ": " . $helper->getOutstandingamount($_order);//Mage::helper('core')->currency($_order->getBaseLayawayRemaining(), true, false); ?></label>
+                                    </li>
+                                    <li>
+                                        <label><?php echo $this->__('Note: Empty Your cart before paying the %1s.',$helper->getLabelsStoredDatafor('installment')) ?></label>
+                                    </li>
+                                    <?php if($nxttimestamp){ ?>
+                                        <input type="hidden" name="lastdate" value="<?php echo $nxttimestamp; ?>" />
+                                    <?php } ?>
+                                            
+                                    <input type="hidden" name="order" value="<?php echo $_order->getId(); ?>" />
+                                    <input type="hidden" name="order_increment" value="<?php echo $_order->getIncrementId(); ?>" />
+                                    <input type="hidden" name="installment" value="<?php echo ($_installments->getSize() + 1); ?>" />
+                                    <?php if($maxinstallments){ ?>
+                                    <input type="hidden" name="remaining_installments" value="<?php echo ($maxinstallments - $_installments->getSize()); ?>" />
+                                    <?php } ?>
+                                    <input type="hidden" name="options[layaway]" value="0" />
+                                    <input type="hidden" name="options[layaway_order]" value="<?php echo $_order->getId(); ?>" />
+                                    <?php if(Mage::helper('layaway')->getPayingOption('open')){ ?>
+                                    <li class="field">
+                                        <label for="layaway:amount" class="required"><?php echo $helper->__('Enter Amount') ?><em>*</em></label>
+                                        <div class="input-box">
+                                            <input type="text" title="<?php echo $helper->__('Enter Amount') ?>" name="amount" id="layaway:amount" value="<?php  ?>" class="input-text required-entry" />
+                                        </div>
+                                    </li>
+                                    <div class="buttons-set" id="billing-buttons-container">
+                                        <p class="required"><?php echo $helper->__('* Required Fields') ?></p>
+                                        <button type="submit" title="<?php echo $this->__('Pay %1s',$helper->getLabelsStoredDatafor('installment')) ?>" class="button" onclick=""><span><span><?php echo $helper->__('Pay %1s',$helper->getLabelsStoredDatafor('installment')) ?></span></span></button>
+                                        <span class="please-wait" id="loading-please-wait" style="display:none;">
+                                            <img src="<?php echo $this->getSkinUrl('images/opc-ajax-loader.gif') ?>" alt="<?php echo $this->__('Saving Data...') ?>" title="<?php echo $helper->__('Saving Data...') ?>" class="v-middle" /> <?php echo $helper->__('Saving Data...') ?>
+                                        </span>
+                                    </div>
+                                    <?php }else{ ?>
+                                        <input type="hidden"  name="amount" id="layaway:amount" value="<?php  ?>" class="input-text" />
+                                    <?php } ?>
+                                </ul>
+                            
+                        </div>
+                    </div>
+                </div>
+                <?php endif; ?>
+                <div class="col-1">
+                    <div class="box box-payment">
+                        <div class="box-title">
+                            <h2><?php echo $helper->__('%1s Info:',$helper->getLabelsStoredDatafor('layaway')) ?></h2>
+                        </div>
+                        <div class="box-content">
+                            <ul>
+                                <li><strong><?php echo $helper->__('Paid NO. of %1s:',$helper->getLabelsStoredDatafor('installment')) ?></strong> <?php echo $_installments->getSize(); ?></li>
+                                <?php if($maxinstallments){ ?>
+                                <li><strong><?php echo $helper->__('Max NO. of %1s:',$helper->getLabelsStoredDatafor('installment')) ?></strong> <?php echo $maxinstallments; ?></li>
+                                <li><strong><?php echo $helper->__('Remaining NO. of %1s:',$helper->getLabelsStoredDatafor('installment')) ?></strong> <?php echo $maxinstallments - $_installments->getSize(); ?></li>
+                                <?php } ?>
+                                <li><strong><?php echo $helper->__('Duration Allowed:') ?></strong> <?php echo $helper->getLayawayDuration($_layawayData, $global); ?></li>
+                                <?php if($nxtdate):?>
+                                    <li><strong><?php echo $helper->__('Last Date:') ?></strong> <?php echo $nxtdate; ?></li>
+                                <?php endif; ?>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+        <script>
+            var installmentForm = new VarienForm('pay_installment');
+            function removerequire(crnt,base){
+                $('layaway:amount').removeClassName('required-entry');
+                <?php $currentcurrency = Mage::app()->getStore()->getCurrentCurrencyCode();
+                if($_order->getOrderCurrencyCode() == $currentcurrency){
+                ?>
+                $('layaway:amount').value=crnt;
+                <?php }else{ ?>
+                $('layaway:amount').value=base;
+                <?php } ?>
+                
+            }
+        </script>
+        
+            
+        <?php if($_installments->getSize()): ?>
+            <div class="order-additional ">
+                <h2 class="sub-title"><?php echo $helper->__('%1s History',$helper->getLabelsStoredDatafor('installment')) ?></h2>
+            </div>
+        <?php echo $this->getPagerHtml(); ?>
+            <table class="data-table" id="layaway-installments-table">
+                <col width="1" />
+                <col width="1" />
+                <col />
+                <col width="1" />
+                <col width="1" />
+                <col width="1" />
+                <thead>
+                    <tr>
+                        <th><?php echo Mage::helper('layaway')->__('Order #') ?></th>
+                        <th><?php echo Mage::helper('layaway')->__('Date') ?></th>
+                        <th><?php echo Mage::helper('layaway')->__('Bill To') ?></th>
+                        <th><?php echo Mage::helper('layaway')->__('Payment Method') ?></th>
+                        <th><span class="nobr"><?php echo Mage::helper('layaway')->__('Paid amount') ?></span></th>
+                        <th><span class="nobr"><?php echo Mage::helper('layaway')->__('Status') ?></span></th>
+                        <th>&nbsp;</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php $_odd = ''; ?>
+                    <?php foreach ($_installments as $_installment): ?>
+                    <tr>
+                        <td><?php echo $_installment->getRealOrderId() ?></td>
+                        <td><span class="nobr"><?php echo $this->formatDate($_installment->getCreatedAtStoreDate()) ?></span></td>
+                        <td><?php echo $_installment->getBillingAddress() ? $this->htmlEscape($_installment->getBillingAddress()->getName()) : '&nbsp;' ?></td>
+                        <td><?php echo $_installment->getPayment()->getMethod() ?></td>
+                        <td><?php echo $_installment->formatPrice($_installment->getGrandTotal()) ?></td>
+                        <td><em><?php echo $_installment->getStatus() ?></em></td>
+                        <td class="a-center">
+                            <span class="nobr"><a href="<?php echo $this->getInstallmentViewUrl($_installment) ?>"><?php echo Mage::helper('layaway')->__('View Details') ?></a></span>
+                        </td>
+                    </tr>
+                    <?php endforeach; ?>
+                </tbody>
+            </table>
+            <script type="text/javascript">decorateTable('layaway-installments-table');</script>
+        <?php echo $this->getPagerHtml(); ?>
+    
+        <?php endif; ?>
+    <?php else: ?>
+        <div class="order-items order-details">
+            <div class="order-additional ">
+                <h2 class="sub-title"><?php echo $helper->__('Sorry, No details available.') ?></h2>
+            </div>
+    <?php endif; ?>  
+            <div class="buttons-set">
+                <p class="back-link"><a href="<?php echo $this->getBackUrl() ?>"><small>&laquo; </small><?php echo $this->getBackTitle() ?></a></p>
+            </div>
+        </div>

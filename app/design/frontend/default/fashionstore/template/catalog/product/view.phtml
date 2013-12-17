@@ -162,6 +162,7 @@ endif;
             <?php if($_product->isSaleable()): ?>
 
             <?php if ($_product->getPreorder()):?>
+			<?php echo $this->getChildHtml('layaway'); ?>
 			<span class="availibity-status"><?php echo $this->__('PRE-ORDER') ?><span class="avaibility-more"><a href="<?php echo $this->getUrl('faq')?>#preorders" target="_blank">(<?php echo $this->__("Learn More")?>)</a></span></span>
 			<span class="dispatch-note"><?php echo $_product->getPreorderdescript()?></span>
             <?php else: ?>

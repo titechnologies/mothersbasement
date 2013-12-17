@@ -1,0 +1,302 @@
+<?xml version="1.0"?>
+<!--
+/*////////////////////////////////////////////////////////////////////////////////
+ \\\\\\\\\\\\\\\\\\\\\\\\\   FME Layaway extension  \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+ /////////////////////////////////////////////////////////////////////////////////
+ \\\\\\\\\\\\\\\\\\\\\\\\\ NOTICE OF LICENSE\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+ ///////                                                                   ///////
+ \\\\\\\ This source file is subject to the Open Software License (OSL 3.0)\\\\\\\
+ ///////   that is bundled with this package in the file LICENSE.txt.      ///////
+ \\\\\\\   It is also available through the world-wide-web at this URL:    \\\\\\\
+ ///////          http://opensource.org/licenses/osl-3.0.php               ///////
+ \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+ ///////                      * @category   FME                            ///////
+ \\\\\\\                      * @package    FME_Layaway                    \\\\\\\
+ ///////    * @author     Malik Tahir Mehmood <malik.tahir786@gmail.com>   ///////
+ \\\\\\\                                                                   \\\\\\\
+ /////////////////////////////////////////////////////////////////////////////////
+ \\* @copyright  Copyright 2010 © free-magentoextensions.com All right reserved\\\
+ /////////////////////////////////////////////////////////////////////////////////
+ */
+
+-->
+<config>
+    <tabs>
+	<fme_extensions translate="label" module="layaway">
+	    <label>FME Extensions</label>
+	    <sort_order>100</sort_order>
+	</fme_extensions>
+    </tabs>
+   <sections>
+       <layaway>
+            <label>Layaway</label>
+            <tab>fme_extensions</tab>
+             <class>separator-top</class>
+            <frontend_type>text</frontend_type>
+            <sort_order>150</sort_order>
+            <show_in_default>1</show_in_default>
+            <show_in_website>1</show_in_website>
+            <show_in_store>1</show_in_store>
+		<groups>
+                    <general translate="label">
+                        <label>General</label>
+                        <frontend_type>text</frontend_type>
+                        <sort_order>10</sort_order>
+                        <show_in_default>1</show_in_default>
+                        <show_in_website>1</show_in_website>
+                        <show_in_store>1</show_in_store>
+                        <fields>
+			    <enable translate="label">
+                                <label>Enable Layaway</label>
+                                <frontend_type>select</frontend_type>
+                                <source_model>adminhtml/system_config_source_yesno</source_model>
+                                <sort_order>10</sort_order>
+                                <show_in_default>1</show_in_default>
+                                <show_in_website>1</show_in_website>
+                                <show_in_store>1</show_in_store>
+                            </enable>
+			    <enable_all translate="label">
+                                <label>Enable Layaway for All Products</label>
+                                <frontend_type>select</frontend_type>
+                                <source_model>adminhtml/system_config_source_yesno</source_model>
+                                <sort_order>20</sort_order>
+                                <show_in_default>1</show_in_default>
+                                <show_in_website>1</show_in_website>
+                                <show_in_store>1</show_in_store>
+				<comment>Not valid for the products where Layaway is disabled individually.</comment>
+                            </enable_all>
+			    <heading translate="label">
+                                <label>Enter Label for Product Page</label>
+                                <frontend_type>text</frontend_type>
+                                <sort_order>30</sort_order>
+				<comment></comment>
+                                <show_in_default>1</show_in_default>
+                                <show_in_website>1</show_in_website>
+                                <show_in_store>1</show_in_store>
+				<!--<validate>required-entry</validate>-->
+                            </heading>
+			    <enabletooltip translate="label">
+				<label>Enable ToolTip</label>
+				<frontend_type>select</frontend_type>
+                                <source_model>adminhtml/system_config_source_yesno</source_model>
+                                <sort_order>40</sort_order>
+				<comment></comment>
+                                <show_in_default>1</show_in_default>
+                                <show_in_website>1</show_in_website>
+                                <show_in_store>1</show_in_store>
+				<!--<validate>required-entry</validate>-->
+			    </enabletooltip>
+			    <tooltip translate="label">
+				<label>Enter Label for ToolTip</label>
+                                <frontend_type>text</frontend_type>
+                                <sort_order>50</sort_order>
+				<comment></comment>
+                                <show_in_default>1</show_in_default>
+                                <show_in_website>1</show_in_website>
+                                <show_in_store>1</show_in_store>
+				<!--<validate>required-entry</validate>-->
+			    </tooltip>
+			    <detail translate="label">
+				<label>Enter Comments for Layaway on Product Page</label>
+                                <frontend_type>textarea</frontend_type>
+                                <sort_order>60</sort_order>
+				<comment></comment>
+                                <show_in_default>1</show_in_default>
+                                <show_in_website>1</show_in_website>
+                                <show_in_store>1</show_in_store>
+				<!--<validate>required-entry</validate>-->
+			    </detail>
+			    <terms_label translate="label">
+				<label>Enter Layaway Terms and Conditions Label</label>
+                                <frontend_type>text</frontend_type>
+                                <sort_order>61</sort_order>
+				<comment></comment>
+                                <show_in_default>1</show_in_default>
+                                <show_in_website>1</show_in_website>
+                                <show_in_store>1</show_in_store>
+				<!--<validate>required-entry</validate>-->
+			    </terms_label>
+			    <terms translate="label">
+				<label>Enter Layaway Terms and Conditions</label>
+                                <frontend_type>textarea</frontend_type>
+                                <sort_order>62</sort_order>
+				<comment></comment>
+                                <show_in_default>1</show_in_default>
+                                <show_in_website>1</show_in_website>
+                                <show_in_store>1</show_in_store>
+				<!--<validate>required-entry</validate>-->
+			    </terms>
+                           <allowedpaymethods translate="label">
+				<label>Select Allowed Payment methods (Listed are your activated methods)</label>
+				<frontend_type>multiselect</frontend_type>
+				<source_model>layaway/paymethods</source_model>
+                                <sort_order>70</sort_order>
+				<comment>If client selects to purchase products on Layaway, which payment methods you allow them.</comment>
+                                <show_in_default>1</show_in_default>
+                                <show_in_website>1</show_in_website>
+                                <show_in_store>1</show_in_store>
+				<validate>required-entry</validate>
+			    </allowedpaymethods>
+			    <pending_status translate="label">
+				<label>Status for pending layaway orders</label>
+				<frontend_type>select</frontend_type>
+				<source_model>layaway/status</source_model>
+				<sort_order>170</sort_order>
+				<show_in_default>1</show_in_default>
+				<show_in_website>1</show_in_website>
+				<show_in_store>1</show_in_store>
+			    </pending_status>
+			    <processing_status translate="label">
+				<label>Status for complete layaway orders</label>
+				<frontend_type>select</frontend_type>
+				<source_model>layaway/status</source_model>
+				<sort_order>170</sort_order>
+				<show_in_default>1</show_in_default>
+				<show_in_website>1</show_in_website>
+				<show_in_store>1</show_in_store>
+			    </processing_status>
+                        </fields>
+                    </general>
+		    <labels translate="label">
+                        <label>Labels</label>
+                        <frontend_type>text</frontend_type>
+                        <sort_order>20</sort_order>
+                        <show_in_default>1</show_in_default>
+                        <show_in_website>1</show_in_website>
+                        <show_in_store>1</show_in_store>
+                        <fields>
+			    <layaway translate="label">
+                                <label>Layaway</label>
+                                <frontend_type>text</frontend_type>
+                                <sort_order>10</sort_order>
+                                <show_in_default>1</show_in_default>
+                                <show_in_website>1</show_in_website>
+                                <show_in_store>1</show_in_store>
+				<validate>required-entry</validate>
+                            </layaway>
+			    <fees translate="label">
+                                <label>Layaway Fee</label>
+                                <frontend_type>text</frontend_type>
+                                <sort_order>20</sort_order>
+                                <show_in_default>1</show_in_default>
+                                <show_in_website>1</show_in_website>
+                                <show_in_store>1</show_in_store>
+				<validate>required-entry</validate>
+                            </fees>
+			    <remaining translate="label">
+                                <label>Layaway Remaining </label>
+                                <frontend_type>text</frontend_type>
+                                <sort_order>30</sort_order>
+                                <show_in_default>1</show_in_default>
+                                <show_in_website>1</show_in_website>
+                                <show_in_store>1</show_in_store>
+				<validate>required-entry</validate>
+                            </remaining>
+			   
+			    <installment translate="label">
+                                <label>Installment</label>
+                                <frontend_type>text</frontend_type>
+                                <sort_order>40</sort_order>
+                                <show_in_default>1</show_in_default>
+                                <show_in_website>1</show_in_website>
+                                <show_in_store>1</show_in_store>
+				<validate>required-entry</validate>
+                            </installment>
+			</fields>
+                    </labels>
+		    <global translate="label">
+                        <label>Global Values</label>
+                        <frontend_type>text</frontend_type>
+                        <sort_order>20</sort_order>
+                        <show_in_default>1</show_in_default>
+                        <show_in_website>1</show_in_website>
+                        <show_in_store>1</show_in_store>
+                        <fields>
+			    <multiple translate="label">
+				<label>Enable Multiple products for checkout</label>
+				<frontend_type>select</frontend_type>
+                                <!--<source_model>adminhtml/system_config_source_yesno</source_model>-->
+				<source_model>layaway/multiple</source_model>
+                                <sort_order>10</sort_order>
+				<comment>if this is enabled, the system will use the values for Maximum Installments and Maximum Period provided below instead of individual products.</comment>
+                                <show_in_default>1</show_in_default>
+                                <show_in_website>1</show_in_website>
+                                <show_in_store>1</show_in_store>
+				<!--<validate>required-entry</validate>-->
+			    </multiple>
+			   
+			    <payoption translate="label">
+				<label>Installment Paying option</label>
+				<frontend_type>multiselect</frontend_type>
+                                <!--<source_model>adminhtml/system_config_source_yesno</source_model>-->
+				<source_model>layaway/payoption</source_model>
+                                <sort_order>15</sort_order>
+				<comment>These options will be available in customer Account while paying the installments.</comment>
+                                <show_in_default>1</show_in_default>
+                                <show_in_website>1</show_in_website>
+                                <show_in_store>1</show_in_store>
+				<validate>required-entry</validate>
+				<!--<validate>required-entry</validate>-->
+			    </payoption>
+			    <charges translate="label">
+				<label>Charge Layaway Fee</label>
+				<frontend_type>select</frontend_type>
+                                <source_model>layaway/charges</source_model>
+                                <sort_order>20</sort_order>
+				<comment>in-case multiple layaway products or qty more than one added to cart.</comment>
+                                <show_in_default>1</show_in_default>
+                                <show_in_website>1</show_in_website>
+                                <show_in_store>1</show_in_store>
+				<!--<validate>required-entry</validate>-->
+			    </charges>
+			    
+			    <layaway_fees translate="label">
+                                <label>Layaway Charges (non-refundable)</label>
+                                <frontend_type>text</frontend_type>
+                                <sort_order>30</sort_order>
+                                <show_in_default>1</show_in_default>
+                                <show_in_website>1</show_in_website>
+                                <show_in_store>1</show_in_store>
+				<comment></comment>
+                            </layaway_fees>
+			    <layaway_first translate="label">
+                                <label>Percent of product price for initial payment</label>
+                                <frontend_type>text</frontend_type>
+                                <sort_order>30</sort_order>
+                                <show_in_default>1</show_in_default>
+                                <show_in_website>1</show_in_website>
+                                <show_in_store>1</show_in_store>
+                            </layaway_first>
+			    <layaway_maxinstallments translate="label">
+                                <label>Maximum no. of Installments</label>
+                                <frontend_type>text</frontend_type>
+                                <sort_order>40</sort_order>
+                                <show_in_default>1</show_in_default>
+                                <show_in_website>1</show_in_website>
+                                <show_in_store>1</show_in_store>
+				<comment>Afer paying the initial amount, the customers can Pay the rest of the amount with maximum number of installments</comment>
+                            </layaway_maxinstallments>
+			    <layaway_period translate="label">
+                                <label>Installments Period Unit</label>
+                                <frontend_type>select</frontend_type>
+				<source_model>layaway/period</source_model>
+                                <sort_order>50</sort_order>
+                                <show_in_default>1</show_in_default>
+                                <show_in_website>1</show_in_website>
+                                <show_in_store>1</show_in_store>
+                            </layaway_period>
+			    <layaway_period_frequency translate="label">
+                                <label>Maximum Period for Installments</label>
+                                <frontend_type>text</frontend_type>
+                                <sort_order>60</sort_order>
+                                <show_in_default>1</show_in_default>
+                                <show_in_website>1</show_in_website>
+                                <show_in_store>1</show_in_store>
+				<comment>The customers have to finish their payments within this period.</comment>
+                            </layaway_period_frequency>
+                        </fields>
+                    </global>
+                </groups>
+        </layaway>
+    </sections>
+</config>

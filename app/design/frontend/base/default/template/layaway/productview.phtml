@@ -1,0 +1,50 @@
+<?php
+/*////////////////////////////////////////////////////////////////////////////////
+ \\\\\\\\\\\\\\\\\\\\\\\\\   FME Layaway extension  \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+ /////////////////////////////////////////////////////////////////////////////////
+ \\\\\\\\\\\\\\\\\\\\\\\\\ NOTICE OF LICENSE\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+ ///////                                                                   ///////
+ \\\\\\\ This source file is subject to the Open Software License (OSL 3.0)\\\\\\\
+ ///////   that is bundled with this package in the file LICENSE.txt.      ///////
+ \\\\\\\   It is also available through the world-wide-web at this URL:    \\\\\\\
+ ///////          http://opensource.org/licenses/osl-3.0.php               ///////
+ \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+ ///////                      * @category   FME                            ///////
+ \\\\\\\                      * @package    FME_Layaway                    \\\\\\\
+ ///////    * @author     Malik Tahir Mehmood <malik.tahir786@gmail.com>   ///////
+ \\\\\\\                                                                   \\\\\\\
+ /////////////////////////////////////////////////////////////////////////////////
+ \\* @copyright  Copyright 2010 © free-magentoextensions.com All right reserved\\\
+ /////////////////////////////////////////////////////////////////////////////////
+ */
+?>
+
+<?php $_product = $this->getProduct(); ?>
+<?php if($_product && $_product->getPreorder()):  $_layaway = $this->getLayawayData($_product->getId()); ?>
+<?php if ($_layaway) :
+$session = Mage::getSingleton('checkout/session');
+$quote = $session->getQuote();
+?>
+
+<div id="layaway" class="layaway">
+	<label for="layaway_select"><?php echo Mage::helper('layaway')->getheading() ;?></label>
+	<select name="options[layaway]" class="required-entry" id="layaway_select" class="layaway_select">
+	    <option value="" ><?php echo $this->__('No');?></option>
+	    <option value="1"<?php if($quote->getIsLayaway()){ ?>selected<?php } ?>><?php echo $this->__('Yes');?></option>
+	</select>
+	<?php $detail = trim(Mage::helper('layaway')->getStoredDatafor('detail'));
+	if(Mage::helper('layaway')->getStoredDatafor('enabletooltip') && $detail !='')?>
+	<span class="tooltip" onmouseover="showdetail()" onmouseout="hidedetail()" ><?php echo Mage::helper('layaway')->getStoredDatafor('tooltip');?><div id="layaway_comments" class="tooltip_detail" style="display:none"><?php echo nl2br($detail);?></div></span>
+	
+</div>
+<script>
+	function showdetail(){
+		Element.show('layaway_comments');
+	}
+	function hidedetail(){
+		Element.hide('layaway_comments');
+	}
+	
+</script>
+<?php endif; ?>
+<?php endif; ?>

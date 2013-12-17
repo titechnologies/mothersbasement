@@ -1,0 +1,12 @@
+<?php
+    $this->setPriceDataObject($this->getSource());
+    $order =  $this->getSource()->getOrder();
+?>
+<?php if($order->getIsLayaway()): ?>
+    <tr>
+        <td class="label"><?php echo Mage::helper('layaway')->getLabelsStoredDatafor('remaining') ?></td>
+        <td>
+            <?php echo "-".$this->displayPrices($order->getBaseLayawayRemaining(), $order->getLayawayRemaining()); ?>
+        </td>
+    </tr>
+<?php endif; ?>
