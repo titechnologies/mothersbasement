@@ -69,6 +69,25 @@
 </script>
 <div id="checkout-review-submit">
     <?php echo $this->getChildHtml('agreements') ?>
+    <?php
+    $terms = trim(Mage::helper('layaway')->getStoredDatafor('terms'));
+    if($islayaway && $terms!=""): ?>
+    
+        <form action="" id="layaway-agreements" onsubmit="return false;">
+            <ol class="checkout-agreements">
+                <li>
+                    <div class="layaway_agreements layaway_agreements_div" id="agreement_detail"style="display:none">
+                        <span onclick="$('agreement_detail').hide()" class="close_layaway" style="float:right;">X</span>
+                        <div class="layaway_inner"><?php echo nl2br($terms); ?></div>
+                    </div>
+                    <p class="agree">
+                        <input type="checkbox" id="agreement-layaway" name="agreement[layaway]" value="1" class="checkbox required-entry" /><label for="agreement-layaway"><?php echo Mage::helper('layaway')->getStoredDatafor('terms_label') ?></label> <a style="cursor:pointer;"onclick="$('agreement_detail').show()"><?php echo Mage::helper('layaway')->__('(read)') ?></a>
+                    </p>
+                </li>
+            </ol>
+        </form>
+        
+    <?php endif; ?>
     <div class="buttons-set" id="review-buttons-container">
         <p class="f-left"><?php echo $this->__('Forgot an Item?') ?> <a href="<?php echo $this->getUrl('checkout/cart') ?>"><?php echo $this->__('Edit Your Cart') ?></a></p>
         <?php echo $this->getChildHtml('button') ?>
@@ -81,4 +100,35 @@
         review = new Review('<?php echo $this->getUrl('checkout/onepage/saveOrder') ?>', '<?php echo $this->getUrl('checkout/onepage/success') ?>', $('checkout-agreements'));
     //]]>
     </script>
+    <?php if($islayaway && $terms!=""): ?>
+        
+        <script>
+            review.save = function(){
+                var a=$("layaway-agreements"); 
+                if((a=new Validation(a))&&a.validate()){
+                    if (checkout.loadWaiting!=false) return;
+                    checkout.setLoadWaiting('review');
+                    var params = Form.serialize(payment.form);
+                    if (this.agreementsForm) {
+                        params += '&'+Form.serialize(this.agreementsForm);
+                    }
+                    
+                    params += '&'+Form.serialize($('layaway-agreements'));
+                    
+                    params.save = true;
+                    var request = new Ajax.Request(
+                        this.saveUrl,
+                        {
+                            method:'post',
+                            parameters:params,
+                            onComplete: this.onComplete,
+                            onSuccess: this.onSave,
+                            onFailure: checkout.ajaxFailure.bind(checkout)
+                        }
+                    );
+                }
+                
+            }
+        </script>
+    <?php endif; ?>
 </div>
