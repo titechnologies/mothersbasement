@@ -36,14 +36,56 @@
     $methods = $this->getMethods();
     $oneMethod = count($methods) <= 1;
 ?>
+
+	<?php
+	//#2137 - starts
+		 // checking any of the cart items is preorder
+		$tempPreorderCount	= 0;
+		$tempWhatsIsThis = '<a target="_blank" href="http://mothersbasement.co.uk/payment-options">What is this?</a>';
+		//$tempWhatsIsThis = "<a onclick=\"javascript:window.open('http://mothersbasement.co.uk/payment-options','olcwhatispaypal','toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=yes, resizable=yes, ,left=0, top=0, width=400, height=350'); return false;\"  href=\"http://mothersbasement.co.uk/payment-options\">What is this?</a>";
+		$tempCartItemCount = Mage::helper('checkout/cart')->getCart()->getItemsCount(); //number of items in cart
+		$tempCartItemSession = Mage::getSingleton('checkout/session');
+
+		foreach ($tempCartItemSession->getQuote()->getAllVisibleItems() as $_tempCartItems){
+				if(Mage::getModel('catalog/product')->load($_tempCartItems->getProductId())->getPreorder()){
+				$tempPreorderCount++;
+				//break;
+				}
+		}
+
+		if(Mage::getSingleton('checkout/session')->getQuote()->getGrandTotal() =='0'){
+			$tempCode[] = 'free';	// for 100% discount orders
+		}else{
+			if($tempPreorderCount == $tempCartItemCount){
+				$tempCode[] = 'cashondelivery';	//for only preorder orders
+			}else if($tempPreorderCount >0){
+				$tempCode[] = 'cashondelivery';	//for mixed products orders
+				$tempCode[] = 'banktransfer';
+			}else{
+				$tempFlag = 'nothing';	//normal orders
+				//do nothing
+			}
+		}
+	//#2137 - ends
+	?>
+
+
 <?php
-    foreach ($methods as $_method):
-      $_code = $_method->getCode();
-	//#1737 - Display only 'No payment required' and hide all other payment methods from display if grandtotal=0 (.ie 100% applied to order)
-	if((Mage::getSingleton('checkout/session')->getQuote()->getGrandTotal() =='0') && $_code != 'free'){
-	  continue;
-	}
+foreach ($methods as $_method):
+  $_code = $_method->getCode();
 ?>
+
+
+	<?php
+	//#2137 - starts
+	if(($tempFlag != 'nothing') && (is_array($tempCode)) && (!in_array($_code,$tempCode))){
+		continue;
+	}else{
+		//do nothing
+	}
+	//#2137 - ends
+	?>
+		
     <dt>
     <?php if(!$oneMethod): ?>
         <input id="p_method_<?php echo $_code ?>" value="<?php echo $_code ?>" type="radio" name="payment[method]" title="<?php echo $this->htmlEscape($_method->getTitle()) ?>" onclick="payment.switchMethod('<?php echo $_code ?>')"<?php if($this->getSelectedMethodCode()==$_code): ?> checked="checked"<?php endif; ?> class="radio" />
@@ -51,8 +93,17 @@
         <span class="no-display"><input id="p_method_<?php echo $_code ?>" value="<?php echo $_code ?>" type="radio" name="payment[method]" checked="checked" class="radio" /></span>
         <?php $oneMethod = $_code; ?>
     <?php endif; ?>
-        <label for="p_method_<?php echo $_code ?>"><?php echo $this->escapeHtml($this->getMethodTitle($_method)) ?> <?php echo $this->getMethodLabelAfterHtml($_method) ?></label>
+        <label for="p_method_<?php echo $_code ?>">
+			<?php echo $this->escapeHtml($this->getMethodTitle($_method)) ?>
+			<?php echo $this->getMethodLabelAfterHtml($_method) ?>
+			<?php
+			if($_code == 'cashondelivery'){
+					echo $tempWhatsIsThis;
+			}
+			?>
+        </label>
     </dt>
+
     <?php if ($html = $this->getPaymentMethodFormHtml($_method)): ?>
     <dd>
         <?php echo $html; ?>
