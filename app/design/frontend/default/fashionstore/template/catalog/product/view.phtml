@@ -37,6 +37,7 @@
 .product-img-box{margin-top:10px}
 .more-views img{ margin-top:5px;}
 .more-views ul{margin-top:-5px;}
+.salebanner p {margin: 10px 0 10px !important;}
 </style>
 <?php $_helper = $this->helper('catalog/output'); ?>
 <?php $_product = $this->getProduct(); ?>
@@ -74,7 +75,9 @@ $product=$row['entity_id'];
 
 	<?php
 	//2199
+	echo '<div class="salebanner">';
 	echo $this->getLayout()->createBlock('cms/block')->setBlockId('sale-banner')->toHtml();
+	echo '</div>';
 	//2199
 	?>
 
@@ -450,15 +453,16 @@ $total = array_sum($stock);
 $total = Mage::getModel('cataloginventory/stock_item')->loadByProduct($_product)->getQty();
 }
 ?>
+<?php
+if($total > 0){
+	echo '<div class="top-header"><span>buy together and save</span></div>';
+	echo '<div class="product-collateral"> ';
+	echo $this->getChildHtml('product_additional_data');
+	echo '</div>';
+}
+?>
 	<?php
-	if($total > 0){
-		echo '<div class="top-header"><span>buy together and save</span></div>';
-		echo '<div class="product-collateral"> ';
-		echo $this->getChildHtml('product_additional_data');
-		echo '</div>';
-	}
-	?>
-	<?php
+		echo '<div class="salebanner"><p>';
 		//#1728
 		$tempCategories = $_product->getCategoryIds();
 		foreach($tempCategories as $k => $_category_id){
@@ -466,20 +470,18 @@ $total = Mage::getModel('cataloginventory/stock_item')->loadByProduct($_product)
 			$tempArrName[] =  $_category->getName();
 			$tempArrId[] = $_category->getId();
 		}
-		if((in_array('Funko',$tempArrName)) && (in_array('53',$tempArrId)) && ($_product->getFinalPrice() <= 50)){
+		if((in_array('Funko',$tempArrName)) && (in_array('53',$tempArrId))){
 			//display funko banner
 			echo $this->getLayout()->createBlock('cms/block')->setBlockId('funko-multi-buy-deal')->toHtml();
-		}else{
-			//#2199
-			//display Breaking Bad banner
-			if($_product->getFinalPrice() > 50){
-					echo $this->getLayout()->createBlock('cms/block')->setBlockId('breaking-bad')->toHtml();
-			}else{
-				//do nothing
-			}
-			//#2199
 		}
-		///#1728
+		
+		//#2199
+		//display Breaking Bad banner display only if 'price > £50'
+		if($_product->getFinalPrice() > 50){
+				echo $this->getLayout()->createBlock('cms/block')->setBlockId('breaking-bad')->toHtml();
+		}
+		//#2199
+		echo '</p></div>';
 		?>
     </td>
   </tr>
