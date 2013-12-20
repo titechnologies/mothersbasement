@@ -24,6 +24,8 @@ class EW_Automatedproducts_Block_Catalog_Product_List_Related extends Mage_Catal
 		}//for ends
 
 		//admin configuration settings 'admin-> system-> configurations-> catalog-> Automated Products-> Automated related products'
+		//#1615
+		//Updated: #2198
 		$displayLimit = Mage::getStoreConfig('automatedproducts/relatedproducts/limit');
 
 		//strip out duplicate products if any

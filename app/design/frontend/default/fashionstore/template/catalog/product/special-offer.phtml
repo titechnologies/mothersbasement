@@ -1,4 +1,4 @@
-<?php 
+<?php
 $storeId = Mage::app()->getStore()->getId();
 $_productCollection = Mage::getModel('catalog/product')->getCollection()
 ->addCategoryFilter(Mage::getModel('catalog/category')->load($this->getCategoryId()))
@@ -17,7 +17,23 @@ $_productCollection->load();
 <?php else: ?>
 <div class="category-products">
 <div class="top-header">
-<span><!--Special Offers #1660 -->CLEARANCE</span><span style="float:right; padding-top:0"><a href="<?php echo $this->getBaseUrl();?>special-offers.html" style=" color:red">View All&nbsp;</a></span>
+	<span>
+		<!--Special Offers #1660 -->
+		<?php
+		//#2196
+		//change the name of the CLEARANCE section to SALE
+		//This is depends on category name from admin side
+		$tempCategoryname = Mage::getModel("catalog/category")->load($this->getCategoryId())->getName();
+		if($tempCategoryname){
+			echo strtoupper($tempCategoryname);
+		}else{
+			echo strtoupper('Clearance');
+		}
+		//#2196
+		?>
+		
+	</span>
+	<span style="float:right; padding-top:0"><a href="<?php echo $this->getBaseUrl();?>special-offers.html" style=" color:red">View All&nbsp;</a></span>
 </div>
     <?php // Grid Mode ?>
 
