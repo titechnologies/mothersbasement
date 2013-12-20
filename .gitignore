@@ -1,11 +1,14 @@
 app/design/install/
+app/etc/local.xml
+app/code/core/Mage/Core/Model/Store.php
+.htaccess
+.gitignore
 install.php
 media/
 nbproject/
 skin/install/
 var/
 BACKUP_10-12-2013/
-.htaccess
 blog/.DS_Store
 blog/wp-content/updraft/*
 blog/.svn
