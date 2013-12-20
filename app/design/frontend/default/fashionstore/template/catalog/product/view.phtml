@@ -59,6 +59,7 @@ $product=$row['entity_id'];
 <div id="messages_product_view"><?php echo $this->getMessagesBlock()->getGroupedHtml() ?></div>
 	<?php
 		//#2158
+		/*
 		$now 	= Mage::getModel('core/date')->gmtDate('U'); //current date
 		$start 	= Mage::getModel('core/date')->gmtDate('U', mktime(0, 0, 0, 12, 16, 2013)); //decembar 16st 2013 12AM
 		$end 	= Mage::getModel('core/date')->gmtDate('U', mktime(13, 59, 0, 12, 23, 2013)); //dec 23rd 2013 2PM
@@ -67,8 +68,17 @@ $product=$row['entity_id'];
 			echo $this->getLayout()->createBlock('cms/block')->setBlockId('christmas-delivery-banner')->toHtml();
 			}
 		}
+		*/
 		//#2158
 	?>
+
+	<?php
+	//2199
+	echo $this->getLayout()->createBlock('cms/block')->setBlockId('sale-banner')->toHtml();
+	//2199
+	?>
+
+
 <table style="width:965px;" border="0">
   <tr>
     <td style="width:645px" valign="top">
@@ -439,40 +449,38 @@ $total = array_sum($stock);
 }else{
 $total = Mage::getModel('cataloginventory/stock_item')->loadByProduct($_product)->getQty();
 }
-if($total > 0){
-echo '
-    <div class="top-header"><span>buy together and save</span></div>
-
-	<div class="product-collateral"> ';
-
-        echo $this->getChildHtml('product_additional_data');
-    echo '</div>';
-}
-	?>
-
+?>
 	<?php
-	/////////////////////////////////////////////////////////////////#1728
-	/*
-	//display 'Pop Funko' banner in right panel only for 'FUNKO' category products
-	//http://dev.mothers-basement.co.uk/media/wysiwyg/funkopagebutton.jpg
-	$_category_detail=Mage::registry('current_category');
-	//if(($_category_detail->getName() == 'Funko') && ($_category_detail->getId() == '53')){
-	if($_category_detail->getId() == '53'){
-		echo $this->getLayout()->createBlock('cms/block')->setBlockId('funko-multi-buy-deal')->toHtml();
+	if($total > 0){
+		echo '<div class="top-header"><span>buy together and save</span></div>';
+		echo '<div class="product-collateral"> ';
+		echo $this->getChildHtml('product_additional_data');
+		echo '</div>';
 	}
-	*/
-	$tempCategories = $_product->getCategoryIds();
-	foreach($tempCategories as $k => $_category_id){
-		$_category = Mage::getModel('catalog/category')->load($_category_id);
-		$tempArrName[] =  $_category->getName();
-		$tempArrId[] = $_category->getId();
-	}
-	if((in_array('Funko',$tempArrName)) && (in_array('53',$tempArrId))){
-			echo $this->getLayout()->createBlock('cms/block')->setBlockId('funko-multi-buy-deal')->toHtml();
-	}
-	/////////////////////////////////////////////////////////////////#1728
 	?>
-
+	<?php
+		//#1728
+		$tempCategories = $_product->getCategoryIds();
+		foreach($tempCategories as $k => $_category_id){
+			$_category = Mage::getModel('catalog/category')->load($_category_id);
+			$tempArrName[] =  $_category->getName();
+			$tempArrId[] = $_category->getId();
+		}
+		if((in_array('Funko',$tempArrName)) && (in_array('53',$tempArrId)) && ($_product->getFinalPrice() <= 50)){
+			//display funko banner
+			echo $this->getLayout()->createBlock('cms/block')->setBlockId('funko-multi-buy-deal')->toHtml();
+		}else{
+			//#2199
+			//display Breaking Bad banner
+			if($_product->getFinalPrice() > 50){
+					echo $this->getLayout()->createBlock('cms/block')->setBlockId('breaking-bad')->toHtml();
+			}else{
+				//do nothing
+			}
+			//#2199
+		}
+		///#1728
+		?>
     </td>
   </tr>
 </table>
