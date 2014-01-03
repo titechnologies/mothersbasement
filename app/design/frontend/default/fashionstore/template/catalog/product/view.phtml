@@ -463,6 +463,17 @@ if($total > 0){
 ?>
 	<?php
 		echo '<div class="salebanner"><p>';
+
+		//#2250
+		//display only for preorder items
+		if($_product->getPreorder()){
+			echo $this->getLayout()->createBlock('cms/block')->setBlockId('deposit-pre-orders')->toHtml();
+		}else{
+			//display all items includig preorder
+			echo $this->getLayout()->createBlock('cms/block')->setBlockId('next-day-delivery')->toHtml();
+		}
+		//#2250
+		
 		//#1728
 		$tempCategories = $_product->getCategoryIds();
 		foreach($tempCategories as $k => $_category_id){
@@ -474,13 +485,8 @@ if($total > 0){
 			//display funko banner
 			echo $this->getLayout()->createBlock('cms/block')->setBlockId('funko-multi-buy-deal')->toHtml();
 		}
+		//#1728
 		
-		//#2199
-		//display Breaking Bad banner display only if 'price > £50'
-		if($_product->getFinalPrice() > 50){
-				echo $this->getLayout()->createBlock('cms/block')->setBlockId('breaking-bad')->toHtml();
-		}
-		//#2199
 		echo '</p></div>';
 		?>
     </td>
