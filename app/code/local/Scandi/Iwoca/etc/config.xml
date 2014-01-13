@@ -1,0 +1,72 @@
+<?xml version="1.0"?>
+<config>
+    <modules>
+        <Scandi_Iwoca>
+            <version>1.0.0.0</version>
+        </Scandi_Iwoca>
+    </modules>
+    <global>
+        <blocks>
+            <iwoca>
+                <class>Scandi_Iwoca_Block</class>
+            </iwoca>
+        </blocks>
+        <models>
+            <iwoca>
+                <class>Scandi_Iwoca_Model</class>
+            </iwoca>
+        </models>
+        <helpers>
+            <iwoca>
+                <class>Scandi_Iwoca_Helper</class>
+            </iwoca>
+        </helpers>
+        <template>
+            <email>
+                <iwoca_email_template module="iwoca">
+                    <label>Iwoca account information</label>
+                    <file>iwoca_email.html</file>
+                    <type>html</type>
+                </iwoca_email_template>
+            </email>
+        </template>
+    </global>
+    <admin>
+        <routers>
+            <iwoca_admin>
+                <use>admin</use>
+                <args>
+                    <module>Scandi_Iwoca</module>
+                    <frontName>iwoca</frontName>
+                </args>
+            </iwoca_admin>
+        </routers>
+    </admin>
+    <adminhtml>
+        <layout>
+            <updates>
+                <scandi_iwoca module="Scandi_Iwoca">
+                    <file>scandi_iwoca.xml</file>
+                </scandi_iwoca>
+            </updates>
+        </layout>
+        <events>
+            <controller_action_layout_load_before>
+                <observers>
+                    <iwoca_observer>
+                        <class>iwoca/observer</class>
+                        <method>addCustomLayoutHandle</method>
+                    </iwoca_observer>
+                </observers>
+            </controller_action_layout_load_before>
+        </events>
+    </adminhtml>
+    <crontab>
+        <jobs>
+            <scandi_iwoca_feed>
+                <schedule><cron_expr>0 0 * * *</cron_expr></schedule>
+                <run><model>iwoca/observer::dailyFeed</model></run>
+            </scandi_iwoca_feed>
+        </jobs>
+    </crontab>
+</config>

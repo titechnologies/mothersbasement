@@ -1,0 +1,93 @@
+<div class="entry-edit">
+    <div class="entry-edit-head">
+        <h4 class="icon-head head-edit-form fieldset-legend"><?php echo Mage::helper('iwoca')->__('Link your iwoca profile') ?></h4>
+    </div>
+        <fieldset class="config collapseable">
+            <?php if (Mage::getStoreConfig('iwoca/general/account') == NULL):?>
+            <div class="comment">
+                <?php echo Mage::helper('iwoca')->__('Click &#39;Link my iwoca profile&#39; to link your Magento store to your iwoca profile. This will allow us to see your sales history so we can better understand your business. No changes will be made to your store and iwoca will not have any access to your account.') ?>
+            </div>
+                <table cellspacing="0" class="form-list iwoca" id="iwoca-passive">
+                    <colgroup class=""></colgroup>
+                    <colgroup class="button"></colgroup>
+                    <colgroup class=""></colgroup>
+                    <tbody>
+                    <tr>
+                        <td class="" colspan="1"></td>
+                        <td class="button iwoca-button" colspan="1">
+                            <button onclick="sendFunction('<?php echo $this->getUrl('iwoca/adminhtml_initial/index') ?>')" class="button" type="button" id="iwoca-button">
+                                <span><span><span><?php echo Mage::helper('iwoca')->__('Link my iwoca profile')  ?></span></span></span>
+                            </button>
+                        </td>
+                        <td class="" colspan="1"></td>
+                    </tr>
+                    </tbody>
+                </table>
+            <?php else: ?>
+                <div class="comment">
+                    <?php echo Mage::helper('iwoca')->__('Your Magento account identifiers are shown below. Make sure these have been added to your iwoca profile - they allow us to see your sales history so we can better understand your business.') ?>
+                </div>
+                <table cellspacing="0" class="form-list iwoca" id="iwoca-active">
+                    <colgroup class=""></colgroup>
+                    <colgroup class="label"></colgroup>
+                    <colgroup class="value"></colgroup>
+                    <colgroup class=""></colgroup>
+                    <tbody>
+                        <tr>
+                            <td class=""></td>
+                            <td class="label">
+                                <label for="iwoca_general_account"><?php echo Mage::helper('iwoca')->__('Account Number') ?></label>
+                            </td>
+                            <td class="value">
+                                <input type="text" class="input-text" readonly="readonly" value="<?php echo Mage::getStoreConfig('iwoca/general/account') ?>" name="iwoca_general_account" id="iwoca_general_account" />
+                                <div id="copy-acc" class="copy-button" data-clipboard-target="iwoca_general_account" data-clipboard-text="Copy" title="Click to copy account number"><?php echo Mage::helper('iwoca')->__('Copy') ?></div>
+                            </td>
+                            <td class=""></td>
+                        </tr>
+                        <tr>
+                            <td class=""></td>
+                            <td class="label">
+                                <label for="iwoca_general_password"><?php echo Mage::helper('iwoca')->__('Password') ?></label>
+                            </td>
+                            <td class="value">
+                                <input type="text" class="input-text" readonly="readonly" value="<?php echo Mage::getStoreConfig('iwoca/general/password') ?>" name="iwoca_general_password" id="iwoca_general_password" />
+                                <div id="copy-pass" class="copy-button" data-clipboard-target="iwoca_general_password" data-clipboard-text="Copy" title="Click to copy password"><?php echo Mage::helper('iwoca')->__('Copy') ?></div>
+                            </td>
+                            <td class=""></td>
+                        </tr>
+                    </tbody>
+                </table>
+            <?php endif; ?>
+            <div class="comment">
+                <?php echo Mage::helper('iwoca')->__('Need a helping hand? Call us on 020 3397 3375 or email') ?>
+                <a href="mailto:support@iwoca.co.uk?Subject=Link%20my%20Magento%20store"><?php echo Mage::helper('iwoca')->__('support@iwoca.co.uk') ?></a>
+            </div>
+    </fieldset>
+</div>
+<div class="entry-edit">
+    <div class="entry-edit-head">
+        <h4 class="icon-head head-edit-form fieldset-legend"><?php echo Mage::helper('iwoca')->__('Uninstall extension') ?></h4>
+    </div>
+    <fieldset class="config collapseable">
+        <div class="comment">
+            <?php echo Mage::helper('iwoca')->__('Uninstall the extension and revoke iwoca&#39;s permission to view your sales history.' ) ?>
+        </div>
+        <table cellspacing="0" class="form-list iwoca" id="iwoca-passive">
+            <colgroup class=""></colgroup>
+            <colgroup class="button"></colgroup>
+            <colgroup class=""></colgroup>
+            <tbody>
+            <tr>
+                <td class="" colspan="1"></td>
+                <td class="button iwoca-delete-button" colspan="1">
+                    <button onclick="deleteFunction('<?php echo $this->getUrl('iwoca/adminhtml_uninstall/index/') ?>');" class="button" type="button" id="iwoca-delete-button">
+                        <span><span><span><?php echo Mage::helper('iwoca')->__('Uninstall extension')  ?></span></span></span>
+                    </button>
+                </td>
+                <td class="" colspan="1"></td>
+            </tr>
+            </tbody>
+        </table>
+    </fieldset>
+</div>
+

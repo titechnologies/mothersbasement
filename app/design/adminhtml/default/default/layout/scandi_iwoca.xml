@@ -1,0 +1,13 @@
+<layout version="0.1.0">
+    <iwoca_admin_handle>
+        <reference name="head">
+            <action method="addItem"><type>js</type><name>scandi_iwoca/FlashDetect.js</name><params/></action>
+            <action method="addItem"><type>js</type><name>scandi_iwoca/ZeroClipboard.js</name><params/></action>
+            <action method="addItem"><type>js</type><name>scandi_iwoca/iwoca.js</name><params/></action>
+            <action method="addItem"><type>js_css</type><name>prototype/windows/themes/default.css</name></action>
+            <action method="addCss"><name>lib/prototype/windows/themes/magento.css</name></action>
+            <action method="addItem"><type>js_css</type><name>prototype/windows/themes/magento.css</name><params/></action>
+            <action method="addCss"><name>scandi_iwoca.css</name></action>
+        </reference>
+    </iwoca_admin_handle>
+</layout>

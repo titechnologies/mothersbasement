@@ -1,0 +1,8 @@
+<config>
+    <modules>
+        <Scandi_Iwoca>
+            <active>true</active>
+            <codePool>local</codePool>
+        </Scandi_Iwoca>
+    </modules>
+</config>

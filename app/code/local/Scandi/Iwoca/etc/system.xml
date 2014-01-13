@@ -1,0 +1,26 @@
+<?xml version="1.0"?>
+<config>
+    <sections>
+        <iwoca translate="label" module="iwoca">
+            <label>iwoca</label>
+            <tab>service</tab>
+            <frontend_type>text</frontend_type>
+            <sort_order>200</sort_order>
+            <show_in_default>1</show_in_default>
+            <show_in_website>0</show_in_website>
+            <show_in_store>0</show_in_store>
+            <groups>
+                <general translate="label" module="iwoca">
+                    <label>General Settings</label>
+                    <frontend_type>text</frontend_type>
+                    <expanded>1</expanded>
+                    <sort_order>100</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>0</show_in_website>
+                    <show_in_store>0</show_in_store>
+                    <frontend_model>iwoca/adminhtml_system_config_iwocaBackend</frontend_model>
+                </general>
+            </groups>
+        </iwoca>
+    </sections>
+</config>

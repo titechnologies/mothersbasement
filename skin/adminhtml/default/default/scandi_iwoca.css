@@ -1,0 +1,13 @@
+.iwoca-content #modal_dialog_message { padding:18px; }
+#iwoca-active td.value { width:327px; }
+#iwoca-active td.value input.input-text { float:left; }
+#iwoca-active td.label label { text-align:right; }
+#iwoca-active div.copy-button, .iwoca-content #modal_dialog_message div.copy-button { cursor:pointer; background:url("images/btn_bg.gif") repeat-x scroll 0 100% #FFAC47; border-color:#ED6502 #A04300 #A04300 #ED6502; display:inline-block;
+border-style:solid; border-width:1px; color:#FFFFFF; font:bold 12px arial,helvetica,sans-serif; padding:1px 7px 3px; text-align:center !important; white-space:nowrap; }
+#iwoca-active div.copy-button:active, .iwoca-content #modal_dialog_message div.copy-button:active, .global-zeroclipboard-container:active { background: url("images/btn_on_bg.gif") repeat-x scroll 0 0 #F77C16; }
+#iwoca-passive { width:100%; }
+#iwoca-active { margin:30px auto; }
+#iwoca-passive td { text-align:center; }
+.iwoca-content #iwoca-active { margin:0 0 0 -100px; }
+.iwoca-content #modal_dialog_message .comment { padding:0 0 15px; }
+p.ext-del { text-align:center; font-weight:bold; font-size:14px; margin-top:35px; }
