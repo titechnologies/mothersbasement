@@ -1,0 +1,41 @@
+<?xml version="1.0"?>
+<config>
+  <modules>
+    <Ti_PersonCollection>
+      <version>0.1.0</version>
+    </Ti_PersonCollection>
+  </modules>
+  <global>
+    <models>
+      <tipersoncollection>
+        <class>Ti_PersonCollection_Model</class>
+      </tipersoncollection>
+    </models>
+    <resources>
+      <tipersoncollection_setup>
+        <setup>
+          <module>Ti_PersonCollection</module>
+        </setup>
+        <connection>
+          <use>core_setup</use>
+        </connection>
+      </tipersoncollection_setup>
+    </resources>
+  </global>
+  <default>
+    <carriers>
+      <tipersoncollection>
+        <active>1</active>
+        <allowed_methods>delivery</allowed_methods>
+        <methods>delivery</methods>
+        <sallowspecific>0</sallowspecific>
+        <model>Ti_PersonCollection_Model_Carrier_PersonDelivery</model>
+        <name>Ti Custom PersonCollection</name>
+        <title>Collection in Person</title>
+        <specificerrmsg>This Collection in Person method is currently unavailable. If you would like to ship using this personcollection method, please contact us.
+                </specificerrmsg>
+        <handling_type>F</handling_type>
+      </tipersoncollection>
+    </carriers>
+  </default>
+</config>
